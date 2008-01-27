@@ -1,5 +1,4 @@
-#summary This is short introduction of
-the bot. 
+This is short introduction of the bot. 
 
 = Authors =
 
@@ -7,22 +6,44 @@ the bot.
 If you want to join the project notify me:
 
 ICQ: _398-238-474_
-Jabber: _bbodio at jabber.ru_ 
+
+Jabber: _bbodio at jabber.ru_
+
 Mail: _bbodio at mail.ru_
 
 = About =
 This is a an executable, which is binded to several dlls'.
+
 Containing:
-*Pako.exe* -> The main engine, which initializes all processes and creates a nes xmpp-session
-*Core.dll* -> Handles all the bot/xmpp processes: provides all the session.
-Pako
-*agsXMPP.dll* -> This library is an official XMPP-many-featured dll 
+
+- *Pako.exe* -> The main engine, which initializes all processes and creates a new instance of xmpp-session
+
+- *Core.dll* -> Handles all the bot/xmpp processes: provides all the session.
+
+- *agsXMPP.dll* -> This library is an official XMPP-many-featured dll 
 of _www.ag-software.de_ , which supports lots-of-XEP-featured Jabber-session.
 I think, this is the most featured and stable jabber-library of all.
-*Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
-*SQLite3.dll* -> This is SQLite wrapper , written on C.
+- *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
+- *SQLite3.dll* -> This is SQLite wrapper , written on C.
+
+- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigaet in rfc3921 by bot.
+
+- *Data* -> Folder, where are data-bases, containing specific information about chat-rooms.
+
+- *Dynamic* -> This folder containes
+ 
+   _Different types of XML configurators:_
+ * Rooms.base -> contains information about auto-entering chat-rooms.
+ * Users.base -> contains information about specific JIDs, for which bot makes exceptions in his behaviour (language, access level). 
+ * Access.base - contains information about the minimum accessing level for each command.
+ ** P.S. All the listed files can be changed dynamicly , by sending command to bot.
+  _Data bases:
+ * Censor.db -> RegEx patterns , which bot gets as censored words and kicks/notifies.
+ * Dictionary.db -> a db, containg a simple dictinary(phrase <-> meaning) , which saves info by author.
+
+- *Plugins* -> 
 = Bugs =
 
 If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
