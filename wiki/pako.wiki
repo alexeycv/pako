@@ -1,3 +1,4 @@
+
 *Bbodio* is the main developer of the curent project. 
 If you want to join the project notify me:
 
@@ -20,11 +21,13 @@ Containing:
 of _www.ag-software.de_ , which supports lots-of-XEP-featured Jabber-session.
 I think, this is the most featured and stable jabber-library of all.
 
+
+- *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
 - *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
 - *SQLite3.dll* -> This is SQLite wrapper , written on C.
 
-- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigate in rfc3921 by bot.
+- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigate through rfc3921 by bot.
 
 - *Data* -> Folder, where are data-bases, containing specific information about chat-rooms.
 
@@ -47,9 +50,9 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
  * Main folder, which has to be named after short international format of country: en, ru, ua, gb and so...
  * In main folder there has to be 2 files: 
 
-     - "help.pack" - contains information about syntax of all the commands.
+   "help.pack" - contains information about syntax of all the commands.
 
-     - "lang.pack" - contains all the response-patterns - the way how bot will reply to client.
+   "lang.pack" - contains all the response-patterns - the way how bot will reply to client.
 
 - *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
 
@@ -57,4 +60,4 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
 = Bugs =
 
 If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
-New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!
+New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!.
