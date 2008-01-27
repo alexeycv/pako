@@ -1,0 +1,62 @@
+*Bbodio* is the main developer of the curent project. 
+If you want to join the project notify me:
+
+ICQ: _398-238-474_
+
+Jabber: _bbodio at jabber.ru_
+
+Mail: _bbodio at mail.ru_
+
+= About =
+This is a an executable, which is binded to several dlls'.
+
+Containing:
+
+- *Pako.exe* -> The main engine, which initializes all processes and creates a new instance of xmpp-session
+
+- *Core.dll* -> Handles all the bot/xmpp processes: provides all the session.
+
+- *agsXMPP.dll* -> This library is an official XMPP-many-featured dll 
+of _www.ag-software.de_ , which supports lots-of-XEP-featured Jabber-session.
+I think, this is the most featured and stable jabber-library of all.
+
+
+- *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
+- *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
+
+- *SQLite3.dll* -> This is SQLite wrapper , written on C.
+
+- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigate through rfc3921 by bot.
+
+- *Data* -> Folder, where are data-bases, containing specific information about chat-rooms.
+
+- *Dynamic* -> This folder containes
+ 
+   _Different types of XML configurators:_
+ * Rooms.base -> contains information about auto-entering chat-rooms.
+ * Users.base -> contains information about specific JIDs, for which bot makes exceptions in his behaviour (language, access level). 
+ * Access.base - contains information about the minimum accessing level for each command.
+ ** P.S. All the listed files can be changed dynamicly , by sending command to bot.
+
+  _Data bases:_
+ * Censor.db -> RegEx patterns , which bot gets as censored words and kicks/notifies.
+ * Dictionary.db -> a db, containg a simple dictinary(phrase <-> meaning) , which saves info by author.
+
+- *Plugins* -> Conatins optionaly-added dlls, which provide new volumes->new commands.
+A plugin can be created and added by anyone. A plugin can be added to any session : before or dynamicly (see "admin pl_load" and "admin pl_unload" cmds).
+
+- *Lang* -> Contains different languages-packs. Each language has to loo like this:
+ * Main folder, which has to be named after short international format of country: en, ru, ua, gb and so...
+ * In main folder there has to be 2 files: 
+
+   "help.pack" - contains information about syntax of all the commands.
+
+   "lang.pack" - contains all the response-patterns - the way how bot will reply to client.
+
+- *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
+
+ 
+= Bugs =
+
+If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
+New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!.
