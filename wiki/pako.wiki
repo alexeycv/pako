@@ -1,4 +1,3 @@
-
 *Bbodio* is the main developer of the curent project. 
 If you want to join the project notify me:
 
@@ -25,7 +24,7 @@ I think, this is the most featured and stable jabber-library of all.
 
 - *SQLite3.dll* -> This is SQLite wrapper , written on C.
 
-- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigaet in rfc3921 by bot.
+- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigate in rfc3921 by bot.
 
 - *Data* -> Folder, where are data-bases, containing specific information about chat-rooms.
 
@@ -36,6 +35,7 @@ I think, this is the most featured and stable jabber-library of all.
  * Users.base -> contains information about specific JIDs, for which bot makes exceptions in his behaviour (language, access level). 
  * Access.base - contains information about the minimum accessing level for each command.
  ** P.S. All the listed files can be changed dynamicly , by sending command to bot.
+
   _Data bases:_
  * Censor.db -> RegEx patterns , which bot gets as censored words and kicks/notifies.
  * Dictionary.db -> a db, containg a simple dictinary(phrase <-> meaning) , which saves info by author.
@@ -47,8 +47,9 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
  * Main folder, which has to be named after short international format of country: en, ru, ua, gb and so...
  * In main folder there has to be 2 files: 
 
-   "help.pack" - contains information about syntax of all the commands.
-   "lang.pack" - contains all the response-patterns - the way how bot will reply to client.
+     - "help.pack" - contains information about syntax of all the commands.
+
+     - "lang.pack" - contains all the response-patterns - the way how bot will reply to client.
 
 - *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
 
@@ -56,4 +57,4 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
 = Bugs =
 
 If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
-New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!.
+New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!
