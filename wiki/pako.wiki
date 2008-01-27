@@ -1,13 +1,29 @@
-#summary One-sentence summary of this page.
+#summary This is short introduction of
+the bot. 
 
-= Introduction =
+= Authors =
 
-Add your content here.
+*Bbodio* is the main developer of the curent project. 
+If you want to join the project notify me:
 
+ICQ: _398-238-474_
+Jabber: _bbodio at jabber.ru_ 
+Mail: _bbodio at mail.ru_
 
-= Details =
+= About =
+This is a an executable, which is binded to several dlls'.
+Containing:
+*Pako.exe* -> The main engine, which initializes all processes and creates a nes xmpp-session
+*Core.dll* -> Handles all the bot/xmpp processes: provides all the session.
+Pako
+*agsXMPP.dll* -> This library is an official XMPP-many-featured dll 
+of _www.ag-software.de_ , which supports lots-of-XEP-featured Jabber-session.
+I think, this is the most featured and stable jabber-library of all.
+*Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+*SQLite3.dll* -> This is SQLite wrapper , written on C.
+
+= Bugs =
+
+If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
+New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!.
