@@ -83,6 +83,7 @@ namespace Plugin
         public void PerformAction(IPluginData d)
         {
            //So if you type the command  plug the bot will say you: hi, little friend! :-)
+
            r.Reply("hi, little friend! :-)";
 
         }
