@@ -3,12 +3,17 @@
 1) *Don't forget to to use the prefix , when sending command to bot! *
 *See Pako.cfg on "delimiter" attribute*
 
-*So your command must look by default for example:*
-!admin cmd dir D:\
+*So your command must look by default for example:{{{ * }}}
+
+{{{
+*admin cmd dir D:\
+}}}
 
 *not*
+
+{{{
 admin cmd dir D:\
- 
+}}} 
 
 2) Add reference of Core.dll into your Plug-in solution. *Your classes should be named   
 right like in the example!* 
@@ -22,23 +27,15 @@ Code:
 
 
 
-
+{{{
 using System;
-
 using System.Collections.Generic;
-
 using System.Text;
-
 using Core.Plugins;
-
 using Core.Client;
-
 using Core.Conference;
-
 using agsXMPP;
-
 using agsXMPP.protocol.client;
-
 
 namespace Plugin
 {
@@ -54,14 +51,6 @@ namespace Plugin
             }
         }
 
-
-        public bool MucOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
 
 
         public string Name
@@ -84,7 +73,7 @@ namespace Plugin
         {
            //So if you type the command  plug the bot will say you: hi, little friend! :-)
 
-           r.Reply("hi, little friend! :-)";
+           r.Reply("hi, little friend! :-)");
 
         }
     }
@@ -92,3 +81,18 @@ namespace Plugin
 
 
 }
+}}}
+
+
+
+Now if you type:
+
+{{{
+*plug
+}}}
+
+bot will answer you:
+
+{{{
+hi, little friend! :-)
+}}}
