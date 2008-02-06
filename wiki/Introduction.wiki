@@ -139,7 +139,19 @@ Open it and follow the tips near each field and you're done.
 Let's take it to /Dynamic directory.
 You can fill all this configurators by your-self, or you can make changes during bot-session.
 
-= !!! =
+Example of Users.base:
+{{{
+<Users>
+<usersdata>
+  <user jid="myjid@server.dom" lang="en" access="100" />
+  <user jid="somejid@server.dom" lang="ru" access="50" />
+</usersdata>
+</Users>
+}}}
+
+
+
+
 
 You have to specify 1 or more rooms, where bot will join each time when starting.
 Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of chat-rooms.
@@ -153,6 +165,11 @@ Example of Rooms.base:
   </rooms>
 </amucs>
 }}}
+So we can see that he will enter two rooms when starting:
+
+*chat@conference.server.dom* with status "hello :-D" and nick "Pako"
+*talks@conference.server.dom" with status "Hello :)" and nick "Pako"
+
 
 
 
