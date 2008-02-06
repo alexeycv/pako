@@ -78,7 +78,7 @@ Choose your platform:
 
 Choose and download the latest archive, labeled 'sources'. Unzip it to some free directory : there are 'Plugins', 'Core', 'Pako'.
 First you have to compile the main core-part of a bot:
-Open Visual Studio/Visual C# . On menu-item 'File' toy will find 'Open' -> 'Project/Solution'.
+Open Visual Studio/Visual C# . On menu-item 'File' you will find 'Open' -> 'Project/Solution'.
 In a dialog-window, which will appear , find directory , where the Core solution is.
 Open Core.sln.
 When solution is loaded, choose menu-item 'Build' -> 'Build Solution'.
@@ -88,6 +88,23 @@ Now open the Core-solution's directory and there will be compiled Core.dll.
 Let's compile a main starter:
 Find in in the directory, where you unziped archive a folder 'Pako', open it and 'Pako.sln' using your IDE.
 Build it, like the previous time you did with Core.dll.
+After compiled successfully you have Pako.exe in Pako/pako/bin/Release/. 
+
+Now you have to compile all the solutions from the folder 'Plugins'. As result you'll have these dlls:
+  - *Muc.dll*
+
+  - *Admin.dll*
+
+  - *Misc.dll*
+
+  - *Def.dll*
+
+  - *Dict.dll*
+
+  - *Web.dll*
+
+you have to put those dlls into Pako/Pako/bin/Release/Plugins directory, These are he plugins for bot (without them bot has no commands).
+Now you only have to fill all the configurators.
  
 
 
