@@ -148,8 +148,8 @@ You have to put those dlls into /Plugins. These are the plug-ins for bot (withou
 Now you only have to fill all the configurators.
 
 
----- 
-let's take a look at /Lang
+----
+Let's take a look at /Lang
 There can be added unlimited count of language-packets. Each language packet is:a directory, named after international name of country, which represents current language
 Int his directory, has to "help.pack" and "lang.pack";
 
@@ -169,7 +169,17 @@ So if the bot has to answer with pattern admin_leave(which is used to notify adm
 if the user wants to get help for some command , which has no documentation yet (see help.pack syntax), bot will use help_not_found pattern to answer.
 That means that you can fully change his answers as you wich and he can even talk French or German :).
 P.S. the patterns are formatted: if you had noticed the {1}, then this is asign , which will be replaced by something, specified by bot. In help_not_found {1} is a exact command, which documentation was not found.
- 
+
+Example of help.pack:
+
+{{{
+<help>
+   <command name="muc kick" value="Please follow this syntax:&#xA;{1}muc kick 'nick'&#xA;where 'nick' is any user to kick" />
+   <command name="muc setsubject" value="Please follow this syntax:&#xA;{1}muc subject newsubject &#xA;where 'newsubject' is any subject chat-room" />  
+</help> 
+}}} 
+See: it contains all documentation for commands: corerct syntax and short discription. Every tag "command" is responsible for one command. it conatins an attribute "name" where has to be a name of command and attribute "value" where has to be exact  text, which bot will return as documentation for current command.
+See the {1} in "value" - this is prefix, which is used to type commands(this sign is dynamic, so bot has always to replace {1} with the current prefix. 
 
  == Warning: all the 
 
