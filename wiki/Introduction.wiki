@@ -151,8 +151,9 @@ Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of 
 
 
 - *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
-*http://www.mono-project.com
-*http://www.go-mono.com
+  Related links:
+* [http://www.mono-project.com Mono-Project]
+* [http://www.go-mono.com Go-Mono]
 
   _Requirments:_
 
