@@ -428,6 +428,10 @@ Bot uses it to execute command "web rfc" from a Web.dll plug-in. This command is
 
    C#, ASP, WPF, WCF .NET, Windows Vista Community.
 
+ * [http://www.sqlite.org/download.html SQLite] 
+
+  Download the freshest SQLite3
+
  * [http://www.gnu.org/licenses/gpl.html GNU/GPL v3] 
 
   See the license agreement.
