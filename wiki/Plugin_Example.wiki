@@ -96,3 +96,6 @@ bot will answer you:
 {{{
 hi, little friend! :-)
 }}}
+
+
+For more complicated structure of plug-in see any of included in sources Plug-ins projects.
