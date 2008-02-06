@@ -57,7 +57,7 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
 
 - *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
 
----- 
+----
 = Getting started =
 
 There are two ways of getting bot on your computer:
@@ -68,6 +68,11 @@ The second way is saftier, beacuse if you compile it on platfrom, on which you e
 
 
 *If you want to compile the bot by your own:*
+
+
+
+
+= Compiling =
 
 Choose your platform:
 
@@ -109,6 +114,23 @@ So we already have:
  * _Core.dll_
 
 ----
+
+- *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
+
+
+
+
+  _Requirments:_
+
+   - *Mono >= v1.2.5.1*,
+
+   - *'mcs' and 'gmcs' C# compilers, SQLite3 library (not installed by default on FreeBSD)*
+
+
+
+
+
+
 Now you have to compile all the solutions from the folder 'Plugins'. As result you'll have these dlls:
   - *Muc.dll*
 
@@ -153,17 +175,32 @@ Part of Pako.cfg:
 
 See: each tag has a comment, which helps to set correctly. Each atg has a "value" attribute, where you should fill-in the values of the parameter: for example:
 
-
- # 
 {{{
 <lang value="en" />
 }}}
 See: here you have to fill-in a default language, which bot will use to comunicate with users. So you should fill-in inti 'value" attribute a name of a language. Please check twice if it's correct.
- # 
+ 
 {{{
 <admins value="jid1@server.dom|jid2@server.dom" />
 }}}
-See the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use sign "|" to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
+See: the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use sign "|" to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
+
+{{{
+<delimiter value="*" />
+}}}
+See: here you have specify a signh, which will be used for entering  commands.
+As default there is {{{ * }}}, that means that all the  commands have to be type like that:
+{{{
+*muc setsubject My New subject
+*web google 1 pako
+}}}
+
+If deleimier is ? than qall the commands have to look like this:
+{{{
+?muc mynick Pako2
+?def add pako = bot
+}}}
+
 
 ----
 Let's take it to /Dynamic directory.
@@ -241,17 +278,6 @@ Bot uses it to execute command "web rfc" from a Web.dll plug-in. This command is
 
 
 
-
-- *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
-
-
-
-
-  _Requirments:_
-
-   - *Mono >= v1.2.5.1*,
-
-   - *'mcs' and 'gmcs' C# compilers, SQLite3 library (not installed by default on FreeBSD)*
 
 
 
