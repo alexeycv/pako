@@ -21,7 +21,7 @@ of _www.ag-software.de_ , which supports lots-of-XEP-featured Jabber-session.
 I think, this is the most featured and stable jabber-library of all.
 
 
-- *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
+- *Pako.cfg* -> This is a bot main configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
 - *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
 - *SQLite3.dll* -> This is SQLite wrapper , written on C.
