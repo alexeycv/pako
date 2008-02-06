@@ -147,6 +147,32 @@ Now you have to compile all the solutions from the folder 'Plugins'. As result y
 You have to put those dlls into /Plugins. These are the plug-ins for bot (without them bot has no commands).
 Now you only have to fill all the configurators.
 
+
+---- 
+let's take a look at /Lang
+There can be added unlimited count of language-packets. Each language packet is:a directory, named after international name of country, which represents current language
+Int his directory, has to "help.pack" and "lang.pack";
+
+Example of lang.pack:
+
+{{{
+<lang>
+   <patterns 
+   admin_leave="Bye, i'm leaving :)"
+   ...
+   help_not_found="The information about the command {1} was not found"
+   />
+}}}
+
+See: "patterns" has to caontain all the patterns, which bot will use to answer to user. See the original /Lang/en/lang.pack to get a full list of needed patterns for the language-packet.
+So if the bot has to answer with pattern admin_leave(which is used to notify administartors, that bot is shutting down), he will answer whatever you fill in thius attribute. 
+if the user wants to get help for some command , which has no documentation yet (see help.pack syntax), bot will use help_not_found pattern to answer.
+That means that you can fully change his answers as you wich and he can even talk French or German :).
+P.S. the patterns are formatted: if you had noticed the {1}, then this is asign , which will be replaced by something, specified by bot. In help_not_found {1} is a exact command, which documentation was not found.
+ 
+
+ == Warning: all the 
+
 ----
 First let's take it to main Pako.cfg.
 
@@ -195,11 +221,13 @@ As default there is {{{ * }}}, that means that all the  commands have to be type
 *web google 1 pako
 }}}
 
-If deleimier is ? than qall the commands have to look like this:
+If deleimier is ? than all the commands have to look like this:
 {{{
 ?muc mynick Pako2
 ?def add pako = bot
 }}}
+
+
 
 
 ----
