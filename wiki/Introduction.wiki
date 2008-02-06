@@ -22,7 +22,7 @@ I think, this is the most featured and stable jabber-library of all.
 
 
 - *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
-- *Mono.Data.SQLite.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
+- *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
 - *SQLite3.dll* -> This is SQLite wrapper , written on C.
 
@@ -85,10 +85,24 @@ When solution is loaded, choose menu-item 'Build' -> 'Build Solution'.
 If no errors, then everything is ok. See at the bottom of the IDE's main window a label 'Build succeeded'.
 Now open the Core-solution's directory and there will be compiled Core.dll.
 
+
 Let's compile a main starter:
-Find in in the directory, where you unziped archive a folder 'Pako', open it and 'Pako.sln' using your IDE.
+Find in in the directory, where you unziped archive a folder 'Pako', open 'Pako.sln' using your IDE.
 Build it, like the previous time you did with Core.dll.
-After compiled successfully you have Pako.exe in Pako/pako/bin/Release/. 
+After compiled successfully you have Pako.exe.
+It's compiled in /Pako/Pako/bin/Release. Let's use this directory as default(when we talk about /Data we mean /Pako/Pako/bin/Release/Data)
+
+Put there Core.dll.
+
+So we already have:
+
+ * /Dynamic, 
+ * _Pako.exe_, 
+ * /Data,
+ * /Static, 
+ * /Lang,
+ * /Plugins
+ * _Core.dll_
 
 Now you have to compile all the solutions from the folder 'Plugins'. As result you'll have these dlls:
   - *Muc.dll*
@@ -103,17 +117,35 @@ Now you have to compile all the solutions from the folder 'Plugins'. As result y
 
   - *Web.dll*
 
-you have to put those dlls into Pako/Pako/bin/Release/Plugins directory, These are he plugins for bot (without them bot has no commands).
+you have to put those dlls into /Plugins. These are the plug-ins for bot (without them bot has no commands).
 Now you only have to fill all the configurators.
- 
+
+First let's take to main Pako.cfg.
+
+Thsi is configurator, where you can specify all the XMPP-connection attributes:
+Example of config is already included into the source package.
+Open it and follow the tips near each field and you're done.
+
+
+Let's take it to /Dynamic directory.
+You can fill all this configurators by your-self, or you can make changes during bot-session.
+
+= !!! =
+
+You have to specify 1 or more rooms, where bot will join each time when starting.
+Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of chat-rooms.
+
+
+
+
+
 
 
 
 
 - *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
-
- * http://www.mono-project.com
- * http://www.go-mono.com
+*http://www.mono-project.com
+*http://www.go-mono.com
 
   _Requirments:_
 
