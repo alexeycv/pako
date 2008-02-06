@@ -13,10 +13,15 @@ This is a an executable, which is binded to several dlls'.
 *Labels:*
 
  - *XML* - this means that the associated file has to be written in XML language, according to all feauters of XML-specification
+
  - *Needed* - this means that associated file is needed for any start of bot: program can not launch without it.
+
  - *Optional* - this means that associated file can be missed when starting the bot: program will recreate it by it-self.
+
  - *Open* - this means that associated file can be changed and edited manually: if it's XML file than with special redactor, whcih writes according to XMl specification.
+
  - *Closed* - this measn that associated file can not be changed/edited manually. 
+
 ----
 
 = Containing =
@@ -92,6 +97,12 @@ Choose your platform:
     - *.NET Framework >= v2.0*
 
 ----
+*Labels:*
+
+ - *Closed*
+
+ - *Needed*
+
 Choose and download the latest archive, labeled 'sources'. Unzip it to some free directory : there are 'Plugins', 'Core', 'Pako'.
 First you have to compile the main core-part of a bot:
 Open Visual Studio/Visual C# . On menu-item 'File' you will find 'Open' -> 'Project/Solution'.
@@ -102,6 +113,13 @@ If no errors, then everything is ok. See at the bottom of the IDE's main window 
 Now open the Core-solution's directory and there will be compiled Core.dll.
 
 ----
+
+*Labels:*
+
+- *Closed*
+
+- *Needed*
+
 Let's compile a main starter:
 Find in in the directory, where you unziped archive a folder 'Pako', open 'Pako.sln' using your IDE.
 Build it, like the previous time you did with Core.dll.
@@ -138,6 +156,12 @@ So we already have:
 
 
 
+*Labels:*
+
+- *Closed*
+
+- *Optional*
+
 Now you have to compile all the solutions from the folder 'Plugins'. As result you'll have these dlls:
   - *Muc.dll*
 
@@ -160,6 +184,13 @@ Let's take a look at /Lang
 There can be added unlimited count of language-packets. Each language packet is:a directory, named after international name of country, which represents current language
 Int his directory, has to "help.pack" and "lang.pack";
 
+----
+*Labels:*
+
+- *Open*
+
+- *Optional*
+
 Example of lang.pack:
 
 {{{
@@ -177,6 +208,15 @@ if the user wants to get help for some command , which has no documentation yet 
 That means that you can fully change his answers as you wich and he can even talk French or German :).
 P.S. the patterns are formatted: if you had noticed the {1}, then this is asign , which will be replaced by something, specified by bot. In help_not_found {1} is a exact command, which documentation was not found.
 
+
+
+----
+*Labels:*
+
+- *Open*
+
+- *Optional*
+
 Example of help.pack:
 
 {{{
@@ -191,6 +231,14 @@ See the {1} in "value" - this is prefix, which is used to type commands(this sig
  == Warning: all the 
 
 ----
+
+
+*Labels:*
+
+- *Open*
+
+- *Optional*
+
 First let's take it to main Pako.cfg.
 
 Thsi is configurator, where you can specify all the XMPP-connection attributes:
@@ -251,6 +299,12 @@ If deleimier is ? than all the commands have to look like this:
 Let's take it to /Dynamic directory.
 You can fill all this configurators by your-self, or you can make changes during bot-session.
 
+----
+*Labels:*
+
+- *Open*
+
+- *Optional*
 
 Users.base:
 
@@ -275,6 +329,13 @@ There must be at least one option:lang/access:
 
 
 
+----
+
+*Labels:*
+
+- *Open*
+
+- *Optional*
 
 Rooms.base
 You have to specify 1 or more rooms, where bot will join each time when starting.
@@ -295,6 +356,13 @@ So we can see that he will enter two rooms when starting:
  # talks@conference.server.dom with status "Hello :)" and nick "Pako"
 
 
+----
+
+*Labels:*
+
+- *Open*
+
+- *Optional*
 
 Access.base:
 Here you can specify the minimum access, which user needs to access the command:
@@ -317,6 +385,13 @@ You can specify unlimited count of commands and access-level, needed for them.
 
 ----
 Let's take it to /Static directory.
+
+*Labels:*
+
+- *Open*
+
+- *Optional*
+
 Here you can see rfc3921.txt - this is full RFC 3921, written by Peter Saint-Andre : the specification of XMPP protocol.
 Bot uses it to execute command "web rfc" from a Web.dll plug-in. This command is a rfc 3921 explorer: you can read any state of this document using state-number(1.1 or 2.2.1)
 
@@ -364,4 +439,4 @@ New ideas and comments are always welcomed. Mail me about your idea and i will t
 
 = Special thanks =
 
-*Alex*, *vt*, *fix*, *renegade*, *Xak*. Thank guys! :) 
+_*Alex*, *vt*, *fix*, *renegade*, *Xak*_. Thank guys! :) 
