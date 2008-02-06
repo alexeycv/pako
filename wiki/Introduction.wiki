@@ -10,6 +10,13 @@ Mail: _bbodio at i.ua_
 = About =
 This is a an executable, which is binded to several dlls'.
 
+*Labels:*
+
+ - *XML* - this means that the associated file has to be written in XML language, according to all feauters of XML-specification
+ - *Needed* - this means that associated file is needed for any start of bot: program can not launch without it.
+ - *Optional* - this means that associated file can be missed when starting the bot: program will recreate it by it-self.
+ - *Open* - this means that associated file can be changed and edited manually: if it's XML file than with special redactor, whcih writes according to XMl specification.
+ - *Closed* - this measn that associated file can not be changed/edited manually. 
 ----
 
 = Containing =
