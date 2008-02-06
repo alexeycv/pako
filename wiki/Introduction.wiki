@@ -10,20 +10,13 @@ Mail: _bbodio at i.ua_
 = About =
 This is a an executable, which is binded to several dlls'.
 
- # bla bla  
- # bla bla
-
- 'gg'
- ,,wseg,,
+-- --
+ -- 
 __
+ __
 
-{{{
-   public SqliteConnection SQLiteConnection
-        {
-            get { lock (sobjs[4]) { return sqlite_conn; } }
-            set { lock (sobjs[4]) { sqlite_conn = value; } }
-        }
-}}}
+[http://www.microsoft.com Microsoft]
+
 Containing:
 
 - *Pako.exe* -> The main engine, which initializes all processes and creates a new instance of xmpp-session
@@ -83,9 +76,7 @@ The second way is saftier, beacuse if you compile it on platfrom, on which you e
 
 Choose your platform:
 
-- *WINDOWS* : You need Microsoft Visual Studio .NET 2005/2008 installed on your machine or Microsoft Visual C# 2005/2008. 
-
-[http://www.microsoft.com Microsoft]
+- *WINDOWS* : You need Microsoft Visual Studio .NET 2005/2008 installed on your machine or Microsoft Visual C# 2005/2008. http://www.microsoft.com
 
   _Requirments:_ 
 
@@ -146,7 +137,8 @@ Open it and follow the tips near each field and you're done.
 Let's take it to /Dynamic directory.
 You can fill all this configurators by your-self, or you can make changes during bot-session.
 
-!!!
+= !!! =
+
 You have to specify 1 or more rooms, where bot will join each time when starting.
 Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of chat-rooms.
 
@@ -159,8 +151,8 @@ Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of 
 
 
 - *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
- * [http://www.mono-project.com Mono-Project]
- * [http://www.go-mono.com Go-Mono]
+*http://www.mono-project.com
+*http://www.go-mono.com
 
   _Requirments:_
 
