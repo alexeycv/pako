@@ -144,6 +144,17 @@ You can fill all this configurators by your-self, or you can make changes during
 You have to specify 1 or more rooms, where bot will join each time when starting.
 Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of chat-rooms.
 
+Example of document:
+
+{{{
+<amucs>
+  <rooms>
+    <room lang="en" jid="talks@conference.server.dom" nick="Pako" status="Hello :)" />
+    <room lang="en" status="hello :-D" nick="Pako" jid="chat@conference.server.dom" />
+  </rooms>
+</amucs>
+}}}
+
 
 
 
