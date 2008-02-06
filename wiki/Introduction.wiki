@@ -10,14 +10,9 @@ Mail: _bbodio at i.ua_
 = About =
 This is a an executable, which is binded to several dlls'.
 
--- --
- -- 
-__
- __
+----
 
-
-
-Containing:
+= Containing =
 
 - *Pako.exe* -> The main engine, which initializes all processes and creates a new instance of xmpp-session
 
@@ -62,7 +57,7 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
 
 - *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
 
- 
+---- 
 = Getting started =
 
 There are two ways of getting bot on your computer:
@@ -84,7 +79,7 @@ Choose your platform:
 
     - *.NET Framework >= v2.0*
 
-
+----
 Choose and download the latest archive, labeled 'sources'. Unzip it to some free directory : there are 'Plugins', 'Core', 'Pako'.
 First you have to compile the main core-part of a bot:
 Open Visual Studio/Visual C# . On menu-item 'File' you will find 'Open' -> 'Project/Solution'.
@@ -94,7 +89,7 @@ When solution is loaded, choose menu-item 'Build' -> 'Build Solution'.
 If no errors, then everything is ok. See at the bottom of the IDE's main window a label 'Build succeeded'.
 Now open the Core-solution's directory and there will be compiled Core.dll.
 
-
+----
 Let's compile a main starter:
 Find in in the directory, where you unziped archive a folder 'Pako', open 'Pako.sln' using your IDE.
 Build it, like the previous time you did with Core.dll.
@@ -113,6 +108,7 @@ So we already have:
  * /Plugins
  * _Core.dll_
 
+----
 Now you have to compile all the solutions from the folder 'Plugins'. As result you'll have these dlls:
   - *Muc.dll*
 
@@ -126,33 +122,79 @@ Now you have to compile all the solutions from the folder 'Plugins'. As result y
 
   - *Web.dll*
 
-you have to put those dlls into /Plugins. These are the plug-ins for bot (without them bot has no commands).
+You have to put those dlls into /Plugins. These are the plug-ins for bot (without them bot has no commands).
 Now you only have to fill all the configurators.
 
-First let's take to main Pako.cfg.
+----
+First let's take it to main Pako.cfg.
 
 Thsi is configurator, where you can specify all the XMPP-connection attributes:
 Example of config is already included into the source package.
 Open it and follow the tips near each field and you're done.
 
+Part of Pako.cfg:
+{{{
+<Config>
+   <bot>
+    # Main language, which bot will use as default
+    #<lang value="en" />
+     
+     ...
 
+    # Here you have to input the list of administartors of bot, using delimiter "|"
+    #<admins value="jid1@server.dom|jid2@server.dom" />
+
+    # Specifies the access of bot administrators, which will be used as default
+    #<delimiter value="*" />
+
+  </bot>
+</Config>
+}}}
+
+See: each tag has a comment, which helps to set correctly. Each atg has a "value" attribute, where you should fill-in the values of the parameter: for example:
+
+
+ # 
+{{{
+<lang value="en" />
+}}}
+See: here you have to fill-in a default language, which bot will use to comunicate with users. So you should fill-in inti 'value" attribute a name of a language. Please check twice if it's correct.
+ # 
+{{{
+<admins value="jid1@server.dom|jid2@server.dom" />
+}}}
+See the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use sign "|" to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
+
+----
 Let's take it to /Dynamic directory.
 You can fill all this configurators by your-self, or you can make changes during bot-session.
+
+
+Users.base:
+
+here you can specify individual behaviour of bot for any jid: language/access-level.
 
 Example of Users.base:
 {{{
 <Users>
 <usersdata>
   <user jid="myjid@server.dom" lang="en" access="100" />
-  <user jid="somejid@server.dom" lang="ru" access="50" />
+  <user jid="somejid@server.dom" access="50" />
 </usersdata>
 </Users>
 }}}
 
+There must be at least one option:lang/access:
+
+ # Bot will always talk in english to myjid@server.dom and will be accessed by myjid@server.dom with level 100.
+ # Somejid@server.dom will always access bot with level 50, but bot will talk to him without any special previlegiouses (according to the situation).
 
 
 
 
+
+
+Rooms.base
 You have to specify 1 or more rooms, where bot will join each time when starting.
 Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of chat-rooms.
 
@@ -167,10 +209,34 @@ Example of Rooms.base:
 }}}
 So we can see that he will enter two rooms when starting:
 
-*chat@conference.server.dom* with status "hello :-D" and nick "Pako"
-*talks@conference.server.dom" with status "Hello :)" and nick "Pako"
+ # chat@conference.server.dom with status "hello :-D" and nick "Pako"
+ # talks@conference.server.dom with status "Hello :)" and nick "Pako"
 
 
+
+Access.base:
+Here you can specify the minimum access, which user needs to access the command:
+
+Example of Access.base:
+{{{
+<Access>
+   <command name="muc kick" access="50" />
+   <command name="muc setsubject" access="50" />
+    ...
+   <command name="muc censor" access="70" />
+   <command name="muc uncensor" access="70" />
+</Access>
+}}}
+
+
+For example, if you want to access command "muc kick" , you're access-level has to be at least 50, if you want to use command "muc censor" then you're access level has to be at least 70.  
+You can specify unlimited count of commands and access-level, needed for them.
+
+
+----
+Let's take it to /Static directory.
+Here you can see rfc3921.txt - this is full RFC 3921, written by Peter Saint-Andre : the specification of XMPP protocol.
+Bot uses it to execute command "web rfc" from a Web.dll plug-in. This command is a rfc 3921 explorer: you can read any state of this document using state-number(1.1 or 2.2.1)
 
 
 
@@ -223,3 +289,8 @@ So we can see that he will enter two rooms when starting:
 
 If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
 New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!.
+
+
+= Special thanks =
+
+*Alex*, *vt*, *fix*, *renegade*, *Xak*. Thank guys! :) 
