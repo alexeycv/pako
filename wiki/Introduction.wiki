@@ -56,6 +56,28 @@ A plugin can be created and added by anyone. A plugin can be added to any sessio
 - *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
 
  
+= Getting started =
+
+There are two ways of getting bot on your computer:
+ * You can download binaries (already compiled program, ready for using);
+ * Download sources, compile it with a C# .NET compiler.
+
+The second way is saftier, beacuse if you compile it on platfrom, on which you eant to use the bot, you'll already know, what's wrong/didn't compile. But anyway .NET applicationa doen't matter on which platfrom they are compiled: on *.exe or *.dll can run on all platforms without recompiling! 
+
+
+*If you want to compile the bot by your own:*
+
+Your platform:
+
+ - *Windows* : You need Microsoft Visual Studio .NET 2005/2008 installed on your machine 
+or Microsoft Visual C# 2005/2008.
+*Requirments: .NET Framework >= 2.0*
+
+ - *Unix/Linux/MAC OS* : You
+
+
+
+
 = Bugs =
 
 If you had found any bugs or mistakes in the code, please save the bug report and send it to me with detailed information about where and when bug occurred. I'll try to fix the problem.
