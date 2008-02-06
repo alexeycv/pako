@@ -21,7 +21,7 @@ of _www.ag-software.de_ , which supports lots-of-XEP-featured Jabber-session.
 I think, this is the most featured and stable jabber-library of all.
 
 
-- *Pako.cfg* -> This is a bot main configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
+- *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
 - *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
 - *SQLite3.dll* -> This is SQLite wrapper , written on C.
@@ -69,7 +69,7 @@ The second way is saftier, beacuse if you compile it on platfrom, on which you e
 
 Choose your platform:
 
-- *WINDOWS* : You need Microsoft Visual Studio .NET 2005/2008 installed on your machine or Microsoft Visual C# 2005/2008.
+- *WINDOWS* : You need Microsoft Visual Studio .NET 2005/2008 installed on your machine or Microsoft Visual C# 2005/2008. http://www.microsoft.com
 
   _Requirments:_ 
 
@@ -111,6 +111,8 @@ Now you only have to fill all the configurators.
 
 
 - *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
+*http://www.mono-project.com
+*http://www.go-mono.com
 
   _Requirments:_
 
