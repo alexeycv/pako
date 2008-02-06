@@ -10,6 +10,14 @@ Mail: _bbodio at i.ua_
 = About =
 This is a an executable, which is binded to several dlls'.
 
+ # bla bla  
+ # bla bla
+
+ 'gg'
+ ,,wseg,,
+__
+[http://www.microsoft.com Microsoft]
+
 Containing:
 
 - *Pako.exe* -> The main engine, which initializes all processes and creates a new instance of xmpp-session
