@@ -22,7 +22,7 @@ I think, this is the most featured and stable jabber-library of all.
 
 
 - *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
-- *Mono.Data.SQLClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
+- *Mono.Data.SQLite.dll* -> This is a library , which provides SQLite data-bases connection. Is *needed* on Microsoft .NET. Is *optional* on Mono.
 
 - *SQLite3.dll* -> This is SQLite wrapper , written on C.
 
@@ -111,8 +111,9 @@ Now you only have to fill all the configurators.
 
 
 - *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
-*http://www.mono-project.com
-*http://www.go-mono.com
+
+ * http://www.mono-project.com
+ * http://www.go-mono.com
 
   _Requirments:_
 
