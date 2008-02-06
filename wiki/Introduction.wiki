@@ -101,9 +101,9 @@ Choose your platform:
 
 *Labels:*
 
- - *Closed*
+- *Closed*
 
- - *Needed*
+- *Needed*
 
 Choose and download the latest archive, labeled 'sources'. Unzip it to some free directory : there are 'Plugins', 'Core', 'Pako'.
 First you have to compile the main core-part of a bot:
@@ -230,7 +230,10 @@ Example of help.pack:
 See: it contains all documentation for commands: corerct syntax and short discription. Every tag "command" is responsible for one command. it conatins an attribute "name" where has to be a name of command and attribute "value" where has to be exact  text, which bot will return as documentation for current command.
 See the {1} in "value" - this is prefix, which is used to type commands(this sign is dynamic, so bot has always to replace {1} with the current prefix. 
 
- == Warning: all the 
+=== Warning: you MUST name language-directories properly, as by default: ===
+=== /en or /ru etc. Because you will later use those name as language name ===
+=== If the language directory is /en than tha language is called "en" === 
+
 
 ----
 
