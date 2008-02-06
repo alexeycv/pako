@@ -154,9 +154,7 @@ Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of 
 
 - *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
 
- [http://www.mono-project.com Mono-Project]
 
- [http://www.go-mono.com Go-Mono]
 
 
   _Requirments:_
@@ -164,6 +162,35 @@ Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of 
    - *Mono >= v1.2.5.1*,
 
    - *'mcs' and 'gmcs' C# compilers, SQLite3 library (not installed by default on FreeBSD)*
+
+
+
+= Related links = 
+
+ * [http://www.mono-project.com Mono-Project]
+
+  Downlaod Mono binaries, sources for any OS. Take part in mailing lists, forums, discuss, ask, get answers : enjoy :)
+
+ * [http://www.go-mono.com Go-Mono]
+
+   A lot of interesting stuff, downloads, dedicated  to Mono.
+
+ * [http://www.codeproject.com CodeProject]
+ 
+  A best place for .NET-programmer. Tons of examples to see, thousands of new friends to get, Tons of interesting themes to read.
+ 
+ * [http://ag-software.de AG-Software] 
+
+  Home of *agsXMPP*. Site related to MiniClient and agsXMPP Jabber library. binaries, sources, examples, forum.
+
+ * [http://www.c-sharpcorner.com C-SharpCorner]
+
+   C#, ASP, WPF, WCF .NET, Windows Vista Community.
+
+ * [http://www.gnu.org/licenses/gpl.html GNU/GPL v3] 
+
+  See the license agreement.
+ 
 
 
 
