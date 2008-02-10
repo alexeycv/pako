@@ -15,7 +15,7 @@ Volumes  available:
  * admin
  * muc
  * misc
- * defg
+ * def
  * dict
  * user
  * web
@@ -32,73 +32,153 @@ Shows to user the list of commands in "admin" volume.
 ----
 {{{
 *admin jid 
-}}}
-Shows the JID of bot.
-{{{
 *admin jid <new_jid>
 }}}
-Sets the JID of bot to <new_jid> - any real JID of format: user@server.domain/resource
+ * Shows the JID of bot.
+ * Sets the JID of bot to <new_jid> - any real JID of format: user@server.domain/resource
 ----
 {{{
 *admin password
-}}}
-Shows to user the password from bot's JID.
-{{{
 *admin password <new_password>
 }}}
-Sets the password from bot's JID to <new_password> -  any string value
+ * Shows to user the password from bot's JID.
+ * Sets the password from bot's JID to <new_password> -  any string value
 ----
 {{{
 *admin usessl
-}}}
-Shows "true" if the bot uses SSL-connection and "false" if not.
-{{{
 *admin usessl true(false)
 }}}
-Sets if the bot will use (true) SSl-connection or not (false).
+ * Shows "true" if the bot uses SSL-connection and "false" if not.
+ * Sets if the bot will use (true) SSl-connection or not (false).
 ----
 {{{
 *admin port
-}}}
-Shows the port-number which bot uses to connect  to jabber-server
-{{{
 *admin port <new_port>
 }}}
-Sets the port-number to a <new_port> - any real port-number
+ * Shows the port-number which bot uses to connect  to jabber-server
+ * Sets the port-number to a <new_port> - any real port-number
+----
+{{{
+*admin reconnects
+*admin reconnects <number>
+}}}
+ * Shows the amout of times, used to reconnect after the connection is lost. After they're ellapsed, bot stops
+ * Sets the amout of times, used to reconnect after the connection is lost, to <number> -  any numeric value.
+----
+{{{
+*admin rectime
+*admin rectime <number>
+}}}
+ * Shows the time (in seconds), which is wasted after the connection is lost before the next reconnect.
+ * Sets the time (in seconds), which is wasted after the connection is lost before the next reconnect, to <number> - any numeric value
 ----
 {{{
 *admin compression
-}}}
-Shows "true" if the bot uses Compression of traffic  and "false" if not.
-{{{
 *admin compression true(false)
 }}}
-Sets if the bot uses (true) Compression of traffic or not (false)
+ * Shows "true" if the bot uses Compression of traffic  and "false" if not.
+ * Sets if the bot uses (true) Compression of traffic or not (false)
 ----
 {{{
 *admin starttls
-}}}
-Show "true" if the bot uses Start-Tls when connecting to jabber-server and "false" if not.
-{{{
 *admin starttls true(false)
 }}} 
-Sets if the bot uses (true) Start-Tls when connecting to jabber-server or not (false)
+ * Show "true" if the bot uses Start-Tls when connecting to jabber-server and "false" if not.
+ * Sets if the bot uses (true) Start-Tls when connecting to jabber-server or not (false)
 ----
 {{{
 *admin nick
-}}}
-Shows the default nick of the bot, which is used to join chat-rooms as default.
-{{{
 *admin nick <new_nick>
 }}}
-Sets the default nick of the bot, which is used to join chat-rooms as default, to <new_nick> -  any string value
+ * Shows the default nick of the bot, which is used to join chat-rooms as default.
+ * Sets the default nick of the bot, which is used to join chat-rooms as default, to <new_nick> -  any string value
+----
+{{{
+*admin status
+*admin status <new_status>
+}}}
+ * Shows the default status of the bot, which is used to join chat-rooms as default.
+ * Sets the default status of the bot, which is used to join chat-rooms as default, to <new_status> -  any string value
 ----
 {{{
 *admin lang
-}}}
-Shows the default language of the bot, with which bot will talk in chat-rooms as default.
-{{{
 *admin lang <new_lang>
 }}}
-Sets the default language of the bot ,with which bot will talk in chat-rooms as default, to <new_lang> - an existing language packet.
----
+ * Shows the default language of the bot, with which bot will talk in chat-rooms as default.
+ * Sets the default language of the bot ,with which bot will talk in chat-rooms as default, to <new_lang> - an existing language packet.
+----
+{{{
+*admin msglimit
+*admin msglimit <number>
+}}}
+ * Shows the maximum length of a message, which can be passed through groupchat, so if the message is longer than msglimit -  bot sends it as Private Message (also notofies user in groupchat)
+ * Sets the  maximum length of a message, which can be passed through groupchat to <number> - any numeric value
+----
+{{{
+*admin heap
+}}}
+ * Shows the amount of current process's working set in megabytes (Windows only).
+ 
+   No parameters needed.
+----
+{{{
+*admin pako
+}}}
+ * Shows the information about Pako.exe - file.
+
+   No parameters needed.
+----
+{{{
+*admin prefix
+*admin prefix <new_prefix>
+}}}
+ * Shows the default character set, used to type commands. As default it's {{{*}}}
+ * Sets the default character set, used to type commands to <new_prefix>.
+*Example:*
+{{{
+user: *admin prefix
+bot: *
+user: *admin prefix ??
+bot: Ok
+}}}
+After this all the commands have to be looking this:
+{{{
+??admin list
+??muc show
+}}}
+----
+{{{
+*admin myroot
+}}}
+ * Shows the directory, where the bot is running on the machine
+  
+   No parameters needed.
+----
+{{{
+*admin find [<search_pattern>] <dir>
+}}}
+ * Finds all files/directories on the machine by <search_pattern> in specified directory: <dir>
+*Example:*
+{{{
+user: *admin find [pako*] /home/user/
+bot: 
+   <Pako.exe>  /home/user/pako/Pako.exe
+   <newpako.tar.gz>   /home/user/gz/newpako.tar.gz
+   [pako]     /home/user/pako
+All found: 2 files, 1 directory.
+}}}
+Notice: directories are in "[]" and files in "<>"
+----
+{{{
+*admin cmd <command_prompt_expression>
+}}}
+ * This command is command prompt emulator. It measn that it accepts <command_prompt_expression> as a command into "cmd.exe"(Windows) / "sh"({{{*}}}nix) and return a real answer of the command prompt to the user.
+*Example:* (Windows)
+{{{
+user: *admin cmd vol C:
+bot: Volume D is labeled DATA
+     Serial number of volume: 88A8-A2H7
+}}}
+----
+}}}
+*admin cmd  
