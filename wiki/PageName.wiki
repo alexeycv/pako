@@ -21,8 +21,25 @@ Volumes  available:
 
 ----
 
-= Admin = 
+= Admin (Bot administrators only) = 
 
+----
 {{{
 *admin list
 }}}
+Shows to user the list of commands in "admin" volume.
+----
+{{{
+*admin jid 
+*admin jid <new_jid>
+}}}
+Shows the JID of bot.
+Sets the JID of bot to <New jid> - any real JID of format: user@server.domain/resource
+----
+{{{
+*admin password
+*admin password <new_password>
+}}}
+Shows to user the password from bot's JID.
+Sets the password from bot's JID to <new_password> -  any string value
+----
