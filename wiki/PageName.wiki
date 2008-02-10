@@ -8,6 +8,7 @@
 all the listed commands are used with Pako's original {{{ * }}} prefix,
 
 but the prefix can be changed any moment by bot administrator.
+*The "()" means a variant of parameter to use It's not used in command!*
 ----
 
 Volumes  available:
@@ -31,15 +32,73 @@ Shows to user the list of commands in "admin" volume.
 ----
 {{{
 *admin jid 
-*admin jid <new_jid>
 }}}
 Shows the JID of bot.
-Sets the JID of bot to <New jid> - any real JID of format: user@server.domain/resource
+{{{
+*admin jid <new_jid>
+}}}
+Sets the JID of bot to <new_jid> - any real JID of format: user@server.domain/resource
 ----
 {{{
 *admin password
-*admin password <new_password>
 }}}
 Shows to user the password from bot's JID.
+{{{
+*admin password <new_password>
+}}}
 Sets the password from bot's JID to <new_password> -  any string value
 ----
+{{{
+*admin usessl
+}}}
+Shows "true" if the bot uses SSL-connection and "false" if not.
+{{{
+*admin usessl true(false)
+}}}
+Sets if the bot will use (true) SSl-connection or not (false).
+----
+{{{
+*admin port
+}}}
+Shows the port-number which bot uses to connect  to jabber-server
+{{{
+*admin port <new_port>
+}}}
+Sets the port-number to a <new_port> - any real port-number
+----
+{{{
+*admin compression
+}}}
+Shows "true" if the bot uses Compression of traffic  and "false" if not.
+{{{
+*admin compression true(false)
+}}}
+Sets if the bot uses (true) Compression of traffic or not (false)
+----
+{{{
+*admin starttls
+}}}
+Show "true" if the bot uses Start-Tls when connecting to jabber-server and "false" if not.
+{{{
+*admin starttls true(false)
+}}} 
+Sets if the bot uses (true) Start-Tls when connecting to jabber-server or not (false)
+----
+{{{
+*admin nick
+}}}
+Shows the default nick of the bot, which is used to join chat-rooms as default.
+{{{
+*admin nick <new_nick>
+}}}
+Sets the default nick of the bot, which is used to join chat-rooms as default, to <new_nick> -  any string value
+----
+{{{
+*admin lang
+}}}
+Shows the default language of the bot, with which bot will talk in chat-rooms as default.
+{{{
+*admin lang <new_lang>
+}}}
+Sets the default language of the bot ,with which bot will talk in chat-rooms as default, to <new_lang> - an existing language packet.
+---
