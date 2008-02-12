@@ -1,5 +1,0 @@
-D:\Pako\Plugins\Plugins\bin\Debug\Web.dll
-D:\Pako\Plugins\Plugins\bin\Debug\Web.pdb
-D:\Pako\Plugins\Net_Plugin\obj\Debug\ResolveAssemblyReference.cache
-D:\Pako\Plugins\Net_Plugin\obj\Debug\Web.dll
-D:\Pako\Plugins\Net_Plugin\obj\Debug\Web.pdb

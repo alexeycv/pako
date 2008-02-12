@@ -1,5 +1,0 @@
-obj\Debug\ResolveAssemblyReference.cache
-bin\Debug\Muc.dll
-bin\Debug\Muc.pdb
-obj\Debug\Muc.dll
-obj\Debug\Muc.pdb

@@ -1,5 +1,0 @@
-D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\bin\Debug\Muc.dll
-D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\bin\Debug\Muc.pdb
-D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
-D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\obj\Debug\Muc.dll
-D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\obj\Debug\Muc.pdb

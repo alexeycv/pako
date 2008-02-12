@@ -1,5 +1,0 @@
-D:\Pako\Plugins\User_Plugin\obj\Debug\ResolveAssemblyReference.cache
-D:\Pako\Plugins\Plugins\bin\Debug\User.dll
-D:\Pako\Plugins\Plugins\bin\Debug\User.pdb
-D:\Pako\Plugins\User_Plugin\obj\Debug\User.dll
-D:\Pako\Plugins\User_Plugin\obj\Debug\User.pdb
