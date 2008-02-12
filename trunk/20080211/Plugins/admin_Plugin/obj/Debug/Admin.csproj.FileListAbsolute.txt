@@ -1,0 +1,12 @@
+D:\Pako\Plugins\admin_Plugin\Funny_Plugin\bin\Debug\Admin.dll
+D:\Pako\Plugins\admin_Plugin\Funny_Plugin\bin\Debug\Admin.pdb
+D:\Pako\Plugins\admin_Plugin\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\admin_Plugin\Funny_Plugin\obj\Debug\Admin.dll
+D:\Pako\Plugins\admin_Plugin\Funny_Plugin\obj\Debug\Admin.pdb
+D:\Pako\Plugins\admin_Plugin\bin\Debug\Admin.dll
+D:\Pako\Plugins\admin_Plugin\bin\Debug\Admin.pdb
+D:\Pako\Plugins\admin_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\admin_Plugin\obj\Debug\Admin.dll
+D:\Pako\Plugins\admin_Plugin\obj\Debug\Admin.pdb
+D:\Pako\Plugins\Plugins\bin\Debug\Admin.dll
+D:\Pako\Plugins\Plugins\bin\Debug\Admin.pdb

@@ -1,0 +1,12 @@
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\bin\Debug\Dict.dll
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\bin\Debug\Dict.pdb
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\obj\Debug\Dict.dll
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\obj\Debug\Dict.pdb
+D:\Pako\Plugins\Dict_Handler\bin\Debug\Dict.dll
+D:\Pako\Plugins\Dict_Handler\bin\Debug\Dict.pdb
+D:\Pako\Plugins\Dict_Handler\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Dict_Handler\obj\Debug\Dict.dll
+D:\Pako\Plugins\Dict_Handler\obj\Debug\Dict.pdb
+D:\Pako\Plugins\Plugins\bin\Debug\Dict.dll
+D:\Pako\Plugins\Plugins\bin\Debug\Dict.pdb

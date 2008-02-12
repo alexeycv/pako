@@ -1,0 +1,12 @@
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\bin\Debug\Alias.dll
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\bin\Debug\Alias.pdb
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\obj\Debug\Alias.dll
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\obj\Debug\Alias.pdb
+D:\Pako\Plugins\Alias_Handler\bin\Debug\Alias.dll
+D:\Pako\Plugins\Alias_Handler\bin\Debug\Alias.pdb
+D:\Pako\Plugins\Alias_Handler\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Alias_Handler\obj\Debug\Alias.dll
+D:\Pako\Plugins\Alias_Handler\obj\Debug\Alias.pdb
+D:\Pako\Plugins\Plugins\bin\Debug\Alias.dll
+D:\Pako\Plugins\Plugins\bin\Debug\Alias.pdb

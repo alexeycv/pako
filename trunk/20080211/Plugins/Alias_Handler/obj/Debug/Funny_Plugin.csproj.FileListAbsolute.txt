@@ -1,0 +1,25 @@
+D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\bin\Debug\Muc.dll
+D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\bin\Debug\Muc.pdb
+D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\obj\Debug\Muc.dll
+D:\Pako\Plugins\Копия Process_Plugin\Funny_Plugin\obj\Debug\Muc.pdb
+D:\Pako\Plugins\Misc_Handler\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Misc_Handler\Funny_Plugin\bin\Debug\Misc.dll
+D:\Pako\Plugins\Misc_Handler\Funny_Plugin\bin\Debug\Misc.pdb
+D:\Pako\Plugins\Misc_Handler\Funny_Plugin\obj\Debug\Misc.dll
+D:\Pako\Plugins\Misc_Handler\Funny_Plugin\obj\Debug\Misc.pdb
+D:\Pako\Plugins\Def_Handler\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Def_Handler\Funny_Plugin\bin\Debug\Def.dll
+D:\Pako\Plugins\Def_Handler\Funny_Plugin\bin\Debug\Def.pdb
+D:\Pako\Plugins\Def_Handler\Funny_Plugin\obj\Debug\Def.dll
+D:\Pako\Plugins\Def_Handler\Funny_Plugin\obj\Debug\Def.pdb
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\bin\Debug\Dict.dll
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\bin\Debug\Dict.pdb
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\obj\Debug\Dict.dll
+D:\Pako\Plugins\Dict_Handler\Funny_Plugin\obj\Debug\Dict.pdb
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\bin\Debug\Alias.dll
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\bin\Debug\Alias.pdb
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\obj\Debug\Alias.dll
+D:\Pako\Plugins\Alias_Handler\Funny_Plugin\obj\Debug\Alias.pdb
