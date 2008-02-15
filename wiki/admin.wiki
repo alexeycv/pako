@@ -251,7 +251,7 @@ Now when bot he says "I'm leaving, good bye! :)" when leaveing a single MUC, or 
 {{{
 *admin set_help <lang_pack> [<cmd_name>] <help_value>
 }}}
- * Sets the documentation (help information for a command <cmd_name> in a language packet <lang_pack> to <help_value>
+ * Sets the documentation (help information for a command <cmd_name> in a language packet <lang_pack> to <help_value>)
 *Example:*
 {{{
 user: *admin set_help en [muc kick] Use this syntax: {1}muc kick 'nick' , where 'user' is a nick in a chat-room
@@ -259,4 +259,17 @@ bot: Ok
 user: *help muc kick
 bot: Use this syntax: *muc kick 'nick' , where 'user' is a nick in a chat-room
 }}}
+----
+== proc_new ==
+{{{
+*admin proc_new <proc_name>
+}}}
+ * A Shell-command, which can launch new process, named <proc_name>
+*Example:*
+{{{
+user: *admin proc_new C:\bbodio\program.exe
+bot: Process loaded.
+}}}
+*Warning:*
+A lot of Anti-Viruses count Shell-programs as viruses!
 ----
