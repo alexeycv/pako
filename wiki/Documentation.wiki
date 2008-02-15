@@ -12,7 +12,7 @@ but the prefix can be changed any moment by bot administrator.
 ----
 
 Volumes  available:
- * admin
+ * [http://code.google.com/p/pako/wiki/Admin admin]
  * muc
  * misc
  * def
