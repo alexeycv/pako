@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+using agsXMPP;
+using agsXMPP.protocol.client;
+using agsXMPP.Xml.Dom;
+
+namespace Core.Client
+{
+   public  class AutoMuc
+    {
+       Jid m_jid;
+       string m_nick;
+       string m_status;
+       string m_lang;
+       object[] sobjs = new object[10];
+
+       /// <summary>
+       /// Create an instance of AutoMuc - a simple container, dedicated to hold information, which
+       /// is used to join the multi-user-chat
+       /// </summary>
+       /// <param name="Jid"></param>
+       /// <param name="Nick"></param>
+       /// <param name="Status"></param>
+       /// <param name="Language"></param>
+       public AutoMuc(Jid Jid, string Nick, string Status, string Language)
+       {
+           for (int i = 0; i < 10; i++)
+           {
+               sobjs[i] = new object();
+           }
+
+           m_jid = Jid;
+           m_status = Status;
+           m_nick = Nick;
+           m_lang = Language;
+
+       }
+
+       public Jid Jid
+       {
+           get { lock (sobjs[0]) { return m_jid; } }
+           set { lock (sobjs[0]) { m_jid = value; } }
+       }
+
+       public string Status
+       {
+           get { lock (sobjs[1]) { return m_status; } }
+           set { lock (sobjs[1]) { m_status = value; } }
+       }
+
+       public string  Nick
+       {
+           get { lock (sobjs[2]) { return m_nick; } }
+           set { lock (sobjs[2]) { m_nick = value; } }
+       }
+       public string Language
+       {
+           get { lock (sobjs[3]) { return m_lang; } }
+           set { lock (sobjs[3]) { m_lang = value; } }
+       }
+  
+
+
+    }
+}
