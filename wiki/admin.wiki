@@ -235,4 +235,28 @@ bbodio: *admin restart good luck
 }}}
 _See *rectime, reconnects*_
 ----
-== list ==
+== set_pattern ==
+{{{
+*admin set_pattern <lang_pack> <pattern_name> <pattern_value>
+}}}
+ * Sets the pattern's, named <pattern_name>, value to <pattern_value> in a specified language packet <lang_pack>
+*Example:*
+{{{
+user: *admin set_pattern en muc_leave I'm leaving, good bye! :)
+bot: Ok
+}}} 
+Now when bot he says "I'm leaving, good bye! :)" when leaveing a single MUC, or uses it as status-message when going offline
+----
+== set_help == 
+{{{
+*admin set_help <lang_pack> [<cmd_name>] <help_value>
+}}}
+ * Sets the documentation (help information for a command <cmd_name> in a language packet <lang_pack> to <help_value>
+*Example:*
+{{{
+user: *admin set_help en [muc kick] Use this syntax: {1}muc kick 'nick' , where 'user' is a nick in a chat-room
+bot: Ok
+user: *help muc kick
+bot: Use this syntax: *muc kick 'nick' , where 'user' is a nick in a chat-room
+}}}
+----
