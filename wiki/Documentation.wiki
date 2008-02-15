@@ -12,12 +12,12 @@ but the prefix can be changed any moment by bot administrator.
 ----
 
 Volumes  available:
- * [http://code.google.com/p/pako/wiki/admin admin]
- * [http://code.google.com/p/pako/wiki/muc muc]
- * [http://code.google.com/p/pako/wiki/web web]
- * [http://code.google.com/p/pako/wiki/misc misc]
- * [http://code.google.com/p/pako/wiki/iq iq]
- * [http://code.google.com/p/pako/wiki/def def]
- * [http://code.google.com/p/pako/wiki/dict aict]
- * [http://code.google.com/p/pako/wiki/alias alias]
+ * [http://code.google.com/p/pako/wiki/admin Admin]
+ * [http://code.google.com/p/pako/wiki/muc Muc]
+ * [http://code.google.com/p/pako/wiki/web Web]
+ * [http://code.google.com/p/pako/wiki/misc Misc]
+ * [http://code.google.com/p/pako/wiki/iq Iq]
+ * [http://code.google.com/p/pako/wiki/def Def]
+ * [http://code.google.com/p/pako/wiki/dict Dict]
+ * [http://code.google.com/p/pako/wiki/alias Alias]
 ----
