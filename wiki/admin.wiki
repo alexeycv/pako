@@ -410,7 +410,7 @@ _See *pl_info*_
 {{{
 *admin gmsg <phrase>
 }}}
- * This is called a "global message" , because  bots sends a message - <phrase> to all conferences, where bit is spending time.
+ * This is called a "global message" , because  bots sends a message - <phrase> to all conferences, where he is spending time.
 *Example:*
 {{{
 user: *admin gmsg Hi to everyone! :)
@@ -425,4 +425,63 @@ MUC #n:
 bot: Hi to everyone! :)
 }}}
 ----
-==  ==
+== censor ==
+{{{
+*admin censor <regex>
+}}}
+This is a expression-filter, which lets you to set all the expressions, which bot counts as censored and takes action (in conference): kicks if he is able(with a specified reason-message), or warns if the target is a moderator.
+<regex> - any .NET Regular Expression.
+*Example:*
+{{{
+user: *admin censor \bi+c+q+\b
+bot: Ok
+
+user(moderator): ICQ rules! 
+bot: Please, don't use this again! :-/
+
+user(participant): iccqq rulez!! :))
+***user was kicked with reason(You must not use this in the conference!)
+}}}
+
+_See *uncensor, allcensor*_
+----
+== uncensor ==
+{{{
+*admin uncensor <regex> (<number>)
+}}}
+Deletes the reflection on a specified Regular Expression by itself - <regex> or an index numbre in a list of all expressions (_See *allcensor*_)
+*Example:*
+{{{
+user(moderator): ICQ rules!
+bot: Please, don't use this again! :-/
+
+#1:
+user: *admin uncensor \bi+c+q+\b
+bot: Ok
+
+#2:
+user: *admin uncensor 5
+bot: Ok
+
+user: ICQ rules!
+}}}
+And bot will not reflect on those "icq"s anymore :)
+
+_See *allcensor*_
+----
+== allcensor ==
+{{{
+*admin allcensor
+}}}
+ * Shows all the list of Regular Expressions, on which bot reflect and counts as censored.
+ * No parameters needed.
+{{{
+user: *admin allcensor
+bot: Here is a list:
+1) \ba+s+s\b
+2) ?{4,}
+3) \bd+a+m+n\b
+}}}
+
+_See *uncensor, censor*_
+----
