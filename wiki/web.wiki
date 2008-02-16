@@ -49,5 +49,5 @@ _See *gtlangs*_
 *web gtlangs
 }}}
  * Shows a list of all language-pairs availablefor a *gt* translation.
-
+ * No parameters needed
 _See *gt*_
