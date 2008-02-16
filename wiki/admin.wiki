@@ -296,6 +296,8 @@ user: *admin proc_kill 1
 bot: Process killed
 }}}
 So this process was killed as if it have been finished in Task Manager
+
+_See *proc_show*_
 ----
 == cmdaccess ==
 {{{
@@ -314,4 +316,62 @@ bot: Ok
 
 user: *admin cmdaccess [muc kick]
 bot: 70
+}}}
+----
+== vip ==
+{{{
+*admin vip <jid> <access>
+*admin vip <jid> <lang>
+*admin vip <jid> <access> <lang> (<lang> <access>)
+}}}
+Vip - this is a single JID, which has some exceptions in language - the way the bot talks to him anywhere, or has a special access-level, whcih he will have anyway in any conferences and roster (!!! if bot is able to see Vip's JID!).
+
+*Example:*
+{{{
+#1:
+user: *admin vip romeo@jabber.dom 56
+bot: Ok
+
+user: *misc access romeo@jabber.dom
+bot: 56
+#2:
+user: *admin vip romeo@jabber.dom en
+bot: Ok
+
+#3:
+user: *admin vip romeo@jabber.dom 56 en
+OR
+user: *admin vip romeo@jabber.dom en 56
+
+bot: Ok
+}}}
+Now if bot identifies some user as romeo@jabber.dom, then:
+ * #1: Romeo@jabber.dom will always have access-level 56 and not more/less
+ * #2: Bot will always talk to romeo@jabber.dom in english
+ * #3: Bot will do both: always talk to romeo@jabber.dom in english and romeo@jabber.dom will always have access-level 56
+
+_See *vip_del*_
+----
+== vip_del ==
+{{{
+*admin vip_del <jid>
+}}}
+ * Deletes all the Vip previlegiouses of a JID <jid> if such exist
+*Example:*
+{{{
+user: *admin vip_del romeo@jabber.dom
+bot: Ok
+}}}
+Now romeo@jabber.dom is a single user, bots counts his access-level due to current conditions.
+
+If the <jid> was not found in Vip base, then:
+{{{
+user: *admin vip_del romeo2@jabber.dom
+bot: No Vip info for this user
+}}}
+
+_See *vip*
+----
+
+}}}
 }}}
