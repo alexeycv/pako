@@ -437,7 +437,7 @@ user: *admin censor \bi+c+q+\b
 bot: Ok
 
 user(moderator): ICQ rules! 
-bot: Please, don't use this again! :-/
+bot: Please, do not use this again! :-/
 
 user(participant): iccqq rulez!! :))
 ***user was kicked with reason(You must not use this in the conference!)
@@ -453,7 +453,7 @@ Deletes the reflection on a specified Regular Expression by itself - <regex> or 
 *Example:*
 {{{
 user(moderator): ICQ rules!
-bot: Please, don't use this again! :-/
+bot: Please, do not use this again! :-/
 
 #1:
 user: *admin uncensor \bi+c+q+\b
