@@ -18,5 +18,15 @@ www.ag-software.de/content/agsxmpp/
 }}}
  * A XEP (XMPP Extensions Protocol) search (see [http://xmpp.org/extensions]) by a piece of text (number) - <tip>
 *Example:*
+{{{
+user: *web xep 99
+bot: XEP 0099:
+IQ Query Action Protocol Type: Standards Track Status: Deferred
+http://www.xmpp.org/extensions/xep-0099.html
 
-= To be continued =
+user:*web xep iq query
+bot: XEP 0099:
+IQ Query Action Protocol Type: Standards Track Status: Deferred
+http://www.xmpp.org/extensions/xep-0099.html
+}}}
+----
