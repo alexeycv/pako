@@ -30,3 +30,24 @@ IQ Query Action Protocol Type: Standards Track Status: Deferred
 http://www.xmpp.org/extensions/xep-0099.html
 }}}
 ----
+== gt ==
+{{{
+*web gt <lang_pair> <text>
+}}}
+ * Google Translator, which lets to translate any Unicode phrase from one language to another. Use language-pair <lang_pair> and <text> to set the text to translate.
+*Example:*
+{{{
+user: *web gt ed Hi, friend, how do you feel?
+bot: Hallo, Freund, wie fühlst du dich?
+}}}
+*P.S.* None of author and bot does not take any responsibility for the translation results: translating is fully handled by http://translate.google.com
+
+_See *gtlangs*_
+----
+== gtlangs ==
+{{{
+*web gtlangs
+}}}
+ * Shows a list of all language-pairs availablefor a *gt* translation.
+
+_See *gt*_
