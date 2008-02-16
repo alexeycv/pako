@@ -130,6 +130,7 @@ Shows to user the list of commands in "admin" volume.
 {{{
 user: *admin prefix
 bot: *
+
 user: *admin prefix ??
 bot: Ok
 }}}
@@ -171,7 +172,7 @@ Notice: directories are in "[]" and files in "<>"
 *Example:* (Windows)
 {{{
 user: *admin cmd vol C:
-bot: Volume D is labeled DATA
+bot: Volume C is labeled DATA
      Serial number of volume: 88A8-A2H7
 }}}
 ----
@@ -206,8 +207,10 @@ Notice, that when you command to to exit with a specified <status>, bots add the
 {{{
 user: *admin quit
 ***bot leaves the room (Good luck, everyone :-D)
+
 user: *admin quit bye, bye!
 ***bot leaves the room (user -> bye, bye!)
+
 bbodio: *admin quit good luck
 ***bot leaves the room (bbodio -> good luck)
 }}}
@@ -226,9 +229,11 @@ Notice, that when you command to to exit with a specified <status>, bots add the
 user: *admin restart
 ***bot leaves the room (Good luck, everyone :-D)
 ***bot joins the room
+
 user: *admin restart bye, bye!
 ***bot leaves the room (user -> bye, bye!)
 ***bot joins the room
+
 bbodio: *admin restart good luck
 ***bot leaves the room (bbodio -> good luck)
 ***bot joins the room
@@ -256,6 +261,7 @@ Now when bot he says "I'm leaving, good bye! :)" when leaveing a single MUC, or 
 {{{
 user: *admin set_help en [muc kick] Use this syntax: {1}muc kick 'nick' , where 'user' is a nick in a chat-room
 bot: Ok
+
 user: *help muc kick
 bot: Use this syntax: *muc kick 'nick' , where 'user' is a nick in a chat-room
 }}}
@@ -273,3 +279,39 @@ bot: Process loaded.
 *Warning:*
 A lot of Anti-Viruses count Shell-programs as viruses!
 ----
+== proc_show (Windows only) ==
+{{{
+*admin proc_show
+}}}
+ * This command is Task Manager emulator :) You can see a list of proccesses, launched on current machine, thier working set
+----
+== proc_kill (Windows only) ==
+{{{
+*admin proc_kill <number>
+}}}
+ * Kills the process, which number in a list (*proc_show*) is <number>
+*Example:*
+{{{
+user: *admin proc_kill 1
+bot: Process killed
+}}}
+So this process was killed as if it have been finished in Task Manager
+----
+== cmdaccess ==
+{{{
+*admin cmdaccess [<cmd>]
+*admin cmdaccess [<cmd>] <number>
+}}}
+ * Shows the access-level of command <cmd>
+ * Sets the access-level of command <cmd> to <number>
+*Example:*
+{{{
+user: *admin cmdaccess [muc kick]
+bot: 50
+
+user: *admin cmdaccess [muc kick] 70
+bot: Ok
+
+user: *admin cmdaccess [muc kick]
+bot: 70
+}}}
