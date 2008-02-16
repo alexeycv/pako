@@ -16,4 +16,7 @@ www.ag-software.de/content/agsxmpp/
 {{{
 *web xep <tip>
 }}}
- * A XEP (XMPP Extensions Protocol) search ( see [http://xmpp.org/extensions])
+ * A XEP (XMPP Extensions Protocol) search (see [http://xmpp.org/extensions]) by a piece of text (number) - <tip>
+*Example:*
+
+= To be continued =
