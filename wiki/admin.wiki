@@ -362,7 +362,7 @@ _See *vip_del*_
 user: *admin vip_del romeo@jabber.dom
 bot: Ok
 }}}
-Now romeo@jabber.dom is a single user, bots counts his access-level due to current conditions.
+Now romeo@jabber.dom is a single user, bot counts his access-level due to current conditions.
 
 If the <jid> was not found in Vip base, then:
 {{{
@@ -372,6 +372,57 @@ bot: No Vip info for this user
 
 _See *vip*
 ----
+== pl_pload ==
+{{{
+*admin pl_load <path>
+}}}
+If you forgot to add a plug-in into /Plugins directory don't worry. You can load any compatible dll from <path> dynamicly and if succeed - use it! Also bot copies the loaded
 
+*Example:*
+{{{
+user: *admin pl_load D:\Stuff\Web.dll
+bot: Plug-in successfully loaded
+
+user: *web
+bot: Volume "Web". Type "*web list" to get a list of commands in this volume.
+}}} 
+
+_See *pl_unload, pl_info*_
+----
+== pl_unload ==
+{{{
+*admin pl_unload <plugin_name>
 }}}
+Unloads the Plug-in  bu it's name: the name of Plugin is his Original name, specified when creating Plug-in.
+*Example:*
+{{{
+user: *admin pl_unload Web
+bot: Plugin unloaded successfully
 }}}
+Now you won't get any anwer when you do this:
+{{{
+user: *web list*
+}}}
+
+_See *pl_info*_
+----
+== gmsg ==
+{{{
+*admin gmsg <phrase>
+}}}
+ * This is called a "global message" , because  bots sends a message - <phrase> to all conferences, where bit is spending time.
+*Example:*
+{{{
+user: *admin gmsg Hi to everyone! :)
+
+MUC #1: 
+bot: Hi to everyone! :)
+
+MUC #2:
+bot: Hi to everyone! :)
+...
+MUC #n:
+bot: Hi to everyone! :)
+}}}
+----
+==  ==
