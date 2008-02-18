@@ -1,0 +1,5 @@
+#Please, be sure that this directory contains following libraries:
+
+Mono.Data.SqliteClient.dll   (mono 2.0 library)
+agsXMPP.dll                  (the base dll, http://ag-sofwtare.de)
+SQLite3.dll                  (a standart SQLite3 library http://sqlite.org)
