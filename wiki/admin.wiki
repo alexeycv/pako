@@ -31,6 +31,14 @@ Shows to user the list of commands in "admin" volume.
  * Shows "true" if the bot uses SSL-connection and "false" if not.
  * Sets if the bot will use (true) SSl-connection or not (false).
 ----
+== debug ==
+{{{
+*admin debug
+*admin debug true(false)
+}}}
+ * Shows "true" if the visual-debugger is On and "false" if Off.
+ * Sets if the bot will turn On (true) visua; debugger or Off (false).
+----
 == port ==
 {{{
 *admin port
