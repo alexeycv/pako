@@ -1,0 +1,5 @@
+D:\Pako\csharp\Plugins\Web\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\csharp\Plugins\Plugins\bin\Debug\Web.pdb
+D:\Pako\csharp\Plugins\Web\obj\Debug\Web.dll
+D:\Pako\csharp\Plugins\Web\obj\Debug\Web.pdb
+D:\Pako\csharp\Plugins\Plugins\bin\Debug\Web.dll
