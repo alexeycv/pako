@@ -1,5 +1,0 @@
-D:\Pako\csharp\Pako\Pako\obj\Release\ResolveAssemblyReference.cache
-D:\Pako\csharp\Pako\Pako\bin\Release\Pako.exe
-D:\Pako\csharp\Pako\Pako\bin\Release\Pako.pdb
-D:\Pako\csharp\Pako\Pako\obj\Release\Pako.exe
-D:\Pako\csharp\Pako\Pako\obj\Release\Pako.pdb
