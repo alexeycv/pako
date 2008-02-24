@@ -1,0 +1,5 @@
+D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Alias.dll
+D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Alias.pdb
+D:\Pako\csharp\vs\Plugins\Alias\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\csharp\vs\Plugins\Alias\obj\Debug\Alias.dll
+D:\Pako\csharp\vs\Plugins\Alias\obj\Debug\Alias.pdb

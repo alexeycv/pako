@@ -1,0 +1,5 @@
+D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Dict.dll
+D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Dict.pdb
+D:\Pako\csharp\vs\Plugins\Dict\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\csharp\vs\Plugins\Dict\obj\Debug\Dict.dll
+D:\Pako\csharp\vs\Plugins\Dict\obj\Debug\Dict.pdb

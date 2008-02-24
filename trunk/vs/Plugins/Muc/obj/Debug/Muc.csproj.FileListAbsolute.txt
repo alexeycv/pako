@@ -1,0 +1,10 @@
+D:\Pako\csharp\Plugins\Muc\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\csharp\Plugins\Plugins\bin\Debug\Muc.dll
+D:\Pako\csharp\Plugins\Plugins\bin\Debug\Muc.pdb
+D:\Pako\csharp\Plugins\Muc\obj\Debug\Muc.dll
+D:\Pako\csharp\Plugins\Muc\obj\Debug\Muc.pdb
+D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Muc.dll
+D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Muc.pdb
+D:\Pako\csharp\vs\Plugins\Muc\obj\Debug\ResolveAssemblyReference.cache
+D:\Pako\csharp\vs\Plugins\Muc\obj\Debug\Muc.dll
+D:\Pako\csharp\vs\Plugins\Muc\obj\Debug\Muc.pdb
