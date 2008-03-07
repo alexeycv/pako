@@ -446,9 +446,15 @@ If you had found any bugs or mistakes in the code, please save the bug report an
 New ideas and comments are always welcomed. Mail me about your idea and i will think about - maybe the next , what will be modified in the code - will be your idea!.
 
 
+= Support =
+
+* The main developing chat-room:         *dotnet@conference.jabber.ru*
+* XMPP support and Jabber Development:   *jdev@conference.jabber.org* 
+* Jabber bots consultation:              *roso@conference.jabber.ru*
+
 = Special thanks =
 
-*Alex* (agsXMPP author and code support),
+_*Alex* (agsXMPP author and code support),
 
 *vt* (code support and testing), 
 
