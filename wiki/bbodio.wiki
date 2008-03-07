@@ -1,10 +1,10 @@
 = Contacts =
 == Bbodio ==
 
-# Address:   Ukraine, Lviv
-# Phone:     +380 67 499 60 37
-# E-mail:    bbodio at i.ua
-# Jabber:    bbodio at jabber.ru
-# ICQ:       398-238-474
-# Full name: Klitschuk Bogdan Michailovitsch
-# MUC:       dotnet@conference.jabber.ru
+ # Address:   Ukraine, Lviv
+ # Phone:     +380 67 499 60 37
+ # E-mail:    bbodio at i.ua
+ # Jabber:    bbodio at jabber.ru
+ # ICQ:       398-238-474
+ # Full name: Klitschuk Bogdan Michailovitsch
+ # MUC:       dotnet@conference.jabber.ru
