@@ -454,6 +454,9 @@ New ideas and comments are always welcomed. Mail me about your idea and i will t
 
 - Jabber bots consultation:              *roso@conference.jabber.ru*
 
+See [http://code.google.com/p/pako/wiki/bbodio Bbodio] contact information here.
+
+
 = Special thanks =
 
 *Alex* (agsXMPP author and code support),
