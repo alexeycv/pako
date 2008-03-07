@@ -456,12 +456,12 @@ New ideas and comments are always welcomed. Mail me about your idea and i will t
 
 = Special thanks =
 
-_*Alex* (agsXMPP author and code support),
+*Alex* (agsXMPP author and code support),
 
 *vt* (code support and testing), 
 
 *fix* (hosting),  
 
-*Pily* (language packs creating and testing)_.
+*Pily* (language packs creating and testing).
 
 Thank guys! :) 
