@@ -448,9 +448,9 @@ New ideas and comments are always welcomed. Mail me about your idea and i will t
 
 = Support =
 
-* The main developing chat-room:         *dotnet@conference.jabber.ru*
-* XMPP support and Jabber Development:   *jdev@conference.jabber.org* 
-* Jabber bots consultation:              *roso@conference.jabber.ru*
+ - The main developing chat-room:         *dotnet@conference.jabber.ru*
+ - XMPP support and Jabber Development:   *jdev@conference.jabber.org* 
+ - Jabber bots consultation:              *roso@conference.jabber.ru*
 
 = Special thanks =
 
