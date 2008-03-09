@@ -1,5 +1,0 @@
-D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Iq.dll
-D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Iq.pdb
-D:\Pako\csharp\vs\Plugins\Iq\obj\Debug\ResolveAssemblyReference.cache
-D:\Pako\csharp\vs\Plugins\Iq\obj\Debug\Iq.dll
-D:\Pako\csharp\vs\Plugins\Iq\obj\Debug\Iq.pdb

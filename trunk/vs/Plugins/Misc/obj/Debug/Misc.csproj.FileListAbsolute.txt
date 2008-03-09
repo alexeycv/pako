@@ -1,5 +1,0 @@
-D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Misc.dll
-D:\Pako\csharp\vs\Plugins\Plugins\bin\Debug\Misc.pdb
-D:\Pako\csharp\vs\Plugins\Misc\obj\Debug\ResolveAssemblyReference.cache
-D:\Pako\csharp\vs\Plugins\Misc\obj\Debug\Misc.dll
-D:\Pako\csharp\vs\Plugins\Misc\obj\Debug\Misc.pdb
