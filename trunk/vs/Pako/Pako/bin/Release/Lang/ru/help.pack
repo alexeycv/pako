@@ -1,0 +1,113 @@
+<help>
+   <command name="admin cmd" value="Вызывает интерпретатор командной строки. Пожалуйста, следуйте синтаксису:&#xA;{1}admin cmd 'команда'" />
+   <command name="admin cmdaccess" value="Устанавливает уровень доступа к команде. Пожалуйста, следуйте синтаксису:&#xA;{1}admin cmdaccess 'команда' 'уровень доступа'" />
+   <command name="admin compression" value="Позволяет включить/отключить компрессию соединения для бота с сервером, если последний поддерживает это. Пожалуйста, следуйте синтаксису:&#xA;{1}admin compression true/false" />
+   <command name="admin find" value="Поиск в системе файлов и папок. Пожалуйста, следуйте синтаксису:&#xA;{1}admin find [имя файла*] 'путь:\'" />
+   <command name="admin gmsg" value="Рассылает административное сообщение по всем конференциям. Пожалуйста, следуйте синтаксису:&#xA;{1}admin gmsg 'сообщение'" />
+   <command name="admin heap" value="Показывает сколько памяти хавает бот. Пожалуйста, следуйте синтаксису:&#xA;{1}admin heap" />
+   <command name="admin jid" value="Позволяет изменить жыд боту. Пожалуйста, следуйте синтаксису:&#xA;{1}admin jid new_jid@server/resourse" />
+   <command name="admin lang" value="Устанавливает глобальный язык бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin lang 'язык'" />
+   <command name="admin list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}admin list" />
+   <command name="admin msglimit" value="Устанавливает лимит выводимых сообщений ботом. Пожалуйста, следуйте синтаксису:&#xA;{1}admin msglimit 'кол-во'" />
+   <command name="admin myroot" value="Показывает текущую папку бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin myroot" />
+   <command name="admin nick" value="Позволяет изменить ник бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin nick 'new_nick'" />
+   <command name="admin pako" value="Показывает информацию о боте. Пожалуйста, следуйте синтаксису:&#xA;{1}admin pako" />
+   <command name="admin password" value="Показфвает пароль к жыду бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin password" />
+   <command name="admin pl_info" value="Показывает информацию плагина. Пожалуйста, следуйте синтаксису:&#xA;{1}admin pl_info 'plugin.dll'" />
+   <command name="admin pl_load" value="Подгружает плагин бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin pl_load 'plugin.dll'" />
+   <command name="admin pl_unload" value="Выгружает используемый ботом плагин. Пожалуйста, следуйте синтаксису:&#xA;{1}admin pl_unload 'plugin.dll'" />
+   <command name="admin port" value="Устанавливает порт подключения к jabber серверу. Пожалуйста, следуйте синтаксису:&#xA;{1}admin port 'new_port'" />
+   <command name="admin prefix" value="Устанавливает префик команд бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin prefix 'prefix'" />
+   <command name="admin proc_kill" value="Завершает определённый процесс в системе. Пожалуйста, следуйте синтаксису:&#xA;{1}admin proc_kill 'number_process'" />
+   <command name="admin proc_new" value="Запускает новый процесс в системе. Пожалуйста, следуйте синтаксису:&#xA;{1}admin proc_new 'process_name'" />
+   <command name="admin proc_show" value="Просмотр текущих процессов в системе. Пожалуйста, следуйте синтаксису:&#xA;{1}admin proc_show" />
+   <command name="admin quit" value="Завершает работу бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin quit 'причина'" />
+   <command name="admin reconnects" value="Показывает время реконекта к серверу. Пожалуйста, следуйте синтаксису:&#xA;{1}admin reconnects 'время_в_секундах'" />
+   <command name="admin rectime" value="Устанавливает порт подключения к jabber серверу. Пожалуйста, следуйте синтаксису:&#xA;{1}admin rectime 'new_port'" />
+   <command name="admin restart" value="Перезагрузка бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin restart 'причина'" />
+   <command name="admin set_help" value="Устанавливает текст справки по определённой команде. Пожалуйста, следуйте синтаксису:&#xA;{1}admin set_help &lt;lang_pack&gt; [&lt;cmd_name&gt;] &lt;help_value&gt;" />
+   <command name="admin set_pattern" value="Устанавливает текст ответа(реакции) бота на определённую команду. Пожалуйста, следуйте синтаксису:&#xA;{1}admin set_pattern 'langpack' ['text_command'] 'help text'" />
+   <command name="admin starttls" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [admin starttls] 'и здесь ваш текст справки'" />
+   <command name="admin status" value="Устанавливает текст статуса бота. Пожалуйста, следуйте синтаксису:&#xA;{1}admin status 'status'" />
+   <command name="admin usessl" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [admin usessl] 'и здесь ваш текст справки'" />
+   <command name="admin vip" value="Добавляет юзера в vip список, с указанием языка обращения и уровень его доступа к боту. Пожалуйста, следуйте синтаксису:&#xA;{1}admin vip 'jid' 'access'" />
+   <command name="admin vip_del" value="Удаляет юзера из vip списка. Пожалуйста, следуйте синтаксису:&#xA;{1}admin vip_del 'jid'" />
+   <command name="alias add" value="Добавляет алиас(список сокращения комманд). Пожалуйста, следуйте синтаксису:&#xA;{1}alias add 'alias' = 'action'" />
+   <command name="alias clear" value="Очищает список алиасов. Пожалуйста, следуйте синтаксису:&#xA;{1}alias clear" />
+   <command name="alias count" value="Показывает количество алиасов. Пожалуйста, следуйте синтаксису:&#xA;{1}alias count" />
+   <command name="alias del" value="Удаляет алиас по номеру в списке алиасов. Пожалуйста, следуйте синтаксису:&#xA;{1}alias del 'number'" />
+   <command name="alias list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}alias list" />
+   <command name="alias show" value="Показывает список алиасов. Пожалуйста, следуйте синтаксису:&#xA;{1}alias show" />
+   <command name="def add" value="Добавляет определение фразы в пользовательскую базу (аналог wtf у sulci). Пожалуйста, следуйте синтаксису:&#xA;{1}def add 'слово'='значение'" />
+   <command name="def clear" value="Очищает определения фраз из пользовательской базы. Пожалуйста, следуйте синтаксису:&#xA;{1}def clear" />
+   <command name="def count" value="Показывает количество определений фраз в пользовательской базе. Пожалуйста, следуйте синтаксису:&#xA;{1}def count" />
+   <command name="def find" value="Поиск определения фразы в пользовательской базе. Пожалуйста, следуйте синтаксису:&#xA;{1}def find 'значение'" />
+   <command name="def list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}def list" />
+   <command name="def show" value="Показывает определение фразы в пользовательской базе. Пожалуйста, следуйте синтаксису:&#xA;{1}def show 'фраза'" />
+   <command name="def showall" value="Показывает все определение фразы в пользовательской базе. Пожалуйста, следуйте синтаксису:&#xA;{1}def showall 'фраза'" />
+   <command name="def showto" value="Показывает определение фразы в пользовательской базе определённому юзеру. Пожалуйста, следуйте синтаксису:&#xA;{1}def showto ['word'] 'nick'" />
+   <command name="dict add" value="Добавляет определение фразы в глобальную базу (аналог wtf у sulci). Пожалуйста, следуйте синтаксису:&#xA;{1}dict add 'слово'='значение'" />
+   <command name="dict clear" value="Очищает определения фраз из глобальной базы. Пожалуйста, следуйте синтаксису:&#xA;{1}dict clear" />
+   <command name="dict count" value="Показывает количество определений фраз в глобальной базе. Пожалуйста, следуйте синтаксису:&#xA;{1}dict count" />
+   <command name="dict find" value="Поиск определения фразы в глобальной базе. Пожалуйста, следуйте синтаксису:&#xA;{1}dict find 'значение'" />
+   <command name="dict list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}dict list" />
+   <command name="dict show" value="Показывает определение фразы в глобальной базе. Пожалуйста, следуйте синтаксису:&#xA;{1}dict show 'фраза'" />
+   <command name="dict showall" value="Показывает все определение фразы в глобальной базе. Пожалуйста, следуйте синтаксису:&#xA;{1}dict showall 'фраза'" />
+   <command name="iq disco" value="Показывает результат обзора сервера/конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}iq disco 'server/room' 'кол-во'" />
+   <command name="iq info" value="Показывает информацию о сервере. Пожалуйста, следуйте синтаксису:&#xA;{1}iq info 'server'" />
+   <command name="iq list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}iq list" />
+   <command name="iq ping" value="Возвращает понг от сервера/юзера. Пожалуйста, следуйте синтаксису:&#xA;{1}iq ping 'user/server'" />
+   <command name="iq time" value="Показывает локальное время сервера/юзера. Пожалуйста, следуйте синтаксису:&#xA;{1}iq time 'user/server'" />
+   <command name="iq uptime" value="Показывает время находящегося в сети сервера. Пожалуйста, следуйте синтаксису:&#xA;{1}iq uptime 'server'" />
+   <command name="iq version" value="Показывает версию, клиент сервера/юзера. Пожалуйста, следуйте синтаксису:&#xA;{1}iq version 'user/server'" />
+   <command name="misc access" value="Показывает уровень доступа к командам бота. Пожалуйста, следуйте синтаксису:&#xA;{1}misc access" />
+   <command name="misc calc" value="Калькулятор. Пожалуйста, следуйте синтаксису:&#xA;misc calc [математическое выражение]&#xA;где выражение - это любой математический пример" />
+   <command name="misc list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}misc list" />
+   <command name="misc myup" value="Показывает время находящегося в сети бота. Пожалуйста, следуйте синтаксису:&#xA;{1}misc myup" />
+   <command name="misc say" value="Позволяет говорить от имени бота. Пожалуйста, следуйте синтаксису:&#xA;{1}misc say 'фраза'" />
+   <command name="misc test" value="Тупо отвечает 'Пассед'. Пожалуйста, следуйте синтаксису:&#xA;{1}misc test" />
+   <command name="muc admin" value="Позволяет с помощью бота повысить до прав администратора определённого юзера. Пожалуйста, следуйте синтаксису:&#xA;{1}muc admin 'nick'" />
+   <command name="muc allcensor" value="Возвращает список цензора. Пожалуйста, следуйте синтаксису:&#xA;{1}muc allcensor" />
+   <command name="muc ban" value="Позволяет с помощью бота запретить юзеру посещать текущую конференцию. Пожалуйста, следуйте синтаксису:&#xA;{1}muc ban 'nick'" />
+   <command name="muc censor" value="Добавляет в базу цензорное выражение. Пожалуйста, следуйте синтаксису:&#xA;{1}muc censor й+у+х+" />
+   <command name="muc clean" value="Отправляет в конференцию (20) пустых сообщений. Пожалуйста, следуйте синтаксису:&#xA;{1}muc clean 'кол-во'" />
+   <command name="muc devoice" value="Позволяет с помощью бота лишить юзера голоса. Пожалуйста, следуйте синтаксису:&#xA;{1}muc devoice 'nick'" />
+   <command name="muc echo" value="Возвращает фразу через бота. Пожалуйста, следуйте синтаксису:&#xA;{1}muc echo 'фраза'" />
+   <command name="muc entered" value="Показывает время входа бота в текущую конференцию. Пожалуйста, следуйте синтаксису:&#xA;{1}muc entered" />
+   <command name="muc info" value="Показывает информацию определённого юзера в текущей конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}muc info 'user'" />
+   <command name="muc join" value="Позволяет завести бота в указанную конференцию. Пожалуйста, следуйте синтаксису:&#xA;{1}muc join 'room' 'nick'" />
+   <command name="muc kick" value="Позволяет с помощью бота выгнать юзера из текущей конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}muc kick 'user'" />
+   <command name="muc leave" value="Позволяет вывести бота из указанной конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}muc leave 'room'" />
+   <command name="muc list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}muc list" />
+   <command name="muc me" value="Тупо отвечает 'Что?'. Пожалуйста, следуйте синтаксису:&#xA;{1}muc me" />
+   <command name="muc member" value="Позволяет с помощью бота дать членство определённому юзеру. Пожалуйста, следуйте синтаксису:&#xA;{1}muc member 'nick'" />
+   <command name="muc mylang" value="Позволяет изменить язык бота в текущей конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}muc mylang 'lang'" />
+   <command name="muc mynick" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc mynick] 'и здесь ваш текст справки'" />
+   <command name="muc mystatus" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc mystatus] 'и здесь ваш текст справки'" />
+   <command name="muc name" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc name] 'и здесь ваш текст справки'" />
+   <command name="muc nicks" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc nicks] 'и здесь ваш текст справки'" />
+   <command name="muc owner" value="Позволяет с помощью бота повысить до прав владельца определённого юзера. Пожалуйста, следуйте синтаксису:&#xA;{1}muc owner 'nick'" />
+   <command name="muc role" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc role] 'и здесь ваш текст справки'" />
+   <command name="muc setsubject" value="Позволяет изменить тему конференции с помощью бота. Пожалуйста, следуйте синтаксису:&#xA;{1}muc setsubject 'newsubject'" />
+   <command name="muc show" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc show] 'и здесь ваш текст справки'" />
+   <command name="muc status" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [muc status] 'и здесь ваш текст справки'" />
+   <command name="muc subject" value="Возвращает тему текущей конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}muc subject" />
+   <command name="muc tell" value="Позволяет передать при входе в данную конференцию фразу отсутствующему в данный момент юзеру. Пожалуйста, следуйте синтаксису:&#xA;{1}muc tell [nick] 'фраза'" />
+   <command name="muc tryme" value="Русская рулетка. Пожалуйста, следуйте синтаксису:&#xA;{1}muc tryme" />
+   <command name="muc uncensor" value="Удаляет цензорное выражение из базы. Пожалуйста, следуйте синтаксису:&#xA;{1}muc uncensor й+у+х+" />
+   <command name="muc voice" value="Позволяет дать голос юзеру в текущей конференции. Пожалуйста, следуйте синтаксису:&#xA;{1}muc voice 'nick'" />
+   <command name="web curr" value="Показывает курс денежной единицы по отношению к другой. Пожалуйста, следуйте синтаксису.&#xA;{1}web curr &lt;amount&gt; &lt;from&gt; &lt;to&gt;&#xA;где&#xA;'amount' - любая денежная единица для перевода&#xA;'from' - переводимое название валюты,&#xA;'to' - название переведённой валюты.&#xA;---Bonus:&#xA;  {1}web curr list  - список валют" />
+   <command name="web curr find" value="Поиск денежной единицы доступной для перевода. Пожалуйста, следуйте синтаксису:&#xA;{1}web curr find 'валюта или страна'" />
+   <command name="web curr list" value="Показывает список денежных единиц доступных для перевода между собой. Пожалуйста, следуйте синтаксису:&#xA;{1}web curr list" />
+   <command name="web dns" value="Возвращает результат DNS резолвинга. Пожалуйста, следуйте синтаксису:&#xA;{1}web dns 'IP/адресс'" />
+   <command name="web google" value="Поиск фразы через поисковую систему google.com. Пожалуйста, следуйте синтаксису:&#xA;{1}web google 'кол-во рез-тов' 'фраза'" />
+   <command name="web google search" value="Поиск фразы через поисковую систему google.com. Пожалуйста, следуйте синтаксису:&#xA;{1}web google 'кол-во рез-тов' 'фраза'" />
+   <command name="web gt" value="Позволяет перевести слово/фразу из одного языка в другой. Пожалуйста, следуйте синтаксису:&#xA;{1}web gt language_pair text. Для просмотра списка доступных для перевода языков наберите {1}web gtlang" />
+   <command name="web gtlangs" value="Показывает список языков доступных для перевода слова/фразы. Пожалуйста, следуйте синтаксису:&#xA;{1}web gtlangs" />
+   <command name="web link" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [web link] 'и здесь ваш текст справки'" />
+   <command name="web list" value="Показывает список команд категории. Пожалуйста, следуйте синтаксису:&#xA;{1}web list" />
+   <command name="web rfc" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [web rfc] 'и здесь ваш текст справки'" />
+   <command name="web whois" value="Справка по данной команде пока отсутствует. Вы можете внести свой вклад в развитие следующей командой {1}admin set_help 'langpack' [web whois] 'и здесь ваш текст справки'" />
+   <command name="web xep" value="Следуйте синтаксису:&#xA;{1}web xep &lt;подсказка&gt;&#xA;где 'подсказка' - номер или слово для поиска определенного XEP &#xA;(XMPP Extensions Protocol)" />
+   <command name="misc greet" value="Устанавливает приветсвие на JID юзера при входе в конференцию. Пожалуйста, следуйте синтаксису:&#xA;{1}misc greet user@server.com hello User!" />
+</help>
