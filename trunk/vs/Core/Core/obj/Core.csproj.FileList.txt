@@ -1,0 +1,12 @@
+bin\Debug\Core.dll
+bin\Debug\Core.pdb
+bin\Debug\agsXMPP.dll
+bin\Debug\Mono.Data.SqliteClient.dll
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Core.dll
+obj\Debug\Core.pdb
+bin\Release\Core.dll
+bin\Release\Core.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\Core.dll
+obj\Release\Core.pdb

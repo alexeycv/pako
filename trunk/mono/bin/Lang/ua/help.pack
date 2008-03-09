@@ -1,0 +1,100 @@
+<help>
+   <command name="admin cmd" value="викликає інтерпретатор командного рядка. Синтаксис:&#xA;{1}admin cmd 'команда'" />
+   <command name="admin cmdaccess" value="встановлює рівень доступу до команди. Синтаксис:&#xA;{1}admin cmdaccess 'команда' 'Рівень доступу'" />
+   <command name="admin compression" value="дозволяє включити/відключити компресію з'єднання бота з сервером, якщо останній підтримує це. Синтаксис:&#xA;{1}admin compression true/false" />
+   <command name="admin find" value="пошук в системі файлів і тек. Синтаксис:&#xA;{1}admin find [ім'я файла] 'тека'" />
+   <command name="admin gmsg" value="розсилає адміністративне повідомлення по всіх конференціях. Синтаксис:&#xA;{1}admin gmsg 'повідомлення'" />
+   <command name="admin heap" value="показує скільки пам'яті хаває бот. Синтаксис:&#xA;{1}admin heap" />
+   <command name="admin jid" value="дозволяє задати жид бота. Синтаксис:&#xA;{1}admin jid new_jid@server/resourse" />
+   <command name="admin lang" value="встановлює глобальну мову бота. Синтаксис:&#xA;{1}admin lang 'мова'" />
+   <command name="admin list" value="показує список команд категорії. Синтаксис:&#xA;{1}admin list" />
+   <command name="admin msglimit" value="встановлює ліміт повідомлень, що виводяться ботом. Синтаксис:&#xA;{1}admin msglimit 'к-ть'" />
+   <command name="admin myroot" value="показує поточну директорію бота. Синтаксис:&#xA;{1}admin myroot" />
+   <command name="admin nick" value="дозволяє змінити нік бота. Синтаксис:&#xA;{1}admin nick 'new_nick'" />
+   <command name="admin pako" value="показує інформацію про бот. Синтаксис:&#xA;{1}admin pako" />
+   <command name="admin password" value="налаштовує пароль до жиду бота. Синтаксис:&#xA;{1}admin password 'пароль'" />
+   <command name="admin pl_info" value="показує інформацію про плагін. Синтаксис:&#xA;{1}admin pl_info 'плагін.dll'" />
+   <command name="admin pl_load" value="завантажує плагін бота. Синтаксис:&#xA;{1}admin pl_load 'plugin.dll'" />
+   <command name="admin pl_unload" value="розвантажує використовуваний ботом плагін. Синтаксис:&#xA;{1}admin pl_unload 'плагін.dll'" />
+   <command name="admin port" value="встановлює порт підключення до jabber сервера. Синтаксис:&#xA;{1}admin port 'новий_порт'" />
+   <command name="admin prefix" value="встановлює префікс команд бота. Синтаксис:&#xA;{1}admin prefix 'prefix'" />
+   <command name="admin proc_kill" value="завершує певний процес в системі (по номеру зі списку 'admin proc_show'). Синтаксис:&#xA;{1}admin proc_kill 'номер_процесу'" />
+   <command name="admin proc_new" value="запускає новий процес в системі. Синтаксис:&#xA;{1}admin proc_new 'процес'" />
+   <command name="admin proc_show" value="gthtukzl поточних процесів в системі. Синтаксис:&#xA;{1}admin proc_show" />
+   <command name="admin quit" value="завершує роботу бота. Синтаксис:&#xA;{1}admin quit 'причина'" />
+   <command name="admin reconnects" value="встановлює кількість максимальних реконектів до серверу перед виключенням. Синтаксис:&#xA;{1}admin reconnects 'кількість'" />
+   <command name="admin rectime" value="встановлює час реконекту до сервера. Синтаксис:&#xA;{1}admin reconnects 'час_в_секундах'" />
+   <command name="admin restart" value="перезавантаження бота. Синтаксис:&#xA;{1}admin restart 'причина'" />
+   <command name="admin set_help" value="встановлює текст довідки по певній команді. Синтаксис:&#xA;{1}admin set_help &lt;lang_pack&gt; [&lt;cmd_name&gt;] &lt;help_value&gt;" />
+   <command name="admin set_pattern" value="встановлює текст відповіді(реакції) бота на певну команду. Синтаксис:&#xA;{1}admin set_pattern 'langpack' ['text_command'] 'help text'" />
+   <command name="admin starttls" value="дозволяє включити/відключити процес Start-Tls під час з'єднання бота з сервером, якщо останній підтримує це. Синтаксис:&#xA;{1}admin starttls true/false" />
+   <command name="admin status" value="встановлює текст статусу бота. Синтаксис:&#xA;{1}admin status 'status'" />
+   <command name="admin usessl" value="дозволяє включити/відключити SSL (захищене з'єднання бота з сервером), якщо останній підтримує це. Синтаксис:&#xA;{1}admin compression true/false" />
+   <command name="admin vip" value="добавляє юзера в vip список, з вказівкою мови звернення і рівню його доступу до бота. Синтаксис:&#xA;{1}admin vip 'jid' 'access'" />
+   <command name="admin vip_del" value="видаляє юзера з vip списку. Синтаксис:&#xA;{1}admin vip_del 'jid'" />
+   <command name="alias add" value="добавляє аліас(список псевдонімів команд). Синтаксис:&#xA;{1}alias add 'і'мя' = 'значення'" />
+   <command name="alias clear" value="очищує список аліасів даної конфи. Синтаксис:&#xA;{1}alias clear" />
+   <command name="alias count" value="показує кількість аліасів даної конфи. Синтаксис:&#xA;{1}alias count" />
+   <command name="alias del" value="видаляє аліас по номеру/імені в списку аліасів даної конфи. Синтаксис:&#xA;{1}alias del 'номер'" />
+   <command name="alias list" value="показує список команд категорії. Синтаксис:&#xA;{1}alias list" />
+   <command name="alias show" value="показує список аліасів. Синтаксис:&#xA;{1}alias show" />
+   <command name="def add" value="добавляє визначення фрази в призначену для даної конфи базу (аналог wtf у sulci). Синтаксис:&#xA;{1}def add 'слово'='значення'" />
+   <command name="def clear" value="очищує визначення фраз з призначеної для даної конфи бази. Синтаксис:&#xA;{1}def clear" />
+   <command name="def count" value="показує кількість визначень фраз в призначеній для даної конфи базі. Синтаксис:&#xA;{1}def count" />
+   <command name="def find" value="пошук визначення фрази в призначеній для даної конфи базі. Синтаксис:&#xA;{1}def find 'значення'" />
+   <command name="def list" value="показує список команд категорії. Синтаксис:&#xA;{1}def list" />
+   <command name="def show" value="показує визначення фрази в призначеній для даної конфи базі. Синтаксис:&#xA;{1}def show 'фраза'" />
+   <command name="def showall" value="показує все визначення фрази в призначеній для даної конфи базі. Синтаксис:&#xA;{1}def showall 'фраза'" />
+   <command name="def showto" value="показує визначення фрази в призначеній для даної конфи базі певному юзерові. Синтаксис:&#xA;{1}def showto ['word'] 'nick'" />
+   <command name="dict add" value="добавляєт визначення фрази в глобальну базу (аналог wtf у sulci). Синтаксис:&#xA;{1}dict add 'слово'='значеніє'" />
+   <command name="dict clear" value="очищаєт визначення фраз з глобальної бази. Синтаксис:&#xA;{1}dict clear" />
+   <command name="dict count" value="показує кількість визначень фраз в глобальній базі. Синтаксис:&#xA;{1}dict count" />
+   <command name="dict find" value="поїськ визначення фрази в глобальній базі. Синтаксис:&#xA;{1}dict find 'значення'" />
+   <command name="dict list" value="показує список команд категорії. Синтаксис:&#xA;{1}dict list" />
+   <command name="dict show" value="показує визначення фрази в глобальній базі. Синтаксис:&#xA;{1}dict show 'фраза'" />
+   <command name="dict showall" value="показує все визначення фрази в глобальній базі. Синтаксис:&#xA;{1}dict showall 'фраза'" />
+   <command name="iq disco" value="показує результат огляду сервера/конференції. Синтаксис:&#xA;{1}iq disco 'server/room' 'к-ть'" />
+   <command name="iq info" value="показує інформацію про сервер. Синтаксис:&#xA;{1}iq info 'server'" />
+   <command name="iq list" value="показує список команд категорії. Синтаксис:&#xA;{1}iq list" />
+   <command name="iq ping" value="возвращаєт понг від сервера/юзера. Синтаксис:&#xA;{1}iq ping 'user/server'" />
+   <command name="iq time" value="показує локальний час сервера/юзера. Синтаксис:&#xA;{1}iq time 'user/server'" />
+   <command name="iq uptime" value="показує час сервера, що знаходиться в мережі. Синтаксис:&#xA;{1}iq uptime 'server'" />
+   <command name="iq version" value="показує версію, клієнт сервера/юзера. Синтаксис:&#xA;{1}iq version 'user/server'" />
+   <command name="misc access" value="показує рівень доступу до команд бота. Синтаксис:&#xA;{1}misc access" />
+   <command name="misc calc" value="калькулятор. Синтаксис:&#xA;misc calc [математичний вираз]&#xA;где вираз - це будь-який математичний приклад" />
+   <command name="misc list" value="показує список команд категорії. Синтаксис:&#xA;{1}misc list" />
+   <command name="misc myup" value="показує час бота, що знаходиться в мережі. Синтаксис:&#xA;{1}misc myup" />
+   <command name="misc say" value="дозволяє говорити від імені бота. Синтаксис:&#xA;{1}misc say 'фраза'" />
+   <command name="misc test" value="тупо відповідає 'Пассед'. Синтаксис:&#xA;{1}misc test" />
+   <command name="muc admin" value="дозволяє за допомогою бота підвищити до прав адміністратора певного юзера. Синтаксис:&#xA;{1}muc admin 'nick'" />
+   <command name="muc allcensor" value="возвращаєт список цензора. Синтаксис:&#xA;{1}muc allcensor" />
+   <command name="muc ban" value="дозволяє за допомогою бота заборонити юзерові відвідувати поточну конференцію. Синтаксис:&#xA;{1}muc ban 'nick'" />
+   <command name="muc censor" value="добавляєт в базу цензорноє вираз. Синтаксис:&#xA;{1}muc censor й+у+х+" />
+   <command name="muc clean" value="отправляєт в конференцію (20) порожніх повідомлень. Синтаксис:&#xA;{1}muc clean 'к-ть'" />
+   <command name="muc devoice" value="дозволяє за допомогою бота позбавити юзера голосу. Синтаксис:&#xA;{1}muc devoice 'nick'" />
+   <command name="muc echo" value="возвращаєт фразу через бота. Синтаксис:&#xA;{1}muc echo 'фраза'" />
+   <command name="muc entered" value="показує час входу бота в поточну конференцію. Синтаксис:&#xA;{1}muc entered" />
+   <command name="muc info" value="показує інформацію певного юзера в поточній конференції. Синтаксис:&#xA;{1}muc info 'user'" />
+   <command name="muc join" value="дозволяє завести бота у вказану конференцію. Синтаксис:&#xA;{1}muc join 'room' 'nick'" />
+   <command name="muc kick" value="дозволяє за допомогою бота вигнати юзера з поточної конференції. Синтаксис:&#xA;{1}muc kick 'user'" />
+   <command name="muc leave" value="дозволяє вивести бота з вказаної конференції. Синтаксис:&#xA;{1}muc leave 'room'" />
+   <command name="muc list" value="показує список команд категорії. Синтаксис:&#xA;{1}muc list" />
+   <command name="muc me" value="просто відповідає 'Що?'. Синтаксис:&#xA;{1}muc me" />
+   <command name="muc member" value="дозволяє за допомогою бота дати членство певному юзерові. Синтаксис:&#xA;{1}muc member 'nick'" />
+   <command name="muc mylang" value="дозволяє змінити мову бота в поточній конференції. Синтаксис:&#xA;{1}muc mylang 'lang'" />
+   <command name="muc mynick" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc mynick] 'і тут вашого тексту довідки'" />
+   <command name="muc mystatus" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc mystatus] 'і тут вашого тексту довідки'" />
+   <command name="muc name" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc name] 'і тут вашого тексту довідки'" />
+   <command name="muc nicks" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc nicks] 'і тут вашого тексту довідки'" />
+   <command name="muc owner" value="дозволяє за допомогою бота підвищити до прав власника певного юзера. Синтаксис:&#xA;{1}muc owner 'nick'" />
+   <command name="muc role" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc role] 'і тут вашого тексту довідки'" />
+   <command name="muc setsubject" value="дозволяє змінити тему конференції за допомогою бота. Синтаксис:&#xA;{1}muc setsubject 'newsubject'" />
+   <command name="muc show" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc show] 'і тут вашого тексту довідки'" />
+   <command name="muc status" value="справка по даній команді поки відсутній. Ви можете внести свій внесок до розвитку наступною командою {1}admin set_help 'langpack' [muc status] 'і тут вашого тексту довідки'" />
+   <command name="muc subject" value="возвращаєт тему поточної конференції. Синтаксис:&#xA;{1}muc subject" />
+   <command name="muc tell" value="дозволяє передати при вході в дану конференцію фразу відсутньому в даний момент юзерові. Синтаксис:&#xA;{1}muc tell [nick] 'фраза'" />
+   <command name="muc tryme" value="русськая рулетка. Синтаксис:&#xA;{1}muc tryme" />
+   <command name="muc uncensor" value="удаляєт цензорноє вираз з бази. Синтаксис:&#xA;{1}muc uncensor й+у+х+" />
+   <command name="muc voice" value="дозволяє дати голос юзерові в поточній конференції. Синтаксис:&#xA;{1}muc voice 'nick'" />
+   <command name="misc greet" value="Встановлює привiтання на JID юзера при входi в конференцiю. Будь ласка, слiдуйте синтаксису:&#xA;{1}misc greet user@server.com hello User!" />
+</help>

@@ -1,0 +1,5 @@
+D:\Pako\csharp\vs\Core\Core\obj\Release\ResolveAssemblyReference.cache
+D:\Pako\csharp\vs\Core\Core\bin\Release\Core.dll
+D:\Pako\csharp\vs\Core\Core\bin\Release\Core.pdb
+D:\Pako\csharp\vs\Core\Core\obj\Release\Core.dll
+D:\Pako\csharp\vs\Core\Core\obj\Release\Core.pdb

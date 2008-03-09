@@ -1,0 +1,13 @@
+bin\Release\Pako.exe
+bin\Release\Pako.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\Pako.exe
+obj\Release\Pako.pdb
+bin\Debug\Pako.exe
+bin\Debug\Pako.pdb
+bin\Debug\agsXMPP.dll
+bin\Debug\Core.dll
+bin\Debug\Mono.Data.SqliteClient.dll
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Pako.exe
+obj\Debug\Pako.pdb
