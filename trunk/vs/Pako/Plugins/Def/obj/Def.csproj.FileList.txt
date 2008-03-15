@@ -1,0 +1,10 @@
+..\Plugins\bin\Debug\Def.dll
+..\Plugins\bin\Debug\Def.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Def.dll
+obj\Debug\Def.pdb
+obj\Release\ResolveAssemblyReference.cache
+..\..\Pako\bin\Release\Plugins\Def.dll
+..\..\Pako\bin\Release\Plugins\Def.pdb
+obj\Release\Def.dll
+obj\Release\Def.pdb

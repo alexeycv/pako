@@ -1,0 +1,10 @@
+..\Plugins\bin\Debug\Admin.dll
+..\Plugins\bin\Debug\Admin.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Admin.dll
+obj\Debug\Admin.pdb
+obj\Release\ResolveAssemblyReference.cache
+..\..\Pako\bin\Release\Plugins\Admin.dll
+..\..\Pako\bin\Release\Plugins\Admin.pdb
+obj\Release\Admin.dll
+obj\Release\Admin.pdb
