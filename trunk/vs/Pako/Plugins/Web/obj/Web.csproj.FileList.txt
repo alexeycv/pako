@@ -1,0 +1,10 @@
+..\Plugins\bin\Debug\Web.dll
+..\Plugins\bin\Debug\Web.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Web.dll
+obj\Debug\Web.pdb
+..\..\Pako\bin\Release\Plugins\Web.dll
+..\..\Pako\bin\Release\Plugins\Web.pdb
+obj\Release\ResolveAssemblyReference.cache
+obj\Release\Web.dll
+obj\Release\Web.pdb
