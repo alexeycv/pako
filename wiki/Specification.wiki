@@ -1,0 +1,5 @@
+= Specification =
+Basic description of bot core. 
+Available on these lanfuages:
+ * [http://code.google.com/p/pako/w/specification_ru ru]
+ * [http://code.google.com/p/pako/w/specification_en en]
