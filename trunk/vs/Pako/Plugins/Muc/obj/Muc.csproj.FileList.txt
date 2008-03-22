@@ -1,0 +1,10 @@
+..\Plugins\bin\Debug\Muc.dll
+..\Plugins\bin\Debug\Muc.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\Muc.dll
+obj\Debug\Muc.pdb
+obj\Release\ResolveAssemblyReference.cache
+..\..\Pako\bin\Release\Plugins\Muc.dll
+..\..\Pako\bin\Release\Plugins\Muc.pdb
+obj\Release\Muc.dll
+obj\Release\Muc.pdb
