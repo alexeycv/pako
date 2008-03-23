@@ -1,8 +1,0 @@
-..\..\Pako\bin\Release\Plugins\Dict.dll
-..\..\Pako\bin\Release\Plugins\Dict.pdb
-obj\Release\ResolveAssemblyReference.cache
-obj\Release\Dict.dll
-obj\Release\Dict.pdb
-obj\Debug\ResolveAssemblyReference.cache
-obj\Debug\Dict.dll
-obj\Debug\Dict.pdb
