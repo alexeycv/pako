@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="Pako">
+</Property><Property Name="Solution File" Value="M:\pako\vs\Pako.sln">
+</Property><Property Name="Date" Value="22 апреля 2008 г.">
+</Property><Property Name="Time" Value="22:35">
+</Property></Properties><Event ErrorLevel="0" Project="Pako" Source="Pako\Pako.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Pako" Source="Pako\Pako.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Admin" Source="Plugins\Admin\Admin.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Admin" Source="Plugins\Admin\Admin.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Alias" Source="Plugins\Alias\Alias.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Alias" Source="Plugins\Alias\Alias.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Def" Source="Plugins\Def\Def.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Def" Source="Plugins\Def\Def.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Dict" Source="Plugins\Dict\Dict.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Dict" Source="Plugins\Dict\Dict.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Iq" Source="Plugins\Iq\Iq.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Iq" Source="Plugins\Iq\Iq.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Misc" Source="Plugins\Misc\Misc.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Misc" Source="Plugins\Misc\Misc.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Muc" Source="Plugins\Muc\Muc.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Muc" Source="Plugins\Muc\Muc.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Web" Source="Plugins\Web\Web.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Web" Source="Plugins\Web\Web.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="Core" Source="Core\Core.csproj" Description="The project file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="Core" Source="Core\Core.csproj" Description="No Conversion Required">
+</Event><Event ErrorLevel="0" Project="" Source="Pako.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="Pako.sln" Description="Converted">
+</Event></UpgradeLog>
