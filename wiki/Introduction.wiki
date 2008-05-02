@@ -8,7 +8,7 @@ Jabber: _bbodio at jabber.ru_
 Mail: _bbodio at i.ua_
 
 = About =
-This is a an executable, which is binded to several dlls'.
+Today we are introdusing to you a bot, an artificial brain, which works with XMPP protocol. It is a live creature :-), it's just a program, which as all programs, has bugs, holes in the code, but in most works properly. It was called "Pako". It was named after a festival "Pako Festa", which  is an annual festival held in Pakington Street, Geelong West each year around late February. me - the author - Klichuk Bogdan (aka bbodio) from Ukraine have been developing the project for already half of year independently. How did i start? Why do i do it? Simple answer: i live by XMPP :) this is the most powerful IM(Instant messaging) protocol, which can let you communicate through it with othe I systems, like ICQ, GaduGadu, HabaHaba, Mail, GMail, IRC etc. Detailed information you can find on the [http://www.jabber.org Jabber.org], contact the main author of XMPP (aka Jabber) protocol - Peter Saint Andre and other members of XSF (XMPP Software Foundation). Somewhere in 01.2007 i made friends with Jabber. First things which was most interesting there where MUC-chatting and bots. Those "creatures", which can talk to you, execute commands, like a real chat-user. Sometimes you don't even need the your computer except your chat-window and an active Jabber-bot in the conference or a roster. That time i was a good Delphi-programmer, so i decided to write a bot on Delphi. In 2-3 months i got that Delphi is not a best way to write a bot for a Jabber -  there were no good XMPP-libraries  for Delphi and there problems with running the bot on Linux/Unix (Wine, Cedega). Than i got intrested with C# and in two weeks my C#-Pako had ability to join a chat-room :). So till autumn 2007 i have been writing the bot which is now may feautured Jabber-bot supporting MUC adminstrating, machine control, web requests, for example viewing wikipedia page, Google search, torrents search on [http://www.mininova.org Mininova], currencies viewing, even studying XMPP specification by RFC3921, and a lot of interesting things.
 
 *Labels:*
 
@@ -24,162 +24,29 @@ This is a an executable, which is binded to several dlls'.
 
 ----
 
-= Containing =
 
-- *Pako.exe* -> The main engine, which initializes all processes and creates a new instance of xmpp-session
-
-- *Core.dll* -> Handles all the bot/xmpp processes: provides all the session.
-
-- *agsXMPP.dll* -> This library is an official XMPP-many-featured dll 
-of [http://www.ag-software.de AG-Software], which supports lots-of-XEP-featured Jabber-session.
-I think, this is the most featured and stable jabber-library of all.
-
-
-- *Pako.cfg* -> This is a bot conmain configurator, which can set the xmpp-connection attributes and options and the bot default behaviour.
-
-- *Mono.Data.SqliteClient.dll* -> This is a library , which provides SQLite data-bases connection. Is *Needed* on Microsoft .NET. Is *Optional* on Mono.
-
-- *SQLite3.dll* -> This is SQLite wrapper , written on C.
-
-- *Static* -> Folder, where is rfc3921.txt located - it's needed for rfc-reading support. You can easy navigate through rfc3921 by bot.
-
-- *Data* -> Folder, where are data-bases, containing specific information about chat-rooms.
-
-- *Dynamic* -> This folder containes
- 
-   _Different types of XML configurators:_
- * Rooms.base -> contains information about auto-entering chat-rooms.
- * Users.base -> contains information about specific JIDs, for which bot makes exceptions in his behaviour (language, access level). 
- * Access.base - contains information about the minimum accessing level for each command.
- ** P.S. All the listed files can be changed dynamicly , by sending command to bot.
-
-  _Data bases:_
- * Censor.db -> RegEx patterns , which bot gets as censored words and kicks/notifies.
- * Dictionary.db -> a db, containg a simple dictinary(phrase <-> meaning) , which saves info by author.
-
-- *Plugins* -> Conatins optionaly-added dlls, which provide new volumes->new commands.
-A plugin can be created and added by anyone. A plugin can be added to any session : before or dynamicly (see "admin pl_load" and "admin pl_unload" cmds).
-
-- *Lang* -> Contains different languages-packs. Each language has to loo like this:
- * Main folder, which has to be named after short international format of country: en, ru, ua, gb and so...
- * In main folder there has to be 2 files: 
-
-   "help.pack" - contains information about syntax of all the commands.
-
-   "lang.pack" - contains all the response-patterns - the way how bot will reply to client.
-
-- *Error.log* -> a log, containg all the bug-reports , which occured while replying to client. 
-
-----
-= Getting started =
-
-There are two ways of getting bot on your computer:
- * You can download binaries (already compiled program, ready for using);
- * Download sources, compile it with a C# .NET compiler.
-
-The second way is saftier, beacuse if you compile it on platfrom, on which you eant to use the bot, you'll already know, what's wrong/didn't compile. But anyway .NET applicationa doen't matter on which platfrom they are compiled: on *.exe or *.dll can run on all platforms without recompiling! 
-
-
-*If you want to compile the bot by your own:*
-
-
-
-
-= Compiling =
-
-Choose your platform:
-
-- *WINDOWS* : You need Microsoft Visual Studio .NET 2005/2008 installed on your machine or Microsoft Visual C# 2005/2008.
-
-[http://www.microsoft.com Microsoft]
-
-  _Requirments:_ 
-
-    - *.NET Framework >= v2.0*
-
-----
-
-*Labels:*
-
-- *Closed*
-
-- *Needed*
-
-Choose and download the latest archive, labeled 'sources'. Unzip it to some free directory : there are 'Plugins', 'Core', 'Pako'.
-First you have to compile the main core-part of a bot:
-Open Visual Studio/Visual C# . On menu-item 'File' you will find 'Open' -> 'Project/Solution'.
-In a dialog-window, which will appear , find directory , where the Core solution is.
-Open Core.sln.
-When solution is loaded, choose menu-item 'Build' -> 'Build Solution'.
-If no errors, then everything is ok. See at the bottom of the IDE's main window a label 'Build succeeded'.
-Now open the Core-solution's directory and there will be compiled Core.dll.
-
-----
-
-*Labels:*
-
-- *Closed*
-
-- *Needed*
-
-Let's compile a main starter:
-Find in in the directory, where you unziped archive a folder 'Pako', open 'Pako.sln' using your IDE.
-Build it, like the previous time you did with Core.dll.
-After compiled successfully you have Pako.exe.
-It's compiled in /Pako/Pako/bin/Release. Let's use this directory as default(when we talk about /Data we mean /Pako/Pako/bin/Release/Data)
-
-Put there Core.dll.
-
-So we already have:
-
- * /Dynamic, 
- * _Pako.exe_, 
- * /Data,
- * /Static, 
- * /Lang,
- * /Plugins
- * _Core.dll_
-
-----
-
-- *UNIX/LINUX/MAC OS* : You need to donwload *Mono* - a nice analogic platform of .NET for any platforms. Has ability to run and compile C# and other .NET languages (Boo, VB..) on for example FreebSD, Linux-distributives, MAC OS X etc.
-
-
-
-
-  _Requirments:_
-
-   - *Mono >= v1.2.5.1*,
-
-   - *'mcs' and 'gmcs' C# compilers, SQLite3 library (not installed by default on FreeBSD)*
-
-
-
-
-
-
-*Labels:*
-
-- *Closed*
-
-- *Optional*
-
-Now you have to compile all the solutions from the folder 'Plugins'. As result you'll have these dlls:
-  - *Muc.dll*
-
-  - *Admin.dll*
-
-  - *Misc.dll*
-
-  - *Def.dll*
-
-  - *Dict.dll*
-
-  - *Web.dll*
-
-You have to put those dlls into /Plugins. These are the plug-ins for bot (without them bot has no commands).
-Now you only have to fill all the configurators.
-
+= Installing =
+ Pako is written on a C# language, which is supported by Windows, Unix/Linux, Mac, Solaris operating systems. That means that bot can work on almost any OS. But it is not a program which can run by "twice click" on a pako executable. For running only it needs a C#-supporting framework for each OS. On Windows it is [http://microsoft.com .NET] Framework version 2.0 or higher. On other systems you can use [Mono  http://www.mono-project.com] and install a Framework dedicated right for your operaing system or build it from sources. For compiling you need 
+ * Windows: Sharp-Develop 2.2 and higher | Visual C# 2005/2008 | Microsoft Visual Studio 2005/2008. Any of those can compile the code.
+ * Other OSes: "gmcs" is includede in standart mono-package. if it is missing use this (Linux/Unix):
+{{{
+sudo apt-get insall mono-gmcs
+}}}
+
+There are two ways to get Pako:
+ * Get [http://code.google.com/p/pako/downloads/list binaries, already built from sources, there only is needed to set the configurator and the bot is ready for a launch.
+ * Get [http://pako.googlecode.com/svn/trunk/pako/ sources] from the SVN repository and compile he code to the complite binaries.
+   How do you use SVN? SVN-clients (Subversion) can be installed on Windows ([http://tortoisesvn.net/downloads TortoiseSVN]), on Linux/Unix.
+If you already have a SVN-client lets get it on:
+ * Windows (TortoiseSVN):
+   Install the program, then push anywhere on the free space of the desktop your right mouth-button. there you will find new volumes, added by Tortoise. In submenus look there for an "Export" item. Push it and you will see a new window opened in the center of ther screen. Fill in the first field the address of the SVN-repository: http://pako.googlecode.com/svn/trunk/pako/vs/
+and in second insert a root where the sources will be save don your machine. Press "Ok" and wait till the exporting is finished.
+After that move to the directory, where source-code was saved, there you can see Pako.sln - the main project file. Open it with 
+  the Sharp-Develop 2.2 and higher or Visual C# 2005/2008 or Microsoft Visual Studio 2005/2008. See in the upper panel a menu item "Project". Find there "Build" and in a few seconds a program will be built. If you see in the downer panel "Errors" some errors occured contact me - i will answer your questions - [http://code.google.com/p/pako/wiki/bbodio bbodio]. Done the compilation is done. See below the instructions to configure and launch the bot.
+{{{
+sudo apt-get install subversion
+}}} 
+    
 
 ----
 Let's take a look at /Lang
@@ -260,7 +127,7 @@ Part of Pako.cfg:
      ...
 
     # Here you have to input the list of administartors of bot, using delimiter "|"
-    #<admins value="jid1@server.dom|jid2@server.dom" />
+    #<admins value="jid1@server.dom jid2@server.dom" />
 
     # Specifies the access of bot administrators, which will be used as default
     #<delimiter value="*" />
