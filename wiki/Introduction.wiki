@@ -35,10 +35,10 @@ There are two ways to get Pako:
  * Get [http://pako.googlecode.com/svn/trunk/pako/ sources] from the SVN repository and compile he code to the complite binaries. How do you use SVN? SVN-clients (Subversion) can be installed on Windows ([http://tortoisesvn.net/downloads TortoiseSVN]), on Linux/Unix.
 If you already have a SVN-client lets get it on:
  * Windows (TortoiseSVN):
-   Install the program, then push anywhere on the free space of the desktop your right mouth-button. there you will find new volumes, added by Tortoise. In submenus look there for an "Export" item. Push it and you will see a new window opened in the center of ther screen. Fill in the first field the address of the SVN-repository: http://pako.googlecode.com/svn/trunk/pako/vs/ and in second insert a root where the sources will be save don your machine. Press "Ok" and wait till the exporting is finished.
+Install the program, then push anywhere on the free space of the desktop your right mouth-button. there you will find new volumes, added by Tortoise. In submenus look there for an "Export" item. Push it and you will see a new window opened in the center of ther screen. Fill in the first field the address of the SVN-repository: http://pako.googlecode.com/svn/trunk/pako/vs/ and in second insert a root where the sources will be save don your machine. Press "Ok" and wait till the exporting is finished.
 After that move to the directory, where source-code was saved, there you can see Pako.sln - the main project file. Open it with the Sharp-Develop 2.2 and higher or Visual C# 2005/2008 or Microsoft Visual Studio 2005/2008. See in the upper panel a menu item "Project". Find there "Build" and in a few seconds a program will be built. If you see in the downer panel "Errors" some errors occured contact me - i will answer your questions - [http://code.google.com/p/pako/wiki/bbodio bbodio]. Done the compilation is done. See below the instructions to configure and launch the bot.
  * Linux/Unix (svn command)
-   You can use "svn" command to downlaod sources. If svn is missing type next command:
+You can use "svn" command to downlaod sources. If svn is missing type next command:
 {{{
 sudo apt-get install subversion
 }}} 
