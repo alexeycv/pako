@@ -72,11 +72,11 @@ Part of Pako.cfg:
      
      ...
 
-    # Here you have to input the list of administartors of bot, using delimiter "|"
+    # Here you have to input the list of administartors of bot, using freespace to separate them
     #<admins value="jid1@server.dom jid2@server.dom" />
 
     # Specifies the access of bot administrators, which will be used as default
-    #<delimiter value="*" />
+    #<prefix value="*" />
 
   </bot>
 </Config>
@@ -90,7 +90,7 @@ See: each tag has a comment, which helps to set correctly. Each tag has a "value
 See: here you have to fill-in a default language, which bot will use to comunicate with users. So you should fill-in inti 'value" attribute a name of a language. Please check twice if it's correct.
  
 {{{
-<admins value="jid1@server.dom|jid2@server.dom" />
+<admins value="jid1@server.dom jid2@server.dom" />
 }}}
 See: the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use freespace to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
 
