@@ -1,3 +1,4 @@
+#labels Featured
 *Bbodio* is the main developer of the curent project. 
 If you want to join the project notify me:
 [http://code.google.com/p/pako/wiki/bbodio bbodio]
