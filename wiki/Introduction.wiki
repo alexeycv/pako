@@ -34,7 +34,7 @@ sudo apt-get insall mono-gmcs
 }}}
 
 There are two ways to get Pako:
- * Get [http://code.google.com/p/pako/downloads/list binaries, already built from sources, there only is needed to set the configurator and the bot is ready for a launch.
+ * Get [http://code.google.com/p/pako/downloads/list binaries], already built from sources, there only is needed to set the configurator and the bot is ready for a launch.
  * Get [http://pako.googlecode.com/svn/trunk/pako/ sources] from the SVN repository and compile he code to the complite binaries. How do you use SVN? SVN-clients (Subversion) can be installed on Windows ([http://tortoisesvn.net/downloads TortoiseSVN]), on Linux/Unix.
 If you already have a SVN-client lets get it on:
  * Windows (TortoiseSVN):
