@@ -37,10 +37,78 @@ If you already have a SVN-client lets get it on:
  * Windows (TortoiseSVN):
    Install the program, then push anywhere on the free space of the desktop your right mouth-button. there you will find new volumes, added by Tortoise. In submenus look there for an "Export" item. Push it and you will see a new window opened in the center of ther screen. Fill in the first field the address of the SVN-repository: http://pako.googlecode.com/svn/trunk/pako/vs/ and in second insert a root where the sources will be save don your machine. Press "Ok" and wait till the exporting is finished.
 After that move to the directory, where source-code was saved, there you can see Pako.sln - the main project file. Open it with the Sharp-Develop 2.2 and higher or Visual C# 2005/2008 or Microsoft Visual Studio 2005/2008. See in the upper panel a menu item "Project". Find there "Build" and in a few seconds a program will be built. If you see in the downer panel "Errors" some errors occured contact me - i will answer your questions - [http://code.google.com/p/pako/wiki/bbodio bbodio]. Done the compilation is done. See below the instructions to configure and launch the bot.
+ * Linux/Unix (svn command)
+   You can use "svn" command to downlaod sources. If svn is missing type next command:
 {{{
 sudo apt-get install subversion
 }}} 
-    
+Now insert into a console this:
+{{{
+svn co http://pako.googlecode.com/svn/trunk/pako/mono
+}}}
+And the source cod will be in your $HOME/mono directory
+
+== Launching ==
+
+
+*Labels:*
+
+- *Open*
+
+- *Optional*
+
+First let's take it to main Pako.cfg.
+
+Thsi is configurator, where you can specify all the XMPP-connection attributes:
+Example of config is already included into the source package.
+Open it and follow the tips near each field and you're done.
+
+Part of Pako.cfg:
+{{{
+<Config>
+   <bot>
+    # Main language, which bot will use as default
+    #<lang value="en" />
+     
+     ...
+
+    # Here you have to input the list of administartors of bot, using delimiter "|"
+    #<admins value="jid1@server.dom jid2@server.dom" />
+
+    # Specifies the access of bot administrators, which will be used as default
+    #<delimiter value="*" />
+
+  </bot>
+</Config>
+}}}
+
+See: each tag has a comment, which helps to set correctly. Each tag has a "value" attribute, where you should fill-in the values of the parameter: for example:
+
+{{{
+<lang value="en" />
+}}}
+See: here you have to fill-in a default language, which bot will use to comunicate with users. So you should fill-in inti 'value" attribute a name of a language. Please check twice if it's correct.
+ 
+{{{
+<admins value="jid1@server.dom|jid2@server.dom" />
+}}}
+See: the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use freespace to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
+
+{{{
+<delimiter value="*" />
+}}}
+See: here you have specify a signh, which will be used for entering  commands.
+As default there is {{{ * }}}, that means that all the  commands have to be type like that:
+{{{
+*muc setsubject My New subject
+*web google 1 pako
+}}}
+
+If prefix is ? than all the commands have to look like this:
+{{{
+?muc mynick Pako2
+?def add pako = bot
+}}}
 
 ----
 Let's take a look at /Lang
@@ -94,72 +162,6 @@ See the {1} in "value" - this is prefix, which is used to type commands(this sig
 === Warning: you MUST name language-directories properly, as by default: ===
 === /en or /ru etc. Because you will later use those name as language name ===
 === If the language directory is /en than tha language is called "en" === 
-
-
-----
-
-
-*Labels:*
-
-- *Open*
-
-- *Optional*
-
-First let's take it to main Pako.cfg.
-
-Thsi is configurator, where you can specify all the XMPP-connection attributes:
-Example of config is already included into the source package.
-Open it and follow the tips near each field and you're done.
-
-Part of Pako.cfg:
-{{{
-<Config>
-   <bot>
-    # Main language, which bot will use as default
-    #<lang value="en" />
-     
-     ...
-
-    # Here you have to input the list of administartors of bot, using delimiter "|"
-    #<admins value="jid1@server.dom jid2@server.dom" />
-
-    # Specifies the access of bot administrators, which will be used as default
-    #<delimiter value="*" />
-
-  </bot>
-</Config>
-}}}
-
-See: each tag has a comment, which helps to set correctly. Each atg has a "value" attribute, where you should fill-in the values of the parameter: for example:
-
-{{{
-<lang value="en" />
-}}}
-See: here you have to fill-in a default language, which bot will use to comunicate with users. So you should fill-in inti 'value" attribute a name of a language. Please check twice if it's correct.
- 
-{{{
-<admins value="jid1@server.dom|jid2@server.dom" />
-}}}
-See: the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use sign "|" to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
-
-{{{
-<delimiter value="*" />
-}}}
-See: here you have specify a signh, which will be used for entering  commands.
-As default there is {{{ * }}}, that means that all the  commands have to be type like that:
-{{{
-*muc setsubject My New subject
-*web google 1 pako
-}}}
-
-If deleimier is ? than all the commands have to look like this:
-{{{
-?muc mynick Pako2
-?def add pako = bot
-}}}
-
-
-
 
 ----
 Let's take it to /Dynamic directory.
