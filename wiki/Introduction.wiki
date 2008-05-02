@@ -1,6 +1,7 @@
 *Bbodio* is the main developer of the curent project. 
 If you want to join the project notify me:
 [http://code.google.com/p/pako/wiki/bbodio bbodio]
+
 *Labels:*
 
  - *XML* - this means that the associated file has to be written in XML language, according to all feauters of XML-specification
