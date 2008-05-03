@@ -105,7 +105,7 @@ See: the "admins" tag, where you have to fill-in an unlimited number of administ
 {{{
 <prefix value="*" />
 }}}
-See: here you have specify a signh, which will be used for entering  commands.
+See: here you have specify a sign, which will be used for entering  commands.
 As default there is {{{ * }}}, that means that all the  commands have to be type like that:
 {{{
 *muc setsubject My New subject
