@@ -54,7 +54,10 @@ make
 make install
 }}}
 While executing "make install" uoy will be offered to fill in the configurator Pako.cfg and /Dynamic/Rooms.base to configure, which chat-rooms will be joined when started.
-
+Also there can be a need in SQLite 3. So you should install
+{{{
+sudo apt-get install libmono-sqlite2.0-cil
+}}}
 == Configuring ==
 
 
