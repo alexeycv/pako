@@ -47,18 +47,21 @@ Now insert into a console this:
 {{{
 svn co http://pako.googlecode.com/svn/trunk/pako/mono
 }}}
-And the source cod will be in your $HOME/mono directory
+And the source cod will be in your $HOME/mono directory. Move there, and type the next commands:
+{{{
+make
+make install
+}}}
+While executing "make install" uoy will be offered to fill in the configurator Pako.cfg and /Dynamic/Rooms.base to configure, which chat-rooms will be joined when started.
 
-== Launching ==
+== Configuring ==
 
 
 *Labels:*
 
 - *Open*
 
-- *Optional*
-
-First let's take it to main Pako.cfg.
+*Pako.cfg*:
 
 Thsi is configurator, where you can specify all the XMPP-connection attributes:
 Example of config is already included into the source package.
@@ -121,9 +124,7 @@ Int his directory, has to "help.pack" and "lang.pack";
 
 - *Open*
 
-- *Optional*
-
-Example of lang.pack:
+Example of *lang.pack*:
 
 {{{
 <lang>
@@ -134,11 +135,11 @@ Example of lang.pack:
    />
 }}}
 
-See: "patterns" has to caontain all the patterns, which bot will use to answer to user. See the original /Lang/en/lang.pack to get a full list of needed patterns for the language-packet.
-So if the bot has to answer with pattern admin_leave(which is used to notify administartors, that bot is shutting down), he will answer whatever you fill in thius attribute. 
+See: "patterns" has to contain all the patterns, which bot will use to answer to user. See the original /Lang/en/lang.pack to get a full list of needed patterns for the language-packet.
+So if the bot has to answer with pattern admin_leave(which is used to notify administrators, that bot is shutting down), he will answer whatever you fill in thius attribute. 
 if the user wants to get help for some command , which has no documentation yet (see help.pack syntax), bot will use help_not_found pattern to answer.
-That means that you can fully change his answers as you wich and he can even talk French or German :).
-P.S. the patterns are formatted: if you had noticed the {1}, then this is asign , which will be replaced by something, specified by bot. In help_not_found {1} is a exact command, which documentation was not found.
+That means that you can fully change his answers as you which and he can even talk French or German :).
+P.S. the patterns are formatted: if you had noticed the {1}, then this is a sign , which will be replaced by something, specified by bot. In help_not_found {1} is a exact command, which documentation was not found.
 
 
 
@@ -146,8 +147,6 @@ P.S. the patterns are formatted: if you had noticed the {1}, then this is asign 
 *Labels:*
 
 - *Open*
-
-- *Optional*
 
 Example of help.pack:
 
@@ -162,51 +161,19 @@ See the {1} in "value" - this is prefix, which is used to type commands(this sig
 
 === Warning: you MUST name language-directories properly, as by default: ===
 === /en or /ru etc. Because you will later use those name as language name ===
-=== If the language directory is /en than tha language is called "en" === 
+=== If the language directory is /en then the language is called "en" === 
 
 ----
 Let's take it to /Dynamic directory.
 You can fill all this configurators by your-self, or you can make changes during bot-session.
 
 ----
-*Labels:*
-
-- *Open*
-
-- *Optional*
-
-Users.base:
-
-here you can specify individual behaviour of bot for any jid: language/access-level.
-
-Example of Users.base:
-{{{
-<Users>
-<usersdata>
-  <user jid="myjid@server.dom" lang="en" access="100" />
-  <user jid="somejid@server.dom" access="50" />
-</usersdata>
-</Users>
-}}}
-
-There must be at least one option:lang/access:
-
- # Bot will always talk in english to myjid@server.dom and will be accessed by myjid@server.dom with level 100.
- # Somejid@server.dom will always access bot with level 50, but bot will talk to him without any special previlegiouses (according to the situation).
-
-
-
-
-
-----
 
 *Labels:*
 
 - *Open*
 
-- *Optional*
-
-Rooms.base
+*Rooms.base*
 You have to specify 1 or more rooms, where bot will join each time when starting.
 Open /Dynamic/Rooms.base and follow the example. You can add unlimited count of chat-rooms.
 
@@ -233,22 +200,22 @@ So we can see that he will enter two rooms when starting:
 
 - *Optional*
 
-Access.base:
+*Access.base*:
 Here you can specify the minimum access, which user needs to access the command:
 
 Example of Access.base:
 {{{
 <Access>
-   <command name="muc kick" access="50" />
-   <command name="muc setsubject" access="50" />
+   <command name="muc kick" access="40" />
+   <command name="muc setsubject" access="40" />
     ...
-   <command name="muc censor" access="70" />
-   <command name="muc uncensor" access="70" />
+   <command name="muc censor" access="60" />
+   <command name="muc uncensor" access="60" />
 </Access>
 }}}
 
 
-For example, if you want to access command "muc kick" , you're access-level has to be at least 50, if you want to use command "muc censor" then you're access level has to be at least 70.  
+For example, if you want to access command "muc kick" , you're access-level has to be at least 40, if you want to use command "muc censor" then you're access level has to be at least 60.  
 You can specify unlimited count of commands and access-level, needed for them.
 
 
@@ -259,16 +226,15 @@ Let's take it to /Static directory.
 
 - *Open*
 
-- *Optional*
-
 Here you can see rfc3921.txt - this is full RFC 3921, written by Peter Saint-Andre : the specification of XMPP protocol.
 Bot uses it to execute command "web rfc" from a Web.dll plug-in. This command is a rfc 3921 explorer: you can read any state of this document using state-number(1.1 or 2.2.1)
 
+== Launching ==
 
+ * Windows:
+Move to the %pako%\Pako\bin\Release folder. See there Pako.exe. DoubleClick and the progam is launched. :) If all the configurators where filled correctly then you will meet the bot in the setted chat-room. 
 
-
-
-
+----
 
 = Related links = 
 
