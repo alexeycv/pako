@@ -28,8 +28,9 @@ Today we are introdusing to you a bot, an artificial brain, which works with *XM
  * Windows: Sharp-Develop 2.2 and higher | Visual C# 2005/2008 | Microsoft Visual Studio 2005/2008. Any of those can compile the code.
  * Other OSes: "gmcs" is includede in standart mono-package. if it is missing use this (Linux/Unix):
 {{{
-sudo apt-get insall mono-gmcs
+sudo apt-get install mono-gmcs
 }}}
+*Install the mono, gmcs with sources from [http://www.mono-project.com Mono-Project]. Checked with 1.2.4, 1.9, 1.9.1. Warning! With 1.2.6 there where problems when trying to compile so this version is not advanced!*
 
 There are two ways to get Pako:
  * Get [http://code.google.com/p/pako/downloads/list binaries], already built from sources, there only is needed to set the configurator and the bot is ready for a launch.
@@ -116,8 +117,8 @@ If prefix is ? than all the commands have to look like this:
 
 ----
 Let's take a look at /Lang
-There can be added unlimited count of language-packets. Each language packet is:a directory, named after international name of country, which represents current language
-Int his directory, has to "help.pack" and "lang.pack";
+There can be added unlimited count of language-packets. Each language packet is: a directory, named after international name of country, which represents current language
+In this directory there has to be "help.pack" and "lang.pack";
 
 ----
 *Labels:*
