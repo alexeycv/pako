@@ -233,7 +233,15 @@ Bot uses it to execute command "web rfc" from a Web.dll plug-in. This command is
 
  * Windows:
 Move to the %pako%\Pako\bin\Release folder. See there Pako.exe. DoubleClick and the progam is launched. :) If all the configurators where filled correctly then you will meet the bot in the setted chat-room. 
-
+ * Linux/Unix:
+You just have to move to the %pako% directory, where the sources where saved and installed, type 
+{{{
+make run
+}}}
+and done. Or you can type 
+{{{
+mono /%pako%/bin/Pako.exe
+}}}
 ----
 
 = Related links = 
