@@ -103,7 +103,7 @@ See: here you have to fill-in a default language, which bot will use to comunica
 See: the "admins" tag, where you have to fill-in an unlimited number of administartors, whose access-level is ALWAYS 100 (use freespace to separate jids). If you want to use one jid as administartor's you just use this: value="jid@server.dom"
 
 {{{
-<delimiter value="*" />
+<prefix value="*" />
 }}}
 See: here you have specify a signh, which will be used for entering  commands.
 As default there is {{{ * }}}, that means that all the  commands have to be type like that:
