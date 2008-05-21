@@ -1,0 +1,9 @@
+   20.05.2008  
+ - Now you do not have to use a prefix to commands in roster or private messages. Only on MUC. You can NOT use 
+   sign in subcommands of "misc make".  
+ - Now problem of recursion in aliases fixed
+ - WARNING: do NOT use the old configurator. See the new example.
+ - Now there is no possibility to acess 100-leveld commands for simple users.
+ - New command: "muc here" - tells the duration of user being present in the room
+ - New command: "muc idle"  - tells how long has user been idling (no groupchat/chat messages)
+-  New feature: "muc options" - a table of options which can let deny global censor in a room, deny aliases or select the result of censor.
