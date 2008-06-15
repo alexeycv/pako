@@ -1,0 +1,12 @@
+C:\pako\vs\Pako\bin\Release\Pako.exe
+C:\pako\vs\Pako\bin\Release\Pako.pdb
+C:\pako\vs\Pako\bin\Release\Core.pdb
+C:\pako\vs\Pako\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Pako\obj\Release\Pako.exe
+C:\pako\vs\Pako\obj\Release\Pako.pdb
+C:\vs\Pako\obj\Release\Pako.exe
+C:\vs\Pako\obj\Release\Pako.pdb
+C:\vs\Pako\bin\Release\Pako.exe
+C:\vs\Pako\bin\Release\Pako.pdb
+C:\vs\Pako\bin\Release\Core.pdb
+C:\vs\Pako\obj\Release\ResolveAssemblyReference.cache

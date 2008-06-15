@@ -1,0 +1,10 @@
+C:\pako\vs\Pako\bin\Release\Plugins\Iq.dll
+C:\pako\vs\Pako\bin\Release\Plugins\Iq.pdb
+C:\pako\vs\Plugins\Iq\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Plugins\Iq\obj\Release\Iq.dll
+C:\pako\vs\Plugins\Iq\obj\Release\Iq.pdb
+C:\vs\Pako\bin\Release\Plugins\Iq.dll
+C:\vs\Pako\bin\Release\Plugins\Iq.pdb
+C:\vs\Plugins\Iq\obj\Release\ResolveAssemblyReference.cache
+C:\vs\Plugins\Iq\obj\Release\Iq.dll
+C:\vs\Plugins\Iq\obj\Release\Iq.pdb
