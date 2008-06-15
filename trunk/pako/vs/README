@@ -1,8 +1,0 @@
-IF YOU ARE USING SHARP-DEVELOP:
-==============================
-1. Open Pako.sln with a notepad.
-2. See the first line: 
-   Microsoft Visual Studio Solution File, Format Version 10.00
-3. Change 10.00 to 9.00
-4. Save changes and open Pako.sln with #develop.
-==============================
