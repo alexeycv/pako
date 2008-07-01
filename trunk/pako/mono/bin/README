@@ -1,5 +1,0 @@
- WARINING:
- DO NOT use the old Pako.cfg:
- + "msglimit" parameter now specifies the global length-limit
- + "mucmsglimit" parameter specifies  the MUC message length-limit
- + You can set "max_reconnects" to 0 if you wont unlimites reconnects count.
