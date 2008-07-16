@@ -1,9 +1,0 @@
- - Web tld added, Be sure to have static/tlds.txt
- - New option in mucs: cleanup_unit :: set the the sign, used in "muc clean" individually for each muc (able to set empty line by value "empty" or no <body/> at all with "null" value(tanx to Grand_dizel)
- - Bug fixed in presence-grabber: grabbew well now elf <show/> status and displays right in "muc show"
- - New "misc cmds" to see the commands list and their accesses (according to the position of the user - muc user or roster user and gathering all the commands)
-  (analogic to cmdaccess, but available for everyone and just for getting the info, no ability to set)
- - Now bot can access muc with a pasword: add an attribute "password" in <room/> tag in Dynamic/Rooms.base. To set password when inviting the bot use "[]":
-   misc join room@conference.jabber.dom Pako2 [password]
- - Bot notifies bot-admins when joining the room (shows the querer of "misc join" and a result of join)
- - Many other bug fixes
