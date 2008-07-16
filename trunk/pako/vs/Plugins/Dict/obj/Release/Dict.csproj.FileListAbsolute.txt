@@ -1,0 +1,10 @@
+C:\pako\vs\Pako\bin\Release\Plugins\Dict.dll
+C:\pako\vs\Pako\bin\Release\Plugins\Dict.pdb
+C:\pako\vs\Plugins\Dict\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Plugins\Dict\obj\Release\Dict.dll
+C:\pako\vs\Plugins\Dict\obj\Release\Dict.pdb
+C:\vs\Pako\bin\Release\Plugins\Dict.dll
+C:\vs\Pako\bin\Release\Plugins\Dict.pdb
+C:\vs\Plugins\Dict\obj\Release\ResolveAssemblyReference.cache
+C:\vs\Plugins\Dict\obj\Release\Dict.dll
+C:\vs\Plugins\Dict\obj\Release\Dict.pdb

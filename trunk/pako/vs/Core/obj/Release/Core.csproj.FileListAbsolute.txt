@@ -1,0 +1,10 @@
+C:\pako\vs\Pako\bin\Release\Core.dll
+C:\pako\vs\Pako\bin\Release\Core.pdb
+C:\pako\vs\Core\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Core\obj\Release\Core.dll
+C:\pako\vs\Core\obj\Release\Core.pdb
+C:\vs\Pako\bin\Release\Core.dll
+C:\vs\Pako\bin\Release\Core.pdb
+C:\vs\Core\obj\Release\ResolveAssemblyReference.cache
+C:\vs\Core\obj\Release\Core.dll
+C:\vs\Core\obj\Release\Core.pdb
