@@ -1,0 +1,10 @@
+C:\vs\Pako\bin\Release\Plugins\Def.dll
+C:\vs\Pako\bin\Release\Plugins\Def.pdb
+C:\vs\Plugins\Def\obj\Release\ResolveAssemblyReference.cache
+C:\vs\Plugins\Def\obj\Release\Def.dll
+C:\vs\Plugins\Def\obj\Release\Def.pdb
+C:\pako\vs\Pako\bin\Release\Plugins\Def.dll
+C:\pako\vs\Pako\bin\Release\Plugins\Def.pdb
+C:\pako\vs\Plugins\Def\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Plugins\Def\obj\Release\Def.dll
+C:\pako\vs\Plugins\Def\obj\Release\Def.pdb

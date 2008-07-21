@@ -1,0 +1,10 @@
+C:\vs\Pako\bin\Release\Plugins\Alias.dll
+C:\vs\Pako\bin\Release\Plugins\Alias.pdb
+C:\vs\Plugins\Alias\obj\Release\ResolveAssemblyReference.cache
+C:\vs\Plugins\Alias\obj\Release\Alias.dll
+C:\vs\Plugins\Alias\obj\Release\Alias.pdb
+C:\pako\vs\Pako\bin\Release\Plugins\Alias.dll
+C:\pako\vs\Pako\bin\Release\Plugins\Alias.pdb
+C:\pako\vs\Plugins\Alias\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Plugins\Alias\obj\Release\Alias.dll
+C:\pako\vs\Plugins\Alias\obj\Release\Alias.pdb
