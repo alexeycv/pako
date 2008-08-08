@@ -301,12 +301,14 @@ See [http://code.google.com/p/pako/wiki/bbodio Bbodio] contact information here.
 
 = Special thanks =
 
-*Alex* (agsXMPP author and code support),
+*Alex* agsXMPP author and code support,
 
-*vt* (code support and testing), 
+*vt* code support and testing,
 
-*fix* (hosting),  
+*Xak* tester, code support,
+  
+*Pily* hoster, documentator,
 
-*Pily* (language packs creating and testing).
+*Dominges* documentator, tester,
 
 Thank guys! :) 
