@@ -306,7 +306,7 @@ See [http://code.google.com/p/pako/wiki/bbodio Bbodio] contact information here.
 *vt* code support and testing,
 
 *Xak* tester, code support,
-  
+
 *Pily* hoster, documentator,
 
 *Dominges* documentator, tester,
