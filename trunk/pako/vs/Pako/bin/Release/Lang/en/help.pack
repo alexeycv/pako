@@ -1,0 +1,23 @@
+<help>
+   <command name="muc kick" value="Please follow this syntax:&#xA;{1}muc kick 'nick'&#xA;where 'nick' is any user to kick, which is spending time in the chat-room right now.&#xA;The bot denies kicking , when it's not alowed to him by room or if a victim is an moderator" />
+   <command name="muc setsubject" value="Please follow this syntax:&#xA;{1}muc subject newsubject &#xA;where 'newsubject' is any subject (theme) for current chat-room" />
+   <command name="muc subject" value="Please follow this syntax:&#xA;{1}muc subject&#xA;Shows the subject of current chat-room.&#xA;No bonus arguments." />
+   <command name="muconly" value="I appologise, but this command is available only in multi-user-chat mode..." />
+   <command name="web gt" value="Please follow this syntax:&#xA;{1}web gt language_pair text&#xA;where 'language_pair' is any defined pair, 'text' - text to translate" />
+   <command name="main calc" value="Please follow this syntax:&#xA;{1}misc calc 'math_expression'&#xA;where 'math_expression' is any math condition" />
+   <command name="alias add" value="Please follow this syntax:&#xA;{1}alias add 'alias'='action' &#xA;where 'action' is an action, which will be executed, when 'alias'-command is called." />
+   <command name="alias del" value="Please follow this syntax:&#xA;{1}alias del 'number' &#xA;where 'number' is a i-terated alias to delete from the alias list(For alias list type '!alias list')" />
+   <command name="def show" value="Please follow this syntax:&#xA;{1}def show 'phrase' &#xA;where 'phrase' is an expression , meaning for which is ought to be found" />
+   <command name="process kill" value="Please follow this syntax:&#xA;{1}admin proc_kill 'process_name' &#xA;where 'process_name' is an existing process's name (Without extension)" />
+   <command name="process new" value="Please follow this syntax:&#xA;{1}admin proc_new 'root' &#xA;where 'root' is a root for launching a new process" />
+   <command name="google search" value="Please follow this syntax:&#xA;{1}web google 'number' 'text' &#xA;where 'number' is a number (1-10) of results to find,&#xA;and 'text' is any text to find in Google." />
+   <command name="main set_help" value="Follow this syntax:&#xA;{1}main set_help 'langpack' ['command_name'] 'help'&#xA;where 'langpack' is any of the available language packets, &#xA;'&lt;command_name&gt;' is full commands name(not alias),&#xA;'help source' is the help, which user will get for the specified command" />
+   <command name="def showto" value="Please follow this syntax:&#xA;{1}def showto ['word'] 'nick' &#xA;where 'word' is any word from a dictionary,&#xA;'nick' is any nickname from a current chat-room" />
+   <command name="admin cmd" value="Please folow this syntax:&#xA;{1}admin cmd 'command' &#xA;where 'command' is any command for a Command prompt , which wil be executed" />
+   <command name="muc devoice" value="Please follow this syntax:&#xA;{1}muc devoice 'nick'&#xA;where 'nick' is any user to revoke voice ( revoke possibility to talk into a groupchat from a user) which is spending time in the chat-room right now.&#xA;The bot denies devoicing, when it's not alowed him by room or if a victim is a moderator" />
+   <command name="muc voice" value="Please follow this syntax:&#xA;{1}muc voice 'nick'&#xA;where 'nick' is any user to give voice ( give a possibility to talk into a groupchat to an user) which is spending time in the chat-room right now.&#xA;The bot denies voicing, when it's not alowed him by room or if a target is a moderator" />
+   <command name="web curr" value="Please follow this syntax. &#xA;   {1}web curr &lt;amount&gt; &lt;from&gt; &lt;to&gt; &#xA;where 'amount' is any amount of money to convert &#xA;where 'from' is a name of currency, to convert from,&#xA;where 'to' is a name of currency to convert to.&#xA;---Bonus:&#xA;  {1}web curr list   - list of all currencies&#xA;  {1}web curr find &lt;text&gt;   - a tip to find some currency's name" />
+   <command name="bgaga" value="гг" />
+   <command name="aha" value="ogo" />
+   <command name="misc vars" value="The list of variables, used to format messages when sending. &#xA;Syntax:&#xA;Every variables has to be located in {}&#xA;Example:&#xA;user123: {1}misc say hello, {NICK}, how is it going? :)&#xA;bot: hello, user123, how is it going? :)&#xA;Review of all variables:&#xA;{1}misc vars&#xA;Review of one single variable:&#xA;{1}misc vars &lt;var&gt;&#xA;where &lt;var&gt; - name of a variable." />
+</help>
