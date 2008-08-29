@@ -1,0 +1,10 @@
+C:\vs\Pako\bin\Release\Plugins\Web.dll
+C:\vs\Pako\bin\Release\Plugins\Web.pdb
+C:\vs\Plugins\Web\obj\Release\ResolveAssemblyReference.cache
+C:\vs\Plugins\Web\obj\Release\Web.dll
+C:\vs\Plugins\Web\obj\Release\Web.pdb
+C:\pako\vs\Pako\bin\Release\Plugins\Web.dll
+C:\pako\vs\Pako\bin\Release\Plugins\Web.pdb
+C:\pako\vs\Plugins\Web\obj\Release\ResolveAssemblyReference.cache
+C:\pako\vs\Plugins\Web\obj\Release\Web.dll
+C:\pako\vs\Plugins\Web\obj\Release\Web.pdb
