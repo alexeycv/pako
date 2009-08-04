@@ -956,7 +956,7 @@ namespace Plugin
                         		syntax_error = true;
                         		break;
                         	}
-                            Hashtable mucs = Sh.S.MUCs;
+                            Dictionary<Jid, MUC> mucs = Sh.S.MUCs;
                             rs = m_r.Agree();
                             
                             foreach (MUC m in mucs.Values)
