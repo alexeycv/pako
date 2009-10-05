@@ -7,5 +7,4 @@
  Jabber:    bbodio at jabber.ru
  ICQ:       398-238-474
  Full name: Klitschuk Bogdan Michailovitsch
- MUC:       dotnet@conference.jabber.ru
 }}}
