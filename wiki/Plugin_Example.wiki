@@ -1,3 +1,4 @@
+#labels Featured,Phase-Implementation
 = !!! = 
 
 1) *Don't forget to to use the prefix , when sending command to bot! *
