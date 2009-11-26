@@ -8,6 +8,8 @@ There is an Pako bot version history.
 
 = Pako 8.8.35 =
 
+Posted on: 2009-11-26 02:46.
+
   * *fix:* bug, that prevent Pako run in Mono 2 on FreeBSD. (Tested on FreeBSD 7.2);
   * *fix:* muc logging function, that do not display a muc topic information;
   * *fix:* web gt command that was crashed with a *show* parameter and was not wsow translation languages. That's happened because google change som elements on page;
