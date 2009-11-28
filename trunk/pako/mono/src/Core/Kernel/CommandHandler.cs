@@ -103,7 +103,7 @@ namespace Core.Kernel
                     Message _msg = new Message();
                     _msg.To = j;
                     _msg.Type = MessageType.chat;
-                    _msg.Body = "ERROR:   " + ex.ToString();
+                    _msg.Body = "ERROR:   " + ex.ToString() + "\n\nStack trace: \n" + ex.StackTrace;
                     Sh.S.C.Send(_msg);
                 }
             }
@@ -172,7 +172,7 @@ namespace Core.Kernel
                 if (vl == null)
                     vl = Sh.S.VipLang.GetLang(m_jid);
    
-
+                //Initializing response object
                 Response r = new Response(Sh.S.Rg[
                               vl != null ?
                               vl :
@@ -180,8 +180,14 @@ namespace Core.Kernel
                               m_user.Language :
                               Sh.S.Config.Language
                          ]);
+
                 int? access = Sh.S.GetAccess(m_msg, m_user, m_muc);
-                r.Access = access;
+
+                if (access != null)
+                    r.Access = access;
+                else
+                    r.Access = 0;
+
                 r.Msg = m_msg;
                 r.MSGLimit = Sh.S.Config.MucMSGLimit;
                 string aliasb = String.Empty;
@@ -191,9 +197,10 @@ namespace Core.Kernel
                 r.MUser = m_user;
                 r.Delimiter = d;
                 r.Sh = Sh;
+
                 if (is_muser)
                 {
-
+                    //Determine a message type for a bot in this groupchat
                     switch (m_muc.OptionsHandler.GetOption("mode"))
                     {
                         case "private":
@@ -210,8 +217,15 @@ namespace Core.Kernel
                             }
                         default: break;
                     }
-                    m_user.Access = access;
+
+                    if (access != null)
+                        m_user.Access = access;
+                    else
+                        m_user.Access = 0;
+
                     @out.exe("[" + s_jid.User + "] " + s_jid.Resource + "> " + m_msg.Body);
+
+                    //Emulation
                     if (emulate == null)
                     {
                         @out.exe("emulate_non_existing");
@@ -227,6 +241,8 @@ namespace Core.Kernel
                         r.Emulation = emulate;
                     }
                     @out.exe("emulate_extistence_determining_finished");
+
+                    // Checking user input text for a censored phrases
                     string found_censored = Utils.FormatEnvironmentVariables(Sh.S.GetMUC(s_jid).IsCensored(m_msg.Body, m_muc.OptionsHandler.GetOption("global_censor") == "+"), r);
                     @out.exe("censor_next_stage");
                     if (found_censored != null)
@@ -308,16 +324,28 @@ namespace Core.Kernel
                     else
                         @out.exe("censored_not_found");
                     @out.exe("censored_check_finished");
+
+                    //Initializing aliases
                     if (!m_muc.HasAlias(m_body))
                     {
+                        // if no alias fount
                         @out.exe("alias_not_found: stage1");
                         if (!m_msg.Body.StartsWith(d))
-                        { if (_signed == CmdhState.PREFIX_REQUIRED) return; }
+                        { 
+                            // If received phrase was started without command prefix
+                            if (_signed == CmdhState.PREFIX_REQUIRED) 
+                                return; 
+                        }
                         else
                         {
-                            if (_signed == CmdhState.PREFIX_NOT_POSSIBLE) return;
+                            // If a received phrase started vith a prefix
+                            if (_signed == CmdhState.PREFIX_NOT_POSSIBLE)
+                               return;
+
                             m_msg.Body = m_msg.Body.Substring(d.Length);
                             m_body = m_msg.Body;
+
+                            // if a message body have no text
                             if (m_msg.Body.Trim() == "")
                                 return;
                         }
@@ -366,7 +394,7 @@ namespace Core.Kernel
                     }
                 }
 
-
+                // Executing a command
                 string m_retort = null;
                 Cmd cmd = Cmd.CreateInstance(m_body, r, null);
                 switch (cmd.Accessibility)
@@ -382,6 +410,7 @@ namespace Core.Kernel
                         break;
                 }
 
+                // help out
                 switch (cmd.Volume)
                 {
                     case "help":
