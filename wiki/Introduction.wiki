@@ -29,11 +29,11 @@ Today we are introdusing to you a bot, an artificial brain, which works with *XM
 {{{
 sudo apt-get install mono-gmcs
 }}}
-*Install the mono, gmcs with sources from [http://www.mono-project.com Mono-Project]. Checked with 1.2.4, 1.9, 1.9.1, 2.0.5. 
+*Install the mono, gmcs with sources from [http://www.mono-project.com Mono-Project]. Checked with 1.2.4, 1.9, 1.9.1, 2.0.5. *
 
-Warning! 
-1. With 1.2.6 there where problems when trying to compile so this version is not advanced!
-2. On FreeBSD 6.3 can be some troubles when launching on mono 2.x.*
+*Warning! *
+*1. With 1.2.6 there where problems when trying to compile so this version is not advanced!*
+*2. On FreeBSD 6.3 can be some troubles when launching on mono 2.x.*
 
 There are two ways to get Pako:
  * Get [http://code.google.com/p/pako/downloads/list binaries], already built from sources, there only is needed to set the configurator and the bot is ready for a launch.
