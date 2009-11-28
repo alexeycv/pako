@@ -419,7 +419,7 @@ namespace Core.Other
                          .Replace("{" + strs[15] + "}", DateTime.Now.ToString())
                          .Replace("{" + strs[17] + "}", Bot["os"])
                          .Replace("{" + strs[18] + "}", Bot["version"])
-                         .Replace("{" + strs[18] + "}", (Environment.Version).ToString());
+                         .Replace("{" + strs[20] + "}", (Environment.Version).ToString());
             if (r.MUC != null && r.MUser != null)
                 res = res.Replace("{" + strs[0] + "}", r.MUser)
                          .Replace("{" + strs[2] + "}", r.MUC.Jid.ToString())
