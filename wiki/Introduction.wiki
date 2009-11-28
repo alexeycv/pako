@@ -1,6 +1,5 @@
 #labels Featured
-*Bbodio* is the main developer of the curent project. 
-If you want to join the project notify me:
+*Bbodio* and *Alex.cv* is the main developers of the curent project. The founder of this project os *Bbodio*, and if you want to join the project notify me:
 [http://code.google.com/p/pako/wiki/bbodio bbodio]
 
 *Labels:*
@@ -304,5 +303,7 @@ See [http://code.google.com/p/pako/wiki/bbodio Bbodio] contact information here.
 *Pily* hoster, documentator,
 
 *Dominges* documentator, tester,
+
+*Quality* tester, new ideas,
 
 Thank guys! :) 
