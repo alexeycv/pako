@@ -40,9 +40,9 @@ namespace Core.Xml
             Open(file, 10);
             
            @out.exe("option_hnd_created_or_opened");
-           string[] opts = new string[] { "global_censor", "censor_result", "amoderator", "akick", "avisitor", "aliases", "mode", "cmdaccess", "cleanup_unit" };
+           string[] opts = new string[] { "global_censor", "censor_result", "amoderator", "akick", "avisitor", "aliases", "mode", "cmdaccess", "cleanup_unit", "enable_logging", "nick_limit", "nick_limit_result" };
            foreach (string opt in opts)
-           AddOption(opt); 
+               AddOption(opt); 
             
             
         }
@@ -150,8 +150,37 @@ namespace Core.Xml
                     }
                     break;
                      
-                
+                 case "enable_logging":
+        	         Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "+");
+                            el.SetAttribute("possible","+|-");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;                
+
                 case "censor_result":
+                   Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "kick");
+                            el.SetAttribute("possible","kick|devoice|nothing|warn|ban");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+
+                case "nick_limit_result":
                    Document.RootElement.AddTag("option");
                     foreach (Element el in Document.RootElement.SelectElements("option"))
                     {
@@ -175,6 +204,21 @@ namespace Core.Xml
                             el.SetAttribute("name", Name);
                             el.SetAttribute("value", "~");
                             el.SetAttribute("possible", "*|null|empty");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+
+                case "nick_limit":
+                    Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "20");
+                            el.SetAttribute("possible", "*");
                             Save();
                             return true;
                         }

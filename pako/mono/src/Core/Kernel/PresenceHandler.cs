@@ -23,6 +23,7 @@ using System.Threading;
 using System.Text;
 using agsXMPP;
 using agsXMPP.protocol.client;
+using agsXMPP.protocol.x.muc;
 using Core.Kernel;
 using Core.Conference;
 using Core.Other;
@@ -99,6 +100,8 @@ namespace Core.Kernel
                         Sh.S.C.Send(pr);
                         pr.Type = PresenceType.subscribe;
                         Sh.S.C.Send(pr);
+
+                        //TODO: Logging subscribes
                     }
                     else
                     {
@@ -107,6 +110,8 @@ namespace Core.Kernel
                         pr.Type = PresenceType.unsubscribed;
                         pr.Nickname = new agsXMPP.protocol.extensions.nickname.Nickname(Sh.S.Config.Nick);
                         Sh.S.C.Send(pr);
+
+                        //TODO: Logging subscribes
                     }
                     break;
 
@@ -155,7 +160,25 @@ namespace Core.Kernel
 
                     if (pres.MucUser != null)
                     {
-
+                        //if user is just joined...
+                        bool _justJoined = false;
+                        bool _affiliationChanged = false;
+                        bool _statusChanged = false;
+                        MUser _tempUser= null;
+                        string _oldStatus = null;
+                        Affiliation _oldAffiliation = Affiliation.none;
+                        if (m_muc.GetUser(pres.From.Resource) == null)
+                        {
+                           _justJoined = true;
+                        }
+                        else
+                        {
+                            //Checking for MucUser properties Get old status and access
+                            _tempUser = m_muc.GetUser(pres.From.Resource);
+                            _oldStatus = _tempUser.Status;
+                            _oldAffiliation = _tempUser.Affiliation;
+                        }
+                        ///
                         m_user = m_muc != null ? m_muc.GetUser(pres.From.Resource) : null;
                         Jid calcjid = m_muc != null ? pres.From : new Jid(pres.From.Bare);
 
@@ -188,10 +211,55 @@ namespace Core.Kernel
                         r.MUC = m_muc;
                         r.MUser = user;
                         r.Sh = Sh;
+
+                        // TODO: Logging entering the room
+                        // TODO: checking version
+
                         if (m_muc != null)
                         {
                             string ak;
                             m_muc = Sh.S.GetMUC(p_jid);
+                            
+                            // muc whowas adder
+                            if (m_muc.WhoWas != null && _justJoined == true)
+                            {
+                                //m_muc.WhoWas.Append(pres.From + "\n");
+                                if (m_muc.WhoWas.ToString().IndexOf(user.Nick + "\n") <= 0)
+                                {
+                                    m_muc.WhoWas.Append(user.Nick + "\n");
+                                }
+
+                                //Add seen log entries
+                                Sh.S.SeenLogger.AddSeenEntry(user.Jid.ToString(), m_muc.Jid.ToString(), user.Nick);
+
+                                //Add html log entry - join
+                                if (Sh.S.Config.EnableLogging && m_muc.OptionsHandler.GetOption("enable_logging") == "+")
+                                {
+                                    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "subscribe", m_muc.Jid.ToString(), user.Nick, " has joined to chat as "+ user.Affiliation.ToString());
+                                }
+                            }
+                            
+                            if (_oldAffiliation != Affiliation.none && _oldAffiliation != user.Affiliation && m_muc.OptionsHandler.GetOption("enable_logging") == "+")
+                            {
+                                if (Sh.S.Config.EnableLogging)
+                                {
+                                    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "affiliation", m_muc.Jid.ToString(), user.Nick, " was " + _oldAffiliation + " and become "+ user.Affiliation.ToString());
+                                }
+                            }
+
+                            if (_oldStatus != null && _oldStatus != user.Status && m_muc.OptionsHandler.GetOption("enable_logging") == "+")
+                            {
+                                if (Sh.S.Config.EnableLogging)
+                                {
+                                    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "status", m_muc.Jid.ToString(), user.Nick, " old status was '" + _oldStatus + "' and become "+ user.Status+"'");
+                                }
+                            }
+
+                            //if (Sh.S.Config.EnableLogging && user != null && m_muc.Subject != null)
+                            //{
+                            //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_muc.Jid.ToString(), user.Nick, m_muc.Subject);
+                            //}
+                            
                             if (m_muc.OptionsHandler.GetOption("akick") == "+")
                             {
                                 ak = Sh.S.Tempdb.IsAutoKick(Jid, p_jid.Resource, p_jid, Sh);
@@ -203,6 +271,8 @@ namespace Core.Kernel
                                     {
                                         @out.exe("censored: yes");
                                         m_muc.Kick(null, user, Utils.FormatEnvironmentVariables(ak, r));
+
+                                        // TODO: Logging autokick
                                         return;
                                     }
                                 }
@@ -230,10 +300,11 @@ namespace Core.Kernel
                             
                             if ((pres.Status != null) && (user != m_muc.MyNick))
                             {
+                                // TODO: Add censore by nick and resource
                                 string censored = Sh.S.GetMUC(p_jid).IsCensored(pres.Status, m_muc.OptionsHandler.GetOption("global_censor") == "+");
                                 if (censored != null)
                                 {
-
+                                    //TODO: Censored logging
                                     @out.exe(m_muc.KickableForCensored(user).ToString());
                                     switch (m_muc.OptionsHandler.GetOption("censor_result"))
                                     {
@@ -266,13 +337,94 @@ namespace Core.Kernel
                                                     r.Reply(censored);
                                                     Sh.S.Sleep();
                                                 }
-
+                                                       
                                             }
                                             break;
                                         case "ban":
                                             {
                                                 if (m_muc.KickableForCensored(user))
                                                 { m_muc.Ban(null, user, censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+                                                 
+                                                  
+                                            }
+                                            break;
+                                        case "warn":
+                                            {
+                                                Message msg = new Message();
+                                                r.Msg = new Message();
+                                                r.Msg.Body = pres.Status;
+                                                r.Msg.From = pres.From;
+                                                r.Msg.Type = MessageType.groupchat;
+                                                r.Reply(censored);
+                                                Sh.S.Sleep();
+                                            }
+                                            break;
+                                        default:
+                                            break;
+
+                                    }
+                                }
+                                //Status handlers
+                                /*int _nickLimit = 10;
+                                try
+                                {
+                                    _nickLimit = Convert.ToInt16(m_muc.OptionsHandler.GetOption("nick_limit"));
+                                }
+                                catch (Exception err)
+                                {
+                                }
+
+                                if (user.Nick.Length > _nickLimit)
+                                {
+                                    censored = "Nick Limit is no more than "+ _nickLimit.ToString();
+                                    switch (m_muc.OptionsHandler.GetOption("nick_limit_result"))
+                                    {
+                                        case "kick":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Kick(null, user, m_muc.MyNick + ">> " + censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+                                            } break;
+                                        case "devoice":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Devoice(null, user, censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+
+                                            }
+                                            break;
+                                        case "ban":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Ban(null, user, m_muc.MyNick + ">> " + censored); return; }
                                                 else
                                                 {
                                                     Message msg = new Message();
@@ -301,9 +453,93 @@ namespace Core.Kernel
                                         default:
                                             break;
 
-                                    }
-                                }
+                                    }//switch
+                                }//if (user.Nick.Length > _nickLimit)
+                                */
                             }
+
+                            //NickLimit handlers
+                                int _nickLimit = 10;
+                                try
+                                {
+                                    _nickLimit = Convert.ToInt16(m_muc.OptionsHandler.GetOption("nick_limit"));
+                                }
+                                catch (Exception err)
+                                {
+                                }
+
+                                if (user.Nick.Length > _nickLimit)
+                                {
+                                    string censored = "Nick Limit is no more than "+ _nickLimit.ToString();
+                                    switch (m_muc.OptionsHandler.GetOption("nick_limit_result"))
+                                    {
+                                        case "kick":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Kick(null, user, m_muc.MyNick + ">> " + censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+                                            } break;
+                                        case "devoice":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Devoice(null, user, censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+
+                                            }
+                                            break;
+                                        case "ban":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Ban(null, user, m_muc.MyNick + ">> " + censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+
+
+                                            }
+                                            break;
+                                        case "warn":
+                                            {
+                                                Message msg = new Message();
+                                                r.Msg = new Message();
+                                                r.Msg.Body = pres.Status;
+                                                r.Msg.From = pres.From;
+                                                r.Msg.Type = MessageType.groupchat;
+                                                r.Reply(censored);
+                                                Sh.S.Sleep();
+                                            }
+                                            break;
+                                        default:
+                                            break;
+
+                                    }//switch
+                                }//if (user.Nick.Length > _nickLimit)
+
                             if (m_user == null)
                             {
                                 string data = Sh.S.Tempdb.Greet(Jid, m_muc.Jid);
@@ -353,13 +589,23 @@ namespace Core.Kernel
                     m_user = m_muc != null ? m_muc.GetUser(pres.From.Resource) : null;
                     Jid _calcjid = m_muc != null ? pres.From : new Jid(pres.From.Bare);
                     Sh.S.CalcHandler.DelHandle(_calcjid);
+
+                    //TODO: leave logging - DONE
+                    
+
                     if (pres.MucUser != null)
                     {
                         m_user = m_muc != null ? m_muc.GetUser(pres.From.Resource) : null;
 
                         if (m_user != null)
                         {
+                                //Add html log entry - join
+                                if (Sh.S.Config.EnableLogging && m_muc.OptionsHandler.GetOption("enable_logging") == "+")
+                                {
+                                    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "subscribe", m_muc.Jid.ToString(), m_user.Nick, " as "+ m_user.Affiliation.ToString()+" has leave chatroom.");
+                                }
                             Sh.S.GetMUC(p_jid).DelUser(m_user);
+                            // Leaving room loging
                             @out.exe("[" + p_jid.User + "]*** " + p_jid.Resource + " leaves the room");
                         }
                         else
@@ -381,8 +627,6 @@ namespace Core.Kernel
                                     Sh.S.DelMUC(p_jid);
                                     foreach (Jid j in Sh.S.Config.Administartion())
                                     {
-
-
                                         Message _msg = new Message();
                                         _msg.To = j;
                                         _msg.Type = MessageType.chat;
