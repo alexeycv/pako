@@ -55,6 +55,8 @@ namespace Core.Kernel
          DirBuilder db = new DirBuilder();
          RfcManager m_rfc;
          long ticks = DateTime.Now.Ticks;
+         // GC Thread
+         Thread _cleaner;
 
          public Session S
         {
@@ -89,8 +91,14 @@ namespace Core.Kernel
             this.Register();
         	@out.log_get_ready();
             Environment.SetEnvironmentVariable("PAKODIR", Utils.CD);
-            Process p = Process.GetCurrentProcess();
-            Console.Title = "Pako " + p.MainModule.FileVersionInfo.FileVersion;
+            try
+            {
+                Process p = Process.GetCurrentProcess();
+                Console.Title = "Pako " + p.MainModule.FileVersionInfo.FileVersion;
+            }
+            catch (Exception err)
+            {
+            }
             m_rects = 0;
             Thread.Sleep(1000);
             MainConnect();
@@ -110,9 +118,24 @@ namespace Core.Kernel
              Utils.Sh = this;
          }
 
+         public void CleanerWorker()
+         {
+            while (true)
+            {
+                GC.Collect();
+                Thread.Sleep(500);
+            }
+         }
 
          public void MainConnect()
         {
+                // init cleaner thread
+                if (_cleaner == null)
+                {
+                    _cleaner = new Thread(this.CleanerWorker);
+                    _cleaner.Start();
+                }
+
                 m_rects++;
                 Console.Clear();
                 if (m_defs != null)

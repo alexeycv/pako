@@ -52,6 +52,9 @@ namespace Core.Kernel
        string dir_vl;
        string dir_temp;
        string dir_access;
+       string dir_log;
+       string dir_html_log;
+       string dir_html_priv_log;
        public bool turn_off = false;
        XmppClientConnection m_con;
        ReplyGenerator m_resphnd;
@@ -72,7 +75,11 @@ namespace Core.Kernel
        string os_version;
        ErrorLoger m_el;
        SessionHandler Sh;
-       object[] sobjs = new object[60];
+       Logger _logger;
+       Logger _seenlogger;
+       Logger _htmllogger;
+       Logger _htmlPrivlogger;
+       object[] sobjs = new object[70];
 
 
        /// <summary>
@@ -95,11 +102,11 @@ namespace Core.Kernel
    /// <param name="CensorFile"></param>
    /// <param name="UsersDataFile"></param>
    /// <param name="AccessFile"></param>
-   /// <param name="botversion"></param>
+   /// <param name="botversion"></param>           @out.write("Working set: " + (Environment.WorkingSet).ToString() + " bytes\n");
    /// <param name="reconnects"></param>
        public Session(int reconnects, SessionHandler sh) : this()
        {
-           for (int i = 0; i < 60; i++)
+           for (int i = 0; i < 70; i++)
            {
                sobjs[i] = new object();
            }
@@ -116,16 +123,23 @@ namespace Core.Kernel
            dir_error = Utils.GetPath("errlog");
            dir_access = Utils.GetPath("accesses");
            dir_temp = Utils.GetPath("tempdb");
+           dir_log = Utils.GetPath("logdb");
+           dir_html_log = Utils.GetPath("logmuc");
+           dir_html_priv_log = Utils.GetPath("logprivate");
            GetReady();  
 		   Utils.Sh = sh;
            Utils.Sh.S = this;
-           @out.write("Location : " + Utils.CD + "\n");
-           @out.write("Working set: " + (Environment.WorkingSet).ToString() + " bytes\n");
-           @out.write("NoMucsMode " + (Sh.arg_nomucs ? "ON" : "OFF"));
+           @out.write("Location : " + Utils.CD + "");
+           @out.write("Working set: " + (Environment.WorkingSet).ToString() + " bytes");
+           @out.write("Version: " + (Environment.Version).ToString() + "");
+           @out.write("NoMucsMode " + (Sh.arg_nomucs ? "ON" : "OFF\n"));
            @out.write("===============================================================================");
-           @out.write("                                PAKO " + Utils.Bot["version"] + "                         ");
+           @out.write("     PAKO " + Utils.Bot["version"] + "     ");
            @out.write("====================================STARTING===================================\n");
            m_rects = reconnects;
+
+           @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Initializing databases and handlers...");
+
            int sqlv = int.Parse(S.Config.GetTag("sqlite"));
            Sh.LoadBase(sqlv);
            m_va = new VipAccess(dir_va, sqlv);
@@ -137,6 +151,13 @@ namespace Core.Kernel
            temp = new Tempdb(dir_temp, sqlv);
            m_con = new XmppClientConnection();
            m_calch = new CalcHandler();
+           _logger = new Logger(dir_log+"log.db", sqlv, "chatlog");
+           _seenlogger = new Logger(dir_log+"seen.db", sqlv, "seenlog");
+           _htmllogger = new Logger(dir_html_log, sqlv, "muclog");
+           _htmlPrivlogger = new Logger(dir_html_priv_log, sqlv, "muclog");
+
+           @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Handlers and databases ready.");
+
            @out.exe("Jid: <" + S.Config.Jid + ">\n");
            m_con.Resource = S.Config.Jid.Resource;
            m_con.Priority = 100;
@@ -179,6 +200,7 @@ namespace Core.Kernel
            m_con.OnMessage += delegate(object o, agsXMPP.protocol.client.Message msg)
            {
                CommandHandler cmdh = new CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
+               // TODO: add a message loghandler (html logfile)
            };
          
          
@@ -201,27 +223,27 @@ namespace Core.Kernel
 
            m_con.OnLogin += new ObjectHandler(OnLogin);
            m_plugs = new PHandler(dir_plugs);
-         
-
-
        }
-
-
 
        void OnDisconnect()
        {
            if (turn_off)
                Environment.Exit(0);
-           @out.write("Socket disconnected");
-           Sh.Ticks = DateTime.Now.Ticks;
-           if (S.Config.MaxReconnects >= m_rects || S.Config.MaxReconnects == 0)
-           {
-               @out.write("Reconnect in " + S.Config.ReconnectTime + " seconds "+ (S.Config.MaxReconnects != 0 ? " (" + m_rects + "/" + S.Config.MaxReconnects + ")" : "") + "\n");
-               Thread.Sleep(S.Config.ReconnectTime * 1000);
-               Sh.MainConnect();
-           }
-           else
-               @out.write("Stopped...");
+			try{
+	           @out.write("Socket disconnected");
+    	       Sh.Ticks = DateTime.Now.Ticks;
+    	       if (S.Config.MaxReconnects >= m_rects || S.Config.MaxReconnects == 0)
+    	       {
+    	           @out.write("Reconnect in " + S.Config.ReconnectTime + " seconds "+ (S.Config.MaxReconnects != 0 ? " (" + m_rects + "/" + S.Config.MaxReconnects + ")" : "") + "\n");
+    	           Thread.Sleep(S.Config.ReconnectTime * 1000);
+    	           Sh.MainConnect();
+    	       }
+    	       else
+    	           @out.write("Stopped...");
+			}catch (Exception err)
+			{
+				Environment.Exit(0);
+			}
        }
 
     
@@ -248,12 +270,6 @@ namespace Core.Kernel
                Environment.Exit(0);
            }
        }
-
-
-
-
-
-
 
        void OnXmppConnectionStateChanged(object sender, XmppConnectionState state)
        {
@@ -295,7 +311,7 @@ namespace Core.Kernel
 
        public void OnLogin(object sender)
        {
-
+           @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Login is OK.");
            if (!Sh.arg_nomucs)
            {
                @out.write("<" + DateTime.Now.Hour + " : " + DateTime.Now.Minute + " : " + DateTime.Now.Second + "> Joining chat-rooms\n");
@@ -334,129 +350,141 @@ namespace Core.Kernel
        public int GetMucAccess(Role Role, Affiliation Affil)
        {
            int res = 0;
-           switch (Role)
+           try
            {
-               case Role.participant:
-                   res += 15;
-                   break;
-               case Role.moderator:
-                   res += 25;
-                   break;
-               case Role.visitor:
-                   res += 10;
-                   break;
-               case Role.none:
-                   res = 0;
-                   break;
-           }
+	        switch (Role)
+    	        {
+    	           case Role.participant:
+    	               res += 15;
+    	               break;
+    	           case Role.moderator:
+    	               res += 25;
+    	               break;
+    	           case Role.visitor:
+    	               res += 10;
+    	               break;
+    	           case Role.none:
+    	               res = 0;
+    	               break;
+    	        }
 
-           switch (Affil)
-           {
-               case Affiliation.member:
-                   res += 15;
-                   break;
-               case Affiliation.admin:
-                   res += 35;
-                   break;
-               case Affiliation.none:
-                   res += 0;
-                   break;
-               case Affiliation.owner:
-                   res += 55;
-                   break;
-           }
-
+	        switch (Affil)
+	        {
+	            case Affiliation.member:
+	                res += 15;
+	                break;
+	            case Affiliation.admin:
+	                res += 35;
+	                break;
+	            case Affiliation.none:
+	                res += 0;
+	                break;
+	            case Affiliation.owner:
+	                res += 55;
+	                break;
+	        }
+            } 
+            catch (Exception err)
+            {
+                res = 0;
+            }
            return res;
-
        }
-
-      
-
 
        public int? GetAccess(Message m_msg, string entity, MUC muc)
        {
-           MUser user = null;
-           Message msg = new Message();
-           msg.From = m_msg.From;
-           msg.To = m_msg.To;
-           msg.Body = m_msg.Body;
-           msg.Type = m_msg.Type;
+            try
+            {
+	       MUser user = null;
+    	       Message msg = new Message();
+    	       msg.From = m_msg.From;
+    	       msg.To = m_msg.To;
+    	       msg.Body = m_msg.Body;
+    	       msg.Type = m_msg.Type;
 
-           bool is_muser = muc != null;
+    	       bool is_muser = muc != null;
+	
+    	       if (is_muser)
+    	       {
+    	           if (muc.UserExists(entity))
+    	               {
+    	                   user = muc.GetUser(entity);
+	
+    	               }
+    	               else
+    	               {
+    	                   is_muser = false;
+    	                   user = null;
+    	                   msg.From = new Jid(entity);
+    	               }
 
-           if (is_muser)
-           {
-               if (muc.UserExists(entity))
-                   {
-                       user = muc.GetUser(entity);
-
-                   }
-                   else
-                   {
-                       is_muser = false;
-                       user = null;
-                       msg.From = new Jid(entity);
-                   }
-
-           }
-
-           Jid Jid = is_muser ?
-               user.Jid :
-               new Jid(msg.From.Bare);
-
-           int? access = null;
-
-           if (S.Config.BotAdmin(Jid))
-           {
-               access = 100;
-               return access;
-           }
-           int? va = Sh.S.VipAccess.GetAccess(Jid);
-           if (va != null)
-               return va;
-           if (is_muser)
-           {
-               int? v_access = muc.VipAccess.GetAccess(Jid);
-               if (v_access != null)
-                   return v_access;
-           } 
-           if (is_muser)
-               return  GetMucAccess(user.Role, user.Affiliation);
-           return null;
-
- 
+    	       }
+	
+    	       Jid Jid = is_muser ?
+    	           user.Jid :
+    	           new Jid(msg.From.Bare);
+	
+    	       int? access = null;
+	
+    	       if (S.Config.BotAdmin(Jid))
+    	       {
+    	           access = 100;
+    	           return access;
+    	       }
+    	       int? va = Sh.S.VipAccess.GetAccess(Jid);
+    	       if (va != null)
+    	           return va;
+    	       if (is_muser)
+    	       {
+    	           int? v_access = muc.VipAccess.GetAccess(Jid);
+    	           if (v_access != null)
+    	               return v_access;
+    	       } 
+    	       if (is_muser)
+    	           return  GetMucAccess(user.Role, user.Affiliation);
+    	       //return null;	
+               return 0;
+            }
+            catch (Exception err)
+            {
+                return 0;
+            }
        }
 
 
        public int? GetAccess(Message msg, MUser user, MUC muc)
        {
+			try
+			{
+           		bool is_muser = user != null;
+           		Jid Jid = is_muser ? user.Jid : new Jid(msg.From.Bare);
 
-           bool is_muser = user != null;
-           Jid Jid = is_muser ?
-               user.Jid :
-               new Jid(msg.From.Bare);
+           		int? access = null;
 
-           int? access = null;
+           		if (S.Config.BotAdmin(Jid))
+           		{
+               		access = 100;
+               		return access;
+           		}
 
-           if (S.Config.BotAdmin(Jid))
-           {
-               access = 100;
-               return access;
-           }
-
-           int? va = Sh.S.VipAccess.GetAccess(Jid);
-           if (va != null)
-               return va;
-           if (muc != null)
-           {
-               int? v_access = muc.VipAccess.GetAccess(Jid);
-               if (v_access != null)
-                   return v_access;
-           }
-           if (is_muser)
-               return GetMucAccess(user.Role, user.Affiliation);
-           return null;
-
+           		int? va = Sh.S.VipAccess.GetAccess(Jid);
+           		if (va != null)
+               		return va;
+           		if (muc != null)
+          		{
+               		int? v_access = muc.VipAccess.GetAccess(Jid);
+               		if (v_access != null)
+                  		return v_access;
+           		}
+           		if (is_muser)
+               		return GetMucAccess(user.Role, user.Affiliation);
+           		//return null;
+				return 0;
+			}
+			catch (Exception err)
+			{
+				return 0;
+			}
 
        }
 
@@ -480,7 +508,8 @@ namespace Core.Kernel
 
        public int? GetAccess(Presence pres, MUC muc)
        {
-          
+          try
+          {
            bool is_muser =  pres.MucUser != null;
            bool jid_visible = false;
            if (is_muser)
@@ -511,7 +540,11 @@ namespace Core.Kernel
                    return v_access;
            }
            return is_muser ? GetMucAccess(pres.MucUser.Item.Role, pres.MucUser.Item.Affiliation) : 0;
-
+          }
+          catch (Exception err)
+          {
+          	return 0;
+          }
 
        }
 
@@ -532,9 +565,6 @@ namespace Core.Kernel
            S.C.Open();
        }
           
-
-
-
         public void Exit(Response resp, string message)
        {
            Presence pr = new Presence();
@@ -557,9 +587,6 @@ namespace Core.Kernel
            Sh.Defs.SQLiteConnection.Close();
            Sh.S.Censor.SQLiteConnection.Close();
            Sh.S.Tempdb.SQLiteConnection.Close();
-
-
-
        }
 
 
@@ -659,6 +686,29 @@ namespace Core.Kernel
            set { lock (sobjs[49]) { S.m_el = value; } }
        }
 
+       public Logger BotLogger
+       {
+           get { lock (sobjs[60]) { return S._logger; } }
+           set { lock (sobjs[60]) { S._logger = value; } }
+       }
+
+       public Logger SeenLogger
+       {
+           get { lock (sobjs[61]) { return S._seenlogger; } }
+           set { lock (sobjs[61]) { S._seenlogger = value; } }
+       }
+
+       public Logger HtmlLogger
+       {
+           get { lock (sobjs[62]) { return S._htmllogger; } }
+           set { lock (sobjs[62]) { S._htmllogger = value; } }
+       }
+
+       public Logger HtmlPrivLogger
+       {
+           get { lock (sobjs[63]) { return S._htmlPrivlogger; } }
+           set { lock (sobjs[63]) { S._htmlPrivlogger = value; } }
+       }
 
        public ReplyGenerator Rg
        {

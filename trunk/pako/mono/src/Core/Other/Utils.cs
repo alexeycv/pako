@@ -634,7 +634,14 @@ namespace Core.Other
                dict.Add("os", GetOSVersion);
                dict.Add("name", "Pako bot");
                dict.Add("version", Version);
-               dict.Add("file", Process.GetCurrentProcess().MainModule.FileVersionInfo.ToString());
+               try
+               {
+                   dict.Add("file", Process.GetCurrentProcess().MainModule.FileVersionInfo.ToString());
+               }
+               catch (Exception err)
+               {
+                   dict.Add("file", "Pako");
+               }
                dict.Add("environment", "C# 2.0 .NET/Mono");
                return dict;
            }
@@ -647,7 +654,7 @@ namespace Core.Other
        {
            get
            {
-               return "8.8.29";
+               return "8.8.35 (http://pako.googlecode.com developers team)";
            }
        }
         

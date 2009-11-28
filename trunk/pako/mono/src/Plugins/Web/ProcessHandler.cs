@@ -1,6 +1,6 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Pako Jabber-bot. Bbodio's Lab.                                                *
- * Copyright. All rights reserved � 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
+ * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
  * Contact information is here: http://code.google.com/p/pako                    *
  *                                                                               *
  * Pako is under GNU GPL v3 license:                                             *
@@ -248,6 +248,94 @@ namespace www
                         break;
                     }
 
+                case "yandex":
+                    {
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2)
+                        {
+                            string text;
+                            int number = 1;
+                            int startn = 1;
+                            if (ws.Length > 3)
+                            {
+                                try
+                                {
+                                    if (ws[2].StartsWith("#"))
+                                    {
+                                        startn = Convert.ToInt32(ws[2].Substring(1));
+                                        number = startn;
+                                        text = ws[3];
+                                    }
+                                    else
+                                    {
+                                        number = Convert.ToInt32(ws[2]);
+                                        text = ws[3];
+                                    }
+                                }
+                                catch
+                                {
+                                    ws = Utils.SplitEx(m_b, 2);
+                                    text = ws[2];
+                                }
+                            }
+                            else
+                            {
+                                ws = Utils.SplitEx(m_b, 2);
+                                text = ws[2];
+                            }
+
+                            if (number <= 10 && number > 0 && startn <= 10 && startn > 0)
+                            {
+                                try
+                                {
+                                    //webrequests
+                                    HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://yandex.ua/yandsearch?text="+text+"&tld=ua&lr=187"));
+                                    _request.Method = "GET";
+                                    //_request.UserAgent
+                                    WebResponse _response = _request.GetResponse();
+
+                                    StreamReader _reader = new StreamReader(_response.GetResponseStream());
+
+                                    String _data = _reader.ReadToEnd();
+                                    String _resultStr = "";
+
+                                    int _resIndex = _data.IndexOf("<ol class=\"results\"");
+                                    int _infoEnd = _resIndex;
+
+                                    for (int _index = 1; _index <= number; _index++)
+                                    {
+                                        if (number > 1)
+                                        {
+                                            _resultStr += "\n" + _index.ToString() + ")\n";
+                                        }
+                                        int _infoIndex = _data.IndexOf("<div class=\"text\">", _infoEnd);
+                                        _infoEnd = _data.IndexOf("</div>", _infoIndex);
+
+                                       _resultStr += _data.Substring(_infoIndex, _infoEnd - _infoIndex).Replace("<div class=\"text\">", "").Replace("<span>", "").Replace("</span>", "").Replace("<wbr />", "").Replace("<br/>", "").Replace("<b>", "").Replace("</b>", "").Replace("<span class='by_link'>", "");
+
+                                       int _titleIndex = _data.IndexOf("<div class=\"title\">", _infoIndex);
+                                       int _titleEnd = _data.IndexOf("</div>", _titleIndex);
+                                       //href
+                                       int _hrefIndex = _data.IndexOf("href=", _titleIndex);
+                                       int _hrefEnd = _data.IndexOf("target", _hrefIndex);
+
+                                       _resultStr += "\n";
+                                       _resultStr += _data.Substring(_hrefIndex, _hrefEnd - _hrefIndex).Replace("href=", "Link: ").Replace("\"", "");
+                                    }
+                                    rs = _resultStr;
+                                }
+                                catch
+                                {
+                                    rs = m_r.f("google_failed");
+                                }
+
+                            }
+                            else syntax_error = true;
+                        }
+                        else
+                            syntax_error = true;
+                        break;
+                    }
 
                 case "tld":
                     {
@@ -273,7 +361,7 @@ namespace www
                                         if (_ws.Length < 2 || line.Trim() == "")
                                             continue;
                                         if (_ws[1].Trim().ToLower().IndexOf(ws[3].ToLower()) >-1)
-                                        { count++;  src += " � " + _ws[0].Trim() + " - " + _ws[1].Trim() + "\n"; }
+                                        { count++;  src += "  " + _ws[0].Trim() + " - " + _ws[1].Trim() + "\n"; }
 
                                     }
                                     rs = src != "" ? m_r.f("results")+"\n"+ src+"-- "+count.ToString()+" --" : m_r.f("tld_not_found", ws[3]);
@@ -701,6 +789,298 @@ namespace www
 
    
                     }
+                    case "news":
+                    {
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2 || true)
+                        {
+                            string text;
+                            int number = 0;
+                            
+                            number = 3;
+                            text = "http://news.google.com/news?pz=1&cf=all&ned=uk_ua&hl=uk&topic=h&num=3&output=rss";
+
+                            //Fetching number
+                            if (ws.Length > 2)
+                            {
+                                try
+                                {
+                                    number = Convert.ToInt32(ws[2]);
+                                    if (number <= 0)
+                                       number = 1;
+                                }
+                                catch (Exception err)
+                                {
+                                    number = 1;
+                                }
+                            }
+
+                            if (number >= 0)
+                            {
+                                RssFeed rf;
+                                try
+                                {
+                          
+                                    RssReader rss = new RssReader();
+                                    rf = rss.Retrieve(text);
+                                }
+                                catch
+                                {
+                                    rs = m_r.f("rss_error");
+                                    break;
+                                }
+                                @out.exe("rss_retreived");
+                                string data = "";
+                                if (!String.IsNullOrEmpty(rf.ErrorMessage))
+                                    data = m_r.f("rss_error");
+                                else
+                                {
+                                    data = "\n";
+                                    if (!String.IsNullOrEmpty(rf.Title))
+                                        data += "" + rf.Title.Trim(' ', '\n');
+                                    if (!String.IsNullOrEmpty(rf.Language))
+                                        data += " (" + rf.Language.Trim(' ', '\n') + ")\n";
+                                    else
+                                        data += "\n";
+                                    if (!String.IsNullOrEmpty(rf.LastBuildDate))
+                                        data += rf.LastBuildDate.Trim(' ', '\n') + "\n";
+                                    if (!String.IsNullOrEmpty(rf.Category))
+                                        data += "(" + rf.Category.Trim(' ', '\n') + ")\n";
+                                    if (!String.IsNullOrEmpty(rf.Copyright))
+                                        data += rf.Copyright.Trim(' ', '\n') + "\n";
+                                    if (!String.IsNullOrEmpty(rf.Description))
+                                        data += rf.Description.Trim(' ', '\n') + "\n-------------\n";
+
+                                }
+                                int i = 1;
+                                foreach (RssItem ri in rf.Items)
+                                {
+                                    @out.exe("rss_item");
+                                    if (number != 0 && i > number) break; 
+                                    if (!String.IsNullOrEmpty(ri.Title))
+                                        data += ri.Title.Trim(' ', '\n') + "\n";
+                                    if (!String.IsNullOrEmpty(ri.Description))
+                                    {
+                                        string body = ri.Description;
+                                        Regex rx = new Regex(@"<[^<>]+?>");
+                                        body = rx.Replace(body, new MatchEvaluator(delegate(Match m)
+                                        {
+                                            @out.exe("RSS_REGEX: \"" + m.ToString()+"\"");
+                                            string src = m.ToString().Replace("<", "").Replace(">", "").Trim();
+                                            return src == "br" ? "\n" : "";
+                                        }));
+                                        data += HttpUtility.HtmlDecode(body) + "\n";
+                                    }
+                                    if (!String.IsNullOrEmpty(ri.Author))
+                                        data += "[" + ri.Author + "]\n";
+
+                                    data += "----------------\n\n";
+                                    i++;
+                                }
+                                @out.exe("rss_data:");
+                             //   @out.exe(data);
+
+                                rs = data.Trim('\n','\v','\r');
+                            }
+                            else syntax_error = true;
+                        }
+                        else
+                            syntax_error = true;
+                        break;
+
+
+   
+                    }
+                    case "worldnews":
+                    {
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2 || true)
+                        {
+                            string text;
+                            int number = 0;
+                            
+                            number = 3;
+                            text = "http://news.google.com/news?pz=1&cf=all&ned=uk_ua&hl=uk&topic=w&output=rss";
+
+                            //Fetching number
+                            if (ws.Length > 2)
+                            {
+                                try
+                                {
+                                    number = Convert.ToInt32(ws[2]);
+                                    if (number <= 0)
+                                       number = 1;
+                                }
+                                catch (Exception err)
+                                {
+                                    number = 1;
+                                }
+                            }
+
+                            if (number >= 0)
+                            {
+                                RssFeed rf;
+                                try
+                                {
+                          
+                                    RssReader rss = new RssReader();
+                                    rf = rss.Retrieve(text);
+                                }
+                                catch
+                                {
+                                    rs = m_r.f("rss_error");
+                                    break;
+                                }
+                                @out.exe("rss_retreived");
+                                string data = "";
+                                if (!String.IsNullOrEmpty(rf.ErrorMessage))
+                                    data = m_r.f("rss_error");
+                                else
+                                {
+                                    data = "\n";
+                                    if (!String.IsNullOrEmpty(rf.Title))
+                                        data += "" + rf.Title.Trim(' ', '\n');
+                                    if (!String.IsNullOrEmpty(rf.Language))
+                                        data += " (" + rf.Language.Trim(' ', '\n') + ")\n";
+                                    else
+                                        data += "\n";
+                                    if (!String.IsNullOrEmpty(rf.LastBuildDate))
+                                        data += rf.LastBuildDate.Trim(' ', '\n') + "\n";
+                                    if (!String.IsNullOrEmpty(rf.Category))
+                                        data += "(" + rf.Category.Trim(' ', '\n') + ")\n";
+                                    if (!String.IsNullOrEmpty(rf.Copyright))
+                                        data += rf.Copyright.Trim(' ', '\n') + "\n";
+                                    if (!String.IsNullOrEmpty(rf.Description))
+                                        data += rf.Description.Trim(' ', '\n') + "\n-------------\n";
+
+                                }
+                                int i = 1;
+                                foreach (RssItem ri in rf.Items)
+                                {
+                                    @out.exe("rss_item");
+                                    if (number != 0 && i > number) break; 
+                                    if (!String.IsNullOrEmpty(ri.Title))
+                                        data += ri.Title.Trim(' ', '\n') + "\n";
+                                    if (!String.IsNullOrEmpty(ri.Description))
+                                    {
+                                        string body = ri.Description;
+                                        Regex rx = new Regex(@"<[^<>]+?>");
+                                        body = rx.Replace(body, new MatchEvaluator(delegate(Match m)
+                                        {
+                                            @out.exe("RSS_REGEX: \"" + m.ToString()+"\"");
+                                            string src = m.ToString().Replace("<", "").Replace(">", "").Trim();
+                                            return src == "br" ? "\n" : "";
+                                        }));
+                                        data += HttpUtility.HtmlDecode(body) + "\n";
+                                    }
+                                    if (!String.IsNullOrEmpty(ri.Author))
+                                        data += "[" + ri.Author + "]\n";
+
+                                    data += "----------------\n\n";
+                                    i++;
+                                }
+                                @out.exe("rss_data:");
+                             //   @out.exe(data);
+
+                                rs = data.Trim('\n','\v','\r');
+                            }
+                            else syntax_error = true;
+                        }
+                        else
+                            syntax_error = true;
+                        break;
+
+
+   
+                    }
+
+                    case "bor":
+                    {
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2 || true)
+                        {
+                            string text;
+                            int number = 0;
+                            
+                            number = 0;                            
+
+                            //Fetching number
+                            if (ws.Length > 2)
+                            {
+                                try
+                                {
+                                    number = Convert.ToInt32(ws[2]);
+                                    if (number <= 0)
+                                       number = 0;
+                                }
+                                catch (Exception err)
+                                {
+                                    number = 0;
+                                }
+                            }
+
+                            try
+                            {
+                                HttpWebRequest _request;
+                                if (number < 0)
+                                {
+                                    _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://bash.org.ru/random"));
+                                }
+                                else
+                                {
+                                    _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://bash.org.ru/quote/"+ number.ToString()));
+                                }
+
+                                _request.Method = "GET";
+                                //_request.UserAgent
+                                HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+                                Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+                                StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
+
+                                String _data = "";
+                                _data = _reader.ReadToEnd();
+                                String _resultStr = "";
+
+                                int _resIndex = _data.IndexOf("<div id=\"quotes\">");
+                                int _infoEnd = _resIndex;
+
+                                int _voteIndex = _data.IndexOf("<div class=\"vote\">", _infoEnd);
+                                _infoEnd = _data.IndexOf("</div>", _voteIndex);
+
+                                int _numend = _data.IndexOf("</a>", _voteIndex);
+
+                                //Select a digit
+                                string _digit = "";
+                                int _dstart = _data.Substring(_numend - 7, 8).IndexOf(">");
+                                if (_dstart < 2)
+                                    _dstart = 1;
+                                else
+                                    _dstart += 1;
+
+                                int _dend = _data.Substring(_numend - 7, 8).IndexOf("<");
+                                if (_dend < 2)
+                                    _dend = 8;
+
+                                _digit = _data.Substring(_numend - 7, 8).Substring(_dstart, _dend - _dstart).Replace(">", "");
+
+                                _resultStr += "Цитата № " + _digit;
+
+                                int _titleIndex = _data.IndexOf("<div>", _infoEnd);
+                                int _titleEnd = _data.IndexOf("</div>", _titleIndex);
+
+                                _resultStr += "\n";
+                                _resultStr += _data.Substring(_titleIndex, _titleEnd - _titleIndex).Replace("href=", "Link: ").Replace("\"", "").Replace("<br>", "\n").Replace("<div>", "").Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;", "\"");
+
+                                rs = _resultStr;
+                            }
+                            catch (Exception err)
+                            {
+                            }
+                        }
+                        else
+                            syntax_error = true;
+                        break;   
+                    }
 
                 case "ping":
                     {
@@ -742,12 +1122,40 @@ namespace www
                         break;
                     }
 
+                case "anekdot":
+                    {
+                        try
+                        {
+                            HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://pda.anekdot.ru/"));
+                            _request.Method = "GET";
+            
+                            HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+                            Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+                            StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
+
+                            String _data = "";
+                            _data = _reader.ReadToEnd();
+                            String _resultStr = "";
+
+                            int _begin = _data.IndexOf("<div style=\"margin-top:15px\" align=\"center\"><h1>Случайный анекдот</h1></div>") + 80;
+                            int _end = _data.IndexOf("</p>", _begin);
+
+                            _resultStr += "\n" + _data.Substring(_begin, _end - _begin).Replace("\"", "").Replace("\"", "").Replace("<br>", "\n").Replace("<div>", "").Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;", "\"").Replace("class=\"main\">", "").Replace("class=main>", "").Replace("<br />", "");
+
+                            rs = _resultStr;
+                        }
+                        catch (Exception err)
+                        {
+                            rs = m_r.f("anekdot_error");
+                        }
+                        break;
+                    }
 
                 case "list":
                     {
                         if (ws.Length == 2)
                         {
-                            rs = m_r.f("volume_list", n) + "\nlist, dns, tld, whois, google, gt, headers, rss, xep, rfc, curr, torrent, wiki, ping, svn, browse";
+                            rs = m_r.f("volume_list", n) + "\nlist, dns, tld, whois, google, yandex, gt, headers, rss, xep, rfc, curr, torrent, wiki, ping, svn, browse, news, worldnews, bor, anekdot";
                         }
                         break;
                     }

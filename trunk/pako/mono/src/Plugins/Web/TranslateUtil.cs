@@ -26,6 +26,7 @@ using System.IO;
 using System.Threading;
 using System.Web;
 using System.Net;
+using System.Xml;
 using Core.Plugins;
 using Core.Kernel;
 using Core.Other;
@@ -93,28 +94,60 @@ namespace www
 
         public Dictionary<string,string> GetAllPairs()
         {
-       
+            string res = "";
+            string opts = "";
+            Dictionary<string,string> dict = new Dictionary<string,string>();
 
-            HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://translate.google.com/translate_t"));
-            wr.Method = "GET";
-            wr.ContentType = "application/x-www-form-urlencoded";
-            wr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
-            WebResponse wp = wr.GetResponse();
-            StreamReader sr = new StreamReader(wp.GetResponseStream());
-            string res = sr.ReadToEnd();
-            string opts = Utils.GetValue(res, "<select(.*)</select>", true);
+            try
+            {
+                //HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://translate.google.com/translate_t"));
+                HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://translate.google.com/"));
+                wr.Method = "GET";
+                wr.ContentType = "application/x-www-form-urlencoded";
+                wr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+                WebResponse wp = wr.GetResponse();
+                StreamReader sr = new StreamReader(wp.GetResponseStream());
+                res = sr.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                //@out.exe(ex.Message);
+            }
+
+            opts = Utils.GetValue(res, "<select(.*)</select>", true);
             Document doc = new Document();
             opts = ("<select>" + Utils.RemoveValue(opts, "<(.*)</option>", true)).Replace(" SELECTED ", " ");
+            opts = opts.Replace("&#8212;", "_").Replace("disabled", "");
             doc.LoadXml("<Document>"+opts+"</Document>");
             @out.exe(opts);
-            Dictionary<string,string> dict = new Dictionary<string,string>();
-            foreach (Element el in doc.RootElement.SelectSingleElement("select").SelectElements("option"))
+            //@out.write(doc.ToString()+"\n\n"+opts) ;
+            try
             {
-                if (el.GetAttribute("value") != "auto")
-                {
-                    dict.Add(el.GetAttribute("value"), el.InnerXml);
-                }
+               if (doc != null)
+               {
+                   foreach (Element el in doc.RootElement.SelectSingleElement("select").SelectElements("option"))
+                   {
+                       if (el != null)
+                       {
+                           if (el.GetAttribute("value") != "auto")
+                           {
+                               try
+                               {
+                                   if (el.GetAttribute("value") != "separator")
+                                       dict.Add(el.GetAttribute("value"), el.InnerXml);
+                               }
+                               catch (Exception ex)
+                               {
+                               }
+                           }
+                       }//if
+                   }
+               }
             }
+            catch (Exception ex)
+            {                
+            }
+
             return dict;
         }
 

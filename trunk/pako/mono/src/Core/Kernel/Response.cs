@@ -404,11 +404,16 @@ namespace Core.Kernel
             }
             else
             {
-                @out.exe("message_provate_ok");
+                @out.exe("message_private_ok");
                 r_msg.To = m_jid;
                 Body = Body.Length > limit ? Body.Substring(0, limit) + "[...]" : Body;
                 r_msg.Body = Body;
                 r_msg.Type = MessageType.chat;
+                //Try  to log message
+                if (Sh.S.Config.EnableLogging && r_msg.Body != null && Sh.S.GetMUC(r_msg.To) == null)
+                {
+                    Sh.S.HtmlPrivLogger.AddHtmlLog("groupchat", "chat", r_msg.To.ToString(), r_msg.To.ToString(), r_msg.Body);
+                }
             }
             @out.exe("message_response_ready");
             Connection.Send(r_msg);

@@ -66,7 +66,14 @@ namespace Plugin
             s_jid = r.Msg.From;
             d = r.Delimiter;
           
-
+            if (r.MUser != null)
+            {
+                if (Sh.S.Config.AdminInMuc == false)
+                {
+                    r.Reply(r.f("rosteronly"));
+                    return;
+                }
+            }
           
             if (ws.Length < 2)
             {
@@ -442,8 +449,15 @@ namespace Plugin
                     {
                         if (ws.Length > 2)
                         {
-                            Stdior std = new Stdior();
-                            rs = std.Execute(ws[2], Sh.S);
+                            if (Sh.S.Config.AlloweCmd)
+                            {
+                                Stdior std = new Stdior();
+                                rs = std.Execute(ws[2], Sh.S);
+                            }
+                            else
+                            {
+                                rs = m_r.f("admin_restricted");
+                            }
                             break;
                         }
                         else

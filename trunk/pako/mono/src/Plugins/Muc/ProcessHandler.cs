@@ -1779,10 +1779,19 @@ namespace Plugin
                             else
                                 @out.exe("\"sign available\"");
                             @out.exe("\"" + sign + "\"");
-                            m_r.Connection.Send(clm);
+                            try
+                            {
+                                m_r.Connection.Send(clm);
+                            }
+                            catch (Exception err)
+                            {
+                            }
+                            Sh.S.Sleep();
                             Sh.S.Sleep();
 
                         }
+                        Sh.S.Sleep();
+                        Sh.S.Sleep();
                         break;
 
                     }
@@ -1895,6 +1904,15 @@ namespace Plugin
                     {
                         if (ws.Length == 2)
                             rs = m_r.MUC.Name;
+                        else
+                            syntax_error = true;
+                        break;
+                    }
+
+                case "whowas":
+                    {
+                        if (ws.Length == 2)
+                            rs = m_r.MUC.WhoWas.ToString();
                         else
                             syntax_error = true;
                         break;
@@ -2226,11 +2244,37 @@ namespace Plugin
                         break;
                     }
 
+                    case "seen":
+                    {
+                        MUser m_user = null;
+                        if (ws.Length > 2)
+                        {
+                            string _time = Sh.S.SeenLogger.FindEntities(ws[2], m_r.MUC.Jid.ToString());
+                            
+                            if (_time.Length == 0)
+                                rs = m_r.f("user_seen_not_found", ws[2]);
+                            else
+                                rs = m_r.f("user_seen_found") + " " + _time;
+                            break;
+                            
+                        }
+                        else
+                        {
+                            string _time = Sh.S.SeenLogger.FindEntitiesLast(m_r.MUC.Jid.ToString());
+
+                            if (_time.Length == 0)
+                                rs = m_r.f("users_not_found", ws[2]);
+                            else
+                                rs = m_r.f("users_seen_found") + "\n" + _time;
+                            break;
+                        }
+                    }
+
                 case "list":
                     {
                         if (ws.Length == 2)
                         {
-                            rs = m_r.f("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean";
+                            rs = m_r.f("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen";
                         }
                         break;
                     }

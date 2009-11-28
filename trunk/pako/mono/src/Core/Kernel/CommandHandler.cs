@@ -140,6 +140,29 @@ namespace Core.Kernel
             }
             if ((m_type == msgType.MUC) || (m_type == msgType.Roster))
             {
+                //Add html log entry
+                try
+                {
+                   if (Sh.S.Config.EnableLogging && m_user != null && m_muc.Subject != null)
+                   {
+                       Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_muc.Jid.ToString(), m_user.Nick, m_muc.Subject);
+                   }
+
+                   //topic
+                   //if (Sh.S.Config.EnableLogging && m_msg.Body != null && Sh.S.GetMUC(m_msg.From) == null)
+                   //{
+                   //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
+                   //}
+
+                   //if (Sh.S.Config.EnableLogging && m_user != null && m_msg.Body != null)
+                   //{
+                   //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
+                   //}
+                }
+                catch (Exception ex)
+                {
+                }
+
                 m_msg.Body = m_msg.Body.TrimStart(' ');
                 original = m_msg.Body;
                 string m_body = m_msg.Body;
@@ -306,6 +329,31 @@ namespace Core.Kernel
                 else
                 {
                     @out.exe("roster_user");
+
+                    //Write to log
+                    try
+                    {
+                       if (Sh.S.Config.EnableLogging && m_msg.Body != null && Sh.S.GetMUC(m_msg.From) == null)
+                       {
+                           Sh.S.HtmlPrivLogger.AddHtmlLog("groupchat", "chat", m_msg.From.ToString(), m_msg.From.ToString(), m_msg.Body);
+                       }
+                    }
+                    catch (Exception exx)
+                    {
+                    }
+
+                    //topic
+                    try
+                    {
+                        if (Sh.S.Config.EnableLogging && m_msg.Body != null && Sh.S.GetMUC(m_msg.From) != null)
+                        {
+                           Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_msg.From.ToString(), "", m_msg.Body);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+
                     if (!m_msg.Body.StartsWith(d))
                     { if (_signed == CmdhState.PREFIX_REQUIRED) return; }
                     else

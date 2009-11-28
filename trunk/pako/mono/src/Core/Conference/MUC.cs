@@ -76,9 +76,12 @@ namespace Core.Conference
         ShowType m_show;
         OptionsHandler opth;
         string m_subject;
-        static object[] sobjs = new object[50];
+        static object[] sobjs = new object[60];
 
         XmppClientConnection m_con;
+
+        //Whowas collector (StringBuilder)
+        StringBuilder _whowas;
 
 
         /// <summary>
@@ -226,6 +229,27 @@ namespace Core.Conference
             }
         }
 
+        /// <summary>
+        /// A Whowas collector
+        /// </summary>
+        public StringBuilder WhoWas
+        {
+            get
+            {
+                lock (sobjs[51])
+                {
+                    return _whowas;
+                }
+            }
+            set
+            {
+                lock (sobjs[51])
+                {
+                    _whowas = value;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Tryes to kick user with nickname "Nick", if Response is not null, messages the querer of a result
@@ -329,6 +353,7 @@ namespace Core.Conference
         public void Leave()
         {
             Manager.LeaveRoom(Jid, MyNick);
+            @out.write("MUC LEAVE >>> " + Jid.ToString());
         }
 
         /// <summary>
@@ -1162,6 +1187,9 @@ namespace Core.Conference
             x.AddChild(h);
             pres.AddChild(x);
             m_con.Send(pres);
+            @out.write("MUC JOIN >>> " + Jid.ToString());
+            //init whowas
+            //this.WhoWas = new StringBuilder();
         }
 
         /// <summary>
@@ -1177,7 +1205,7 @@ namespace Core.Conference
         /// <param name="Password"></param>
         public MUC(XmppClientConnection con, Jid Jid, string Nick, string Status, string Lang, ShowType Show, SessionHandler sh, string Password)
         {
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 60; i++)
             {
                 sobjs[i] = new object();
             }
@@ -1220,6 +1248,7 @@ namespace Core.Conference
             VipAccess = new VipAccess(va_dir, sqlv);
             m_defs = new Dictionary(Utils.GetPath("def", this), sqlv);
             m_manager = new MucManager(m_con);
+            this._whowas = new StringBuilder();
 
 
         }

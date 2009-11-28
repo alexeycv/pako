@@ -461,5 +461,89 @@ namespace Core.Xml
 
         }
 
+        public bool AdminInMuc
+        {
+            get
+            {
+                lock (Document)
+                {
+                    try
+                    {
+                        return Document.RootElement.SelectSingleElement("bot").SelectSingleElement("admininmuc").GetAttributeBool("value");
+                    }
+                    catch (Exception err)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            set
+            {
+                lock (Document)
+                {
+                    Document.RootElement.SelectSingleElement("bot").SelectSingleElement("admininmuc").SetAttribute("value", value.ToString());
+                    Save();
+                }
+            }
+
+        }
+
+        public bool AlloweCmd
+        {
+            get
+            {
+                lock (Document)
+                {
+                    try
+                    {
+                        return Document.RootElement.SelectSingleElement("bot").SelectSingleElement("allowecmd").GetAttributeBool("value");
+                    }
+                    catch (Exception err)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            set
+            {
+                lock (Document)
+                {
+                    Document.RootElement.SelectSingleElement("bot").SelectSingleElement("allowecmd").SetAttribute("value", value.ToString());
+                    Save();
+                }
+            }
+
+        }
+
+        public bool EnableLogging
+        {
+            get
+            {
+                lock (Document)
+                {
+                    try
+                    {
+                        return Document.RootElement.SelectSingleElement("bot").SelectSingleElement("enablelogging").GetAttributeBool("value");
+                    }
+                    catch (Exception err)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            set
+            {
+                lock (Document)
+                {
+                    Document.RootElement.SelectSingleElement("bot").SelectSingleElement("enablelogging").SetAttribute("value", value.ToString());
+                    Save();
+                }
+            }
+
+        }
+
     }
 }
