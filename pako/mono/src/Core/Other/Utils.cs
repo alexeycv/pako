@@ -86,6 +86,7 @@ namespace Core.Other
             vars.Add("SYSTEM");
             vars.Add("BOTVERSION");
             vars.Add("SUBJECT");
+            vars.Add("ENVIRONMENT");
             Assembly assem = Assembly.GetExecutingAssembly();
             m_dir = Path.GetDirectoryName(assem.Location);
             CD = m_dir;
@@ -417,7 +418,8 @@ namespace Core.Other
                          .Replace("{" + strs[14] + "}", DateTime.Now.ToString("dddd"))
                          .Replace("{" + strs[15] + "}", DateTime.Now.ToString())
                          .Replace("{" + strs[17] + "}", Bot["os"])
-                         .Replace("{" + strs[18] + "}", Bot["version"]);
+                         .Replace("{" + strs[18] + "}", Bot["version"])
+                         .Replace("{" + strs[18] + "}", (Environment.Version).ToString());
             if (r.MUC != null && r.MUser != null)
                 res = res.Replace("{" + strs[0] + "}", r.MUser)
                          .Replace("{" + strs[2] + "}", r.MUC.Jid.ToString())
@@ -654,7 +656,7 @@ namespace Core.Other
        {
            get
            {
-               return "8.8.35 (http://pako.googlecode.com developers team)";
+               return "8.8.36 (http://pako.googlecode.com developers team)";
            }
        }
         
