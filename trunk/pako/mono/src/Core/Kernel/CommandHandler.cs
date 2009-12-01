@@ -143,10 +143,10 @@ namespace Core.Kernel
                 //Add html log entry
                 try
                 {
-                   if (Sh.S.Config.EnableLogging && m_user != null && m_muc.Subject != null)
-                   {
-                       Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_muc.Jid.ToString(), m_user.Nick, m_muc.Subject);
-                   }
+                   //if (Sh.S.Config.EnableLogging && m_user != null && m_muc.Subject != null)
+                   //{
+                   //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_muc.Jid.ToString(), m_user.Nick, m_muc.Subject);
+                   //}
 
                    //topic
                    //if (Sh.S.Config.EnableLogging && m_msg.Body != null && Sh.S.GetMUC(m_msg.From) == null)
