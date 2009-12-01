@@ -396,18 +396,25 @@ namespace Core.Kernel
 
                 // Executing a command
                 string m_retort = null;
-                Cmd cmd = Cmd.CreateInstance(m_body, r, null);
-                switch (cmd.Accessibility)
+                Cmd cmd = null;
+                try
                 {
-                    case CmdAccessibilityType.Accessible:
-                        cmd.Execute();
-                        break;
-                    case CmdAccessibilityType.NotAccessible:
-                        r.Reply(r.f("access_not_enough", cmd.CompleteAccess.ToString()));
-                        break;
-                    case CmdAccessibilityType.AliasRecursion:
-                        r.Reply(r.f("commands_recursion", Sh.S.Config.RecursionLevel.ToString()));
-                        break;
+                    cmd = Cmd.CreateInstance(m_body, r, null);
+                    switch (cmd.Accessibility)
+                    {
+                        case CmdAccessibilityType.Accessible:
+                            cmd.Execute();
+                            break;
+                        case CmdAccessibilityType.NotAccessible:
+                            r.Reply(r.f("access_not_enough", cmd.CompleteAccess.ToString()));
+                            break;
+                        case CmdAccessibilityType.AliasRecursion:
+                            r.Reply(r.f("commands_recursion", Sh.S.Config.RecursionLevel.ToString()));
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
                 }
 
                 // help out
