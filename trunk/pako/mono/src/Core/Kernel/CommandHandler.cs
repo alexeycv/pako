@@ -154,10 +154,10 @@ namespace Core.Kernel
                    //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
                    //}
 
-                   //if (Sh.S.Config.EnableLogging && m_user != null && m_msg.Body != null)
-                   //{
-                   //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
-                   //}
+                   if (Sh.S.Config.EnableLogging && m_user != null && m_msg.Body != null)
+                   {
+                       Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
+                   }
                 }
                 catch (Exception ex)
                 {
