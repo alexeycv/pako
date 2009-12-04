@@ -103,7 +103,7 @@ namespace Core.Kernel
                     Message _msg = new Message();
                     _msg.To = j;
                     _msg.Type = MessageType.chat;
-                    _msg.Body = "ERROR:   " + ex.ToString() + "\n\nStack trace: \n" + ex.StackTrace;
+                    _msg.Body = "ERROR:   " + ex.ToString() + "\n\nStack trace: \n" + ex.StackTrace + "\nSource:\n" + msg_source;
                     Sh.S.C.Send(_msg);
                 }
             }

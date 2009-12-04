@@ -130,29 +130,39 @@ namespace Core.Kernel
             bool alias_exists = false;
 
             this.m_body = cmd;
-            string pure_cmd = null;
+            string pure_cmd = null; //command test
             if (r.MUC != null && r.MUser != null && (roster == null || (roster != null && roster == false)))
             {
-                r.Access = r.Access ?? 0;
+                // If source is muc
+                r.Access = r.Access ?? 0; //access level. 0 if not defined
+
+                // Checking access levels
                 @out.exe("cmd_muc_access_setting_started");
                 naccess = r.MUC.OptionsHandler.GetOption("cmdaccess") == "+" ? r.MUC.AccessManager.GetAccess(m_body, ref pure_cmd) : null;
                 this.acc_type = AccessType.SetByMuc;
+
+                // Checking for aliases
                 alias_exists = r.MUC.HasAlias(m_body);
                 @out.exe("pure_cmd: '" + pure_cmd + "'");
                 this.has_alias = alias_exists;
                 @out.exe("cmd_muc_access_setting_finished");
+
+                // Checking for command recursion
                 if (r.MUC.chkal_rec(m_body, 0, r.Sh.S.Config.RecursionLevel, r))
                 {
                     @out.exe("recursion_excided");
                     //r.Reply(r.f("commands_recursion", r.Sh.S.Config.RecursionLevel.ToString()));
                     this.avail = CmdAccessibilityType.AliasRecursion;
-                    return;
+                    return; //exit, if resursion
                 }
+
                 int steps = 0;
                 string al_name = null,
                        al_body = null,
                        al_formatted = null,
                        al_temp_f = null;
+
+                //aliases
                 while (r.MUC.HasAlias(m_body))
                 {
                     @out.exe("alias_launching");
@@ -171,6 +181,8 @@ namespace Core.Kernel
                     r.Format = false;
                     string a_purec_cmd = null;
                     string _purec_cmd = null;
+
+                    // Getting command access levels
                     _nalias = r.MUC.OptionsHandler.GetOption("cmdaccess") == "+" ? r.MUC.AccessManager.GetAccess(al_body, ref a_purec_cmd) : null;
                     _naccess = r.MUC.OptionsHandler.GetOption("cmdaccess") == "+" ? r.MUC.AccessManager.GetAccess(m_body, ref _purec_cmd) : null;
                     _nalias = r.Sh.S.AccessManager.GetAccess(al_body, a_purec_cmd, _nalias);
@@ -181,28 +193,33 @@ namespace Core.Kernel
                     @out.exe("test_cmd: " + al_formatted);
                     @out.exe("test_access: " + _naccess.ToString());
                     @out.exe("test_access_finish: " + _nalias.ToString());
+
+                    // Checking a user access
                     if (_nalias != _naccess && _naccess > r.Access)
                     {
                         @out.exe("access_not_enough");
                         this.naccess = _naccess;
                         //r.Reply(r.f("access_not_enough", naccess.ToString()));
                         this.avail = CmdAccessibilityType.NotAccessible;
-                        return;
+                        return;  //exit, if user haven't access
                     }
                 }
-                else
+                else //no aloases
                     @out.exe("alias_not_found: stage2");
 
 
 
-            }
+            } //end muc part
 
-            args = Utils.SplitEx(m_body, 2);
+            args = Utils.SplitEx(m_body, 2); // getting a command aqnd arguments
             volume = args[0];
+
+            // Get command global access
             @out.exe("cmd_global_access_setting_started: " + m_body);
             naccess = r.Sh.S.AccessManager.GetAccess(m_body, pure_cmd, naccess, ref this.acc_type);
             if (naccess == null)
             {
+                // !!! NOTICE: access will be 0, but if command need a high security level it's must be checked MANUALY !!!
                 this.acc_type = AccessType.None;
                 @out.exe("cmd_no_access_notifies_found_access=0");
             }
@@ -214,7 +231,7 @@ namespace Core.Kernel
                 {
                     @out.exe("access_not_enough");
                     this.avail = CmdAccessibilityType.NotAccessible;
-                    return;
+                    return; // exiut if no access
                 }
             }
 
@@ -229,6 +246,10 @@ namespace Core.Kernel
         }
 
 
+        /// <summary>
+        /// Execute a command
+        /// </summary>
+
         public bool Execute()
         {
             @out.exe("cmd_body: " + m_body);
@@ -238,13 +259,12 @@ namespace Core.Kernel
                 object obj = m_r.Sh.S.PluginHandler.Execute(volume);
                 if (obj != null)
                 {
-                    @out.exe("cmd_body: handles");
-                    IPlugin plugin = (IPlugin)obj;
-                    PluginTransfer pt = new PluginTransfer(m_r);
-                    @out.exe("EXE");
-                    plugin.PerformAction(pt);
-                    return true;
-
+                   @out.exe("cmd_body: handles");
+                   IPlugin plugin = (IPlugin)obj;
+                   PluginTransfer pt = new PluginTransfer(m_r);
+                   @out.exe("EXE");
+                   plugin.PerformAction(pt);
+                   return true;                    
                 }
                 return false;
             }

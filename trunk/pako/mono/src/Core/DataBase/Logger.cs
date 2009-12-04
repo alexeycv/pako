@@ -82,6 +82,23 @@ namespace Core.DataBase
             }
         }
 
+	public void LoadIqBase()
+        {
+            bool to_create = !File.Exists(db_file);
+            m_dir = db_file;
+            sqlite_conn = new SqliteConnection("URI=file:" + db_file.Replace("\\", "/") + ",version=" + ver.ToString());
+            sqlite_conn.Open();
+            if (to_create)
+            {
+                SqliteCommand cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE  iq (jid varchar, room varchar, nick varchar, version varchar, os varchar);
+                                      ", sqlite_conn);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public Logger(string DBfile, int version, string logtype)
         {
             for (int i = 0; i < 30; i++)
