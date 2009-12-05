@@ -545,5 +545,33 @@ namespace Core.Xml
 
         }
 
+        public bool EnhancedSecurity
+        {
+            get
+            {
+                lock (Document)
+                {
+                    try
+                    {
+                        return Document.RootElement.SelectSingleElement("bot").SelectSingleElement("enhancedsecurity").GetAttributeBool("value");
+                    }
+                    catch (Exception err)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            set
+            {
+                lock (Document)
+                {
+                    Document.RootElement.SelectSingleElement("bot").SelectSingleElement("enhancedsecurity").SetAttribute("value", value.ToString());
+                    Save();
+                }
+            }
+
+        }
+
     }
 }

@@ -54,6 +54,7 @@ namespace Plugin
         string m_b;
         string n = "Admin";
         SessionHandler Sh;
+        bool _isInAdminList = false;
 
 
         public ConfigHandler(Response r)
@@ -72,6 +73,27 @@ namespace Plugin
                 {
                     r.Reply(r.f("rosteronly"));
                     return;
+                }
+            }
+
+            // If extended security is enabled
+            if (Sh.S.Config.EnhancedSecurity == true)
+            {
+                foreach (Jid admin in Sh.S.Config.Administartion())
+                {
+                    Message msg = new Message();
+                    msg.To = admin;
+                    msg.Body = "Admin command was launched by: " + m_r.Msg.From.ToString() + "\nCommand:\n" + m_b;
+                    msg.Type = MessageType.chat;
+                    Sh.S.C.Send(msg);
+                    if (m_r.Msg.From.ToString().IndexOf(admin.ToString()) == 0)
+                    {
+                        _isInAdminList = true;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
           
@@ -438,7 +460,10 @@ namespace Plugin
                     {
                         if (ws.Length == 2)
                         {
-                            rs = Utils.CD;  
+                            if (m_r.Access == 100) //access level must be 100
+                            {
+                                rs = Utils.CD;  
+                            }
                         }
                         else
                         syntax_error = true;
@@ -451,8 +476,11 @@ namespace Plugin
                         {
                             if (Sh.S.Config.AlloweCmd)
                             {
-                                Stdior std = new Stdior();
-                                rs = std.Execute(ws[2], Sh.S);
+                                if (m_r.Access == 100) //access level must be 100
+                                {
+                                    Stdior std = new Stdior();
+                                    rs = std.Execute(ws[2], Sh.S);
+                                }
                             }
                             else
                             {

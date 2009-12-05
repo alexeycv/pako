@@ -83,5 +83,8 @@
     # Google API key for Google Search service
     <googlekey value="ouMVkMNQFHLQxhw96VunraH5SRWyRBhf" /> 
 
+    # If you wish to enable advanced bot security set this value true
+    <enhancedsecurity value="false" />
+
   </bot>
 </Config>
