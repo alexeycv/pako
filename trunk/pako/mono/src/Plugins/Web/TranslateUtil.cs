@@ -170,7 +170,9 @@ namespace www
             try
             {
                 string m_pair = a_lang + "%7C" + b_lang;
-                HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://translate.google.com/translate_t?text=" + HttpUtility.UrlEncode(m_text) + "&langpair=" + m_pair));
+                //string m_pair = a_lang + "%7C" + b_lang;
+                //HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://translate.google.com/translate_t?text=" + HttpUtility.UrlEncode(m_text) + "&langpair=" + m_pair));
+                HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q="+HttpUtility.UrlEncode(m_text)+"&langpair="+m_pair));
                 wr.Method = "GET";
                 wr.ContentType = "application/x-www-form-urlencoded";
                 wr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
@@ -184,10 +186,14 @@ namespace www
                 m_r.Reply(m_r.f("gt_failed"));
                 return;
             }
+            //@out.write(res);
+            //res = Utils.GetValue(Utils.GetValue(res.Substring(res.IndexOf("</textarea>")+10), "<textarea(.*)/textarea>"), ">(.*)<");
 
-            res = Utils.GetValue(Utils.GetValue(res.Substring(res.IndexOf("</textarea>")+10), "<textarea(.*)/textarea>"), ">(.*)<");
+            ////string res2 = res.Substring(res.IndexOf("<span id=\"result_box\"")+19, res.Length-1);
+            ////@out.write(res2+"\n");
+            ////res = Utils.GetValue(Utils.GetValue(res2.Substring(res2.IndexOf("</span>")+10), "<span(.*)/span>"), ">(.*)<");
             @out.exe("'" + res + "'");
-            string result = HttpUtility.HtmlDecode(HttpUtility.HtmlDecode(res)).Replace("<br>", "\n");
+            string result = res.Substring(res.IndexOf("{\"translatedText\":\"")+19).Substring(0, res.IndexOf("\"},") - (res.IndexOf("{\"translatedText\":\"")+19) ); //HttpUtility.HtmlDecode(HttpUtility.HtmlDecode(res)).Replace("<br>", "\n");
             result = result.Trim() == "" ? m_r.f("lang_not_existing") : result;
             m_r.Reply(result);
         }
