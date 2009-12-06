@@ -6,6 +6,14 @@
 There is an Pako bot version history.
 
 
+= Pako 8.8.36 =
+
+Posted on: 2009-12-06 03:30.
+
+  * *Fix:* translator error. It's display the same text as input. Gogle have changed page layout and use an ajax technology;
+  * *Add:* Enhanced security options;
+  * *FIX:* some restriction fixes.
+
 = Pako 8.8.35 =
 
 Posted on: 2009-11-26 02:46.
