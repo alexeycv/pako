@@ -293,7 +293,7 @@ New ideas and comments are always welcomed. Mail me about your idea and i will t
 
 = Support =
 
-See [http://code.google.com/p/pako/wiki/bbodio Bbodio] contact information here.
+See the [http://www.klichuk.info author] contact information here.
 
 
 = Special thanks =
