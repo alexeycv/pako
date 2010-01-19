@@ -203,7 +203,11 @@ namespace Core.Kernel
                             m_user != null ? m_user.Idle : DateTime.Now.Ticks,
                             ""
                         );
-                        VersionCB _version = new VersionCB(user, Sh.S.C);
+
+                        if (_justJoined == true)
+                        {
+                            VersionCB _version = new VersionCB(user, Sh.S.C);
+                        }
 
 
                         Sh.S.GetMUC(p_jid).SetUser(m_user, user);
