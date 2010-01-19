@@ -141,22 +141,29 @@ namespace Core.Kernel
            @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Initializing databases and handlers...");
 
            int sqlv = int.Parse(S.Config.GetTag("sqlite"));
-           Sh.LoadBase(sqlv);
-           m_va = new VipAccess(dir_va, sqlv);
-           m_vl = new VipLang(dir_vl, sqlv);
-           m_censor = new Censor(dir_censor, sqlv);
-           m_el = new ErrorLoger(dir_error);
-           m_ams = new AutoMucManager(dir_ams);
-           m_acsh = new AccessManager(dir_access);
-           temp = new Tempdb(dir_temp, sqlv);
-           m_con = new XmppClientConnection();
-           m_calch = new CalcHandler();
-           _logger = new Logger(dir_log+"log.db", sqlv, "chatlog");
-           _seenlogger = new Logger(dir_log+"seen.db", sqlv, "seenlog");
-           _htmllogger = new Logger(dir_html_log, sqlv, "muclog");
-           _htmlPrivlogger = new Logger(dir_html_priv_log, sqlv, "muclog");
+           try
+           {
+               Sh.LoadBase(sqlv);
+               m_va = new VipAccess(dir_va, sqlv);
+               m_vl = new VipLang(dir_vl, sqlv);
+               m_censor = new Censor(dir_censor, sqlv);
+               m_el = new ErrorLoger(dir_error);
+               m_ams = new AutoMucManager(dir_ams);
+               m_acsh = new AccessManager(dir_access);
+               temp = new Tempdb(dir_temp, sqlv);
+               m_con = new XmppClientConnection();
+               m_calch = new CalcHandler();
+               _logger = new Logger(dir_log+"log.db", sqlv, "chatlog");
+               _seenlogger = new Logger(dir_log+"seen.db", sqlv, "seenlog");
+               _htmllogger = new Logger(dir_html_log, sqlv, "muclog");
+               _htmlPrivlogger = new Logger(dir_html_priv_log, sqlv, "muclog");
 
-           @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Handlers and databases ready.");
+               @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Handlers and databases ready.");
+           }
+           catch
+           {
+               @out.write("<" + DateTime.Now.Hour+" : "+DateTime.Now.Minute + " : " + DateTime.Now.Second + "> " + "Handlers and databases NOT ready.");
+           }
 
            @out.exe("Jid: <" + S.Config.Jid + ">\n");
            m_con.Resource = S.Config.Jid.Resource;
