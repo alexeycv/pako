@@ -191,18 +191,19 @@ namespace Core.Kernel
                             @out.exe(m_user != null ? "[" + p_jid.User + "]*** " + p_jid.Resource + " is now " + pres.Show.ToString().Replace("NONE", "Online") : "[" + p_jid.User + "]*** " + p_jid.Resource + " enters the room as " + pres.MucUser.Item.Affiliation + "/" + pres.MucUser.Item.Role);
                         time = m_user != null ? m_user.EnterTime : DateTime.Now.Ticks;
                         MUser user = new MUser(
-                        pres.From.Resource,
-                        Jid,
-                        pres.MucUser.Item.Role,
-                        pres.MucUser.Item.Affiliation,
-                        pres.Status,
-                        pres.Show,
-                        m_muc != null ? m_muc.Language :
-                                 Sh.S.Config.Language,
-                        time,
-                        access,
-                        m_user != null ? m_user.Idle : DateTime.Now.Ticks
+                            pres.From.Resource,
+                            Jid,
+                            pres.MucUser.Item.Role,
+                            pres.MucUser.Item.Affiliation,
+                            pres.Status,
+                            pres.Show,
+                            m_muc != null ? m_muc.Language : Sh.S.Config.Language,
+                            time,
+                            access,
+                            m_user != null ? m_user.Idle : DateTime.Now.Ticks,
+                            ""
                         );
+                        VersionCB _version;
 
 
                         Sh.S.GetMUC(p_jid).SetUser(m_user, user);

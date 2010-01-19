@@ -45,8 +45,10 @@ namespace Core.Conference
         ShowType m_show;
         int? m_access;
         string m_lang;
-        object[] sobjs = new object[12];
+        object[] sobjs = new object[20];
         long msg_time;
+        string _version;
+        bool _isBot;
 
 
         /// <summary>
@@ -56,6 +58,9 @@ namespace Core.Conference
         public int? GetAccess()
         {
             int? res = 0;
+
+            // If IsBot and BotNoAccess config parameter is enabled, then return 0;
+
             switch (m_role)
             {
                 case Role.participant:
@@ -106,10 +111,10 @@ namespace Core.Conference
       /// <param name="EnterTime"></param>
       /// <param name="args"></param>
   
-        public MUser(string UserNick, Jid UserJid, Role UserRole, Affiliation UserAffiliation, string UserStatus, ShowType UserShow, string Lang, long EnterTime, int? access, long Idle)
+        public MUser(string UserNick, Jid UserJid, Role UserRole, Affiliation UserAffiliation, string UserStatus, ShowType UserShow, string Lang, long EnterTime, int? access, long Idle, string user_version)
         {
 
-            for (int i = 0; i < 12; i++ )
+            for (int i = 0; i < 20; i++ )
             {
                 sobjs[i] = new object();
             }
@@ -124,6 +129,8 @@ namespace Core.Conference
             m_lang = Lang;
             m_enter = EnterTime;
             msg_time = Idle;
+            _version=user_version;
+            _isBot=false;
 
         }
         /// <summary>
@@ -229,6 +236,24 @@ namespace Core.Conference
         {
             get { lock (sobjs[9]) { return msg_time; } }
             set { lock (sobjs[9]) { msg_time = value; } }
+        }
+
+        // <summary>
+        /// Gets or sets a MUC-user version
+        /// </summary>
+        public string Version
+        {
+            get { lock (sobjs[13]) { return _version; } }
+            set { lock (sobjs[13]) { _version = value; } }
+        }
+
+        // <summary>
+        /// Gets or sets a MUC-user bot-checking state
+        /// </summary>
+        public bool IsBot
+        {
+            get { lock (sobjs[11]) { return _isBot; } }
+            set { lock (sobjs[14]) { _isBot = value; } }
         }
      
 
