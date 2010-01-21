@@ -204,6 +204,8 @@ namespace Core.Kernel
                             ""
                         );
 
+                        // Checking version
+
                         if (_justJoined == true)
                         {
                             VersionCB _version = new VersionCB(user, Sh.S.C);
@@ -217,8 +219,7 @@ namespace Core.Kernel
                         r.MUser = user;
                         r.Sh = Sh;
 
-                        // TODO: Logging entering the room
-                        // TODO: checking version
+                        // Logging entering the room
 
                         if (m_muc != null)
                         {
