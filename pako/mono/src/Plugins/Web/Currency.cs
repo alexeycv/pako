@@ -91,11 +91,24 @@ namespace www
             WebResponse _wp = wr.GetResponse();
             StreamReader sr = new StreamReader(_wp.GetResponseStream());
 
+            string temp = sr.ReadToEnd();
             string data = "";
-            Regex reg = new Regex("<h2 class=\"XE\">(.*)<!--");
-            MatchCollection mc = reg.Matches(sr.ReadToEnd());
-            data = Utils.GetValue(mc[0].ToString(), "<h2 class=\"XE\">(.*)<!--");
-            data += " = " + Utils.GetValue(mc[1].ToString(), "<h2 class=\"XE\">(.*)<!--");
+            Regex reg = new Regex("<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
+            MatchCollection mc = reg.Matches(temp);
+            data = Utils.GetValue(mc[0].ToString(), "<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
+            data += " = " + Utils.GetValue(mc[1].ToString(), "<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
+
+            //if (data == "")
+            //{
+            //    data=temp;
+            //}
+
+            //return data;
+
+            //string _sbegin = temp.Substring(temp.IndexOf("<h2 class=\"XE\""), temp.Length - temp.IndexOf("<h2 class=\"XE\"") - 1);
+            //string _send = _sbegin.Substring(1, 10);
+            //data = _send;
+
             return data;
         }
 
