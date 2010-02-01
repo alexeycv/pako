@@ -180,11 +180,11 @@ namespace Core.DataBase
                 try
                 {
                     // If the same jid+room is exisis
-                    //SqliteCommand delcmd = new SqliteCommand(String.Format(@"
-                    //   DELETE FROM logs WHERE nick LIKE '%{0}%' AND room LIKE '%{1}%';",                                                            
-                    //                                           nick,
-                    //                                           room
-                    //                                           ), sqlite_conn);
+                    SqliteCommand delcmd = new SqliteCommand(String.Format(@"
+                       DELETE FROM logs WHERE jid = '{0}' AND nick = '{1}' AND room = '{2}';",                                                            
+                                                               jid, nick,
+                                                               room
+                                                               ), sqlite_conn);
                     //delcmd.ExecuteNonQuery();
 
                     SqliteCommand cmd = new SqliteCommand(String.Format(@"
