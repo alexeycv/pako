@@ -211,7 +211,7 @@ namespace Core.Kernel
 
             } //end muc part
 
-            args = Utils.SplitEx(m_body, 2); // getting a command aqnd arguments
+            args = Utils.SplitEx(m_body, 2); // getting a command aqd arguments
             volume = args[0];
 
             // Get command global access
@@ -222,6 +222,10 @@ namespace Core.Kernel
                 // !!! NOTICE: access will be 0, but if command need a high security level it's must be checked MANUALY !!!
                 this.acc_type = AccessType.None;
                 @out.exe("cmd_no_access_notifies_found_access=0");
+            }
+            if (volume == "admin" || volume == "misc")
+            {
+                naccess = naccess ?? 100;
             }
             naccess = naccess ?? 0;
 
