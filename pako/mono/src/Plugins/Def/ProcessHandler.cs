@@ -118,10 +118,18 @@ namespace Plugin
 
                 case "showto":
                     {
-                        string word = Utils.GetValue(m_b, "[(.*)]").Trim();
-                        m_b = Utils.RemoveValue(m_b, "[(.*)]", true);
-                        ws = Utils.SplitEx(m_b, 2);
+                        string word = "";
+                        try
+                        {
+                            word = Utils.GetValue(m_b, "[(.*)]").Trim();
+                            m_b = Utils.RemoveValue(m_b, "[(.*)]", true);
+                            ws = Utils.SplitEx(m_b, 2);
 
+                        }
+                        catch (Exception ex)
+                        {
+                            @out.exe("ERROR:\n\n" + ex.Message + "\n\n" + ex.StackTrace);
+                        }
 
                         if (word != "")
                         {
@@ -135,12 +143,15 @@ namespace Plugin
                             {
                                 if (def != null)
                                 {
-                                    Message msg = new Message();
-                                    msg.To = new Jid(m_msg.From.Bare + "/" + nick);
-                                    msg.Body = def;
-                                    msg.Type = MessageType.chat;
-                                    msg.From = m_msg.From;
-                                    m_r.Connection.Send(msg);
+                                    //Message msg = new Message();
+                                    //msg.To = new Jid(m_msg.From.Bare + "/" + nick);
+                                    //msg.Body = def;
+                                    //msg.Type = MessageType.chat;
+                                    //msg.From = m_msg.From;
+                                    //m_r.Connection.Send(msg);    
+                                    rs = def;// + " " + nick;
+                                    m_r.MUser = m_r.MUC.GetUser(nick);
+                                    m_r.Msg.From = new Jid(m_msg.From.Bare + "/" + nick);
                                 }
                             }
                             else
@@ -149,6 +160,7 @@ namespace Plugin
                         }
                         else
                             syntax_error = true;
+
                         break;
                     }
 
