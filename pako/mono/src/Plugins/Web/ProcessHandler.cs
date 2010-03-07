@@ -177,7 +177,7 @@ namespace www
                         break;
                     }
 
-                case "google":
+                case "google_old":
                     {
                         ws = Utils.SplitEx(m_b, 3);
                         if (ws.Length > 2)
@@ -336,6 +336,125 @@ namespace www
                             syntax_error = true;
                         break;
                     }
+
+                case "google":
+                    {
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2)
+                        {
+                            string text;
+                            int number = 1;
+                            int startn = 1;
+                            if (ws.Length > 3)
+                            {
+                                try
+                                {
+                                    if (ws[2].StartsWith("#"))
+                                    {
+                                        startn = Convert.ToInt32(ws[2].Substring(1));
+                                        number = startn;
+                                        text = ws[3];
+                                    }
+                                    else
+                                    {
+                                        number = Convert.ToInt32(ws[2]);
+                                        text = ws[3];
+                                    }
+                                }
+                                catch
+                                {
+                                    ws = Utils.SplitEx(m_b, 2);
+                                    text = ws[2];
+                                }
+                            }
+                            else
+                            {
+                                ws = Utils.SplitEx(m_b, 2);
+                                text = ws[2];
+                            }
+
+                            if (number <= 10 && number > 0 && startn <= 10 && startn > 0)
+                            {
+                                try
+                                {
+                                    //webrequests
+                                    HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q="+text));
+                                    _request.Method = "GET";
+                                    _request.ContentType = "application/x-www-form-urlencoded";
+                                    _request.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+                                    //_request.UserAgent
+                                    WebResponse _response = _request.GetResponse();
+
+                                    StreamReader _reader = new StreamReader(_response.GetResponseStream());
+
+                                    String _data = _reader.ReadToEnd();
+                                    String _resultStr = "";
+
+                                    string _url = "";
+                                    string _title = "";
+                                    string _content = "";
+                                    int _indexContent = 0;
+                                    string _textCopy = "";
+
+                                    for (int _index = 1; _index <= number; _index++)
+                                    {
+                                        if (number > 1)
+                                        {
+                                            _resultStr += "\n" + _index.ToString() + ")\n";
+                                        }
+
+                                        //_ fill URL
+                                        _url = "";
+                                        _indexContent = _data.IndexOf("\"url\":\"");
+                                        _textCopy = _data.Substring(_indexContent, _data.Length - _indexContent - 1);
+                                        
+                                        _url = _textCopy.Substring(7, _textCopy.IndexOf("\",") - 7);
+                                        if (_url == "")
+                                            _url = "[NO URL]" + _indexContent + " - " + _textCopy.IndexOf("/") + " - " + _textCopy;
+                                        _url+="\n";
+                                        _resultStr+=_url;
+
+                                       //_ fill title
+                                        _title = "";
+                                        _indexContent = _data.IndexOf("\"title\":\"");
+                                        _textCopy = _data.Substring(_indexContent, _data.Length - _indexContent - 1);
+                                        
+                                        _title = _textCopy.Substring(9, _textCopy.IndexOf("\",") - 9);
+                                        if (_title == "")
+                                            _title = "[NO URL]" + _indexContent + " - " + _textCopy.IndexOf("/") + " - " + _textCopy;
+                                        _title+="\n";
+                                        _resultStr+=_title;
+
+                                       //_ fill content
+                                        _content = "";
+                                        _indexContent = _data.IndexOf("\"content\":\"");
+                                        _textCopy = _data.Substring(_indexContent, _data.Length - _indexContent - 1);
+                                        
+                                        _content = _textCopy.Substring(11, _textCopy.IndexOf("\"}") - 11);
+                                        if (_content == "")
+                                            _content = "[NO URL]" + _indexContent + " - " + _textCopy.IndexOf("/") + " - " + _textCopy;
+                                        _content+="\n";
+                                        _resultStr+=_content;
+
+                                        // Replacer
+                                        _resultStr = _resultStr.Replace("u003c", "<").Replace("u003e", ">").Replace("u0026quot;", "\"").Replace("\\\"", "\"").Replace("\\>", ">").Replace("\\<", "<").Replace("<b>", "").Replace("</b>", "");
+
+                                    }
+                                    rs = _resultStr;
+                                }
+                                catch (Exception ex)
+                                {
+                                    rs = m_r.f("google_failed") + "\n" + ex.Message;
+                                }
+
+                            }
+                            else syntax_error = true;
+                        }
+                        else
+                            syntax_error = true;
+                        break;
+                    }
+
 
                 case "tld":
                     {
