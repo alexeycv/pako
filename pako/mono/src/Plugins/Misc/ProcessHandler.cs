@@ -461,7 +461,7 @@ namespace Plugin
 
                 case "list":
                     {
-                        rs = m_r.f("volume_list", n) + "\nlist, access, calc, cs, make, say, test, langs, join, leave, cmds, vars";
+                        rs = m_r.f("volume_list", n) + "\nlist, access, calc, cs, make, say, test, langs, join, leave, cmds, vars, rejoin, rejoinall";
                         break;
                     }
 
