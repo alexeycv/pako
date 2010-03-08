@@ -476,7 +476,7 @@ namespace Core.Kernel
 
                                 if (user.Nick.Length > _nickLimit)
                                 {
-                                    string censored = "Nick Limit is no more than "+ _nickLimit.ToString();
+                                    string censored = "Your nick is too big. It large than "+ _nickLimit.ToString();
                                     switch (m_muc.OptionsHandler.GetOption("nick_limit_result"))
                                     {
                                         case "kick":

@@ -40,7 +40,7 @@ namespace Core.Xml
             Open(file, 10);
             
            @out.exe("option_hnd_created_or_opened");
-           string[] opts = new string[] { "global_censor", "censor_result", "amoderator", "akick", "avisitor", "aliases", "mode", "cmdaccess", "cleanup_unit", "enable_logging", "nick_limit", "nick_limit_result" };
+           string[] opts = new string[] { "global_censor", "censor_result", "amoderator", "akick", "avisitor", "aliases", "mode", "cmdaccess", "cleanup_unit", "enable_logging", "nick_limit", "nick_limit_result", "length_limit", "length_limit_overflow_result" };
            foreach (string opt in opts)
                AddOption(opt); 
             
@@ -195,6 +195,21 @@ namespace Core.Xml
                     }
                     break;
 
+                case "length_limit_overflow_result":
+                   Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "kick");
+                            el.SetAttribute("possible","kick|devoice|nothing|warn|ban");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+
                 case "cleanup_unit":
                     Document.RootElement.AddTag("option");
                     foreach (Element el in Document.RootElement.SelectElements("option"))
@@ -218,6 +233,21 @@ namespace Core.Xml
                         {
                             el.SetAttribute("name", Name);
                             el.SetAttribute("value", "20");
+                            el.SetAttribute("possible", "*");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+
+                case "length_limit":
+                    Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "200");
                             el.SetAttribute("possible", "*");
                             Save();
                             return true;
