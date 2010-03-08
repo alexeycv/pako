@@ -28,6 +28,7 @@ using System.IO;
 using Core.Kernel;
 using Core.Conference;
 using Core.Other;
+using Core.Xml;
 using System.Threading;
 
 namespace Plugin
@@ -272,7 +273,92 @@ namespace Plugin
                         break;
                     }
 
+                case "rejoin":
+                    {
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2)
+                        {
+                            Jid room = Sh.S.GetMUCJid(ws[2]) ?? new Jid(ws[2]);
 
+                            if (Sh.S.AutoMucManager.Exists(room))
+                            {
+
+                                MUC m = Sh.S.GetMUC(room);
+                                m_r.Reply(m_r.Agree());
+                                if (Sh.S.GetMUC(room) != null)
+                                {
+                                    Message msg = new Message();
+                                    msg.To = room;
+                                    msg.Body = "Rejoin...";// : m_r.f("muc_leave");
+                                    msg.Type = MessageType.groupchat;
+                                    m_r.Connection.Send(msg);
+                                    Presence pr = new Presence();
+                                    pr.To = room;
+                                    pr.Type = PresenceType.unavailable;
+                                    m_r.Connection.Send(pr);
+                                }
+
+                                Sh.S.AutoMucManager.DelMuc(room);
+                                //Sh.S.GetMUC(room).Join();
+
+                                // Join
+                                //Thread.Sleep(20);
+                                //Sh.S.MUCs.Add(new Jid(ws[2].Trim()), m);
+                                //MucActivityController mac = new MucActivityController(m_r, m);
+
+                            }
+
+                             Thread.Sleep(5);
+                             m_r.Reply("Rejoin process started...");
+
+                            //r START JOIN section
+
+                            string _cmd = Utils.GetValue(m_b, "[(.*)]").Trim();
+                            m_b = Utils.RemoveValue(m_b, "[(.*)]", true);
+                            ws = Utils.SplitEx(m_b, 3);
+
+                            //m_r.Reply(m_b + "\n\n" + ws.Length);
+
+                            //*misc join roso@c.j.dom Radiohead [password]
+                            if (ws.Length == 3)
+                            {
+                                //m_r.Reply("L=3 Creation phase...");
+                                if (!Sh.S.AutoMucManager.Exists(new Jid(ws[2].Trim())))
+                                {
+                                    MUC m = new MUC(Sh.S.C, new Jid(ws[2].Trim()), Sh.S.Config.Nick, Sh.S.Config.Status, Sh.S.Config.Language, ShowType.NONE, Sh, _cmd.Trim() != "" ? _cmd : null);
+                                    Sh.S.MUCs.Add(new Jid(ws[2].Trim()), m);
+                                    MucActivityController mac = new MucActivityController(m_r, m);
+                                    //m_r.Reply("L=3 Handler done...");
+                                    return;
+                                }
+                                else
+                                    rs = m_r.f("muc_already_in", ws[2]);
+
+                            }
+                            else
+                                if (ws.Length == 4)
+                                {
+                                    //m_r.Reply("L=4 Creation phase...");
+                                    if (!Sh.S.AutoMucManager.Exists(new Jid(ws[2].Trim())))
+                                    {
+                                        MUC m = new MUC(Sh.S.C, new Jid(ws[2].Trim()), ws[3].Trim(), Sh.S.Config.Status, Sh.S.Config.Language, ShowType.NONE, Sh,_cmd.Trim() != "" ? _cmd : null);
+                                        Sh.S.MUCs.Add(new Jid(ws[2].Trim()), m);
+                                        MucActivityController mac = new MucActivityController(m_r, m);
+                                       // m_r.Reply("L=4 Handler done");
+                                        return;
+
+                                    }
+                                    else
+                                        rs = m_r.f("muc_already_in", ws[2]);
+                                }
+                                else
+                                    syntax_error = true;
+                             // END of JION section
+                        }
+                        else
+                            syntax_error = true;
+                        break;
+                    }
 
 
 
@@ -297,6 +383,31 @@ namespace Plugin
                             rs = ws[2];
                         else
                             syntax_error = true;
+
+                        break;
+                    }
+
+                    case "rejoinall":
+                    {
+                        foreach (AutoMuc am in Sh.S.AutoMucManager.GetAMList())
+                       {
+ 
+                           if (!Sh.S.MUCs.ContainsKey(am.Jid))
+                           {
+                               MUC m = new MUC(Sh.S.C, am.Jid, am.Nick, am.Status, am.Language, ShowType.NONE, Sh, am.Password);
+                               Sh.S.MUCs.Add(am.Jid, m);
+                           }
+                       }
+                        lock (this)
+                       {
+                           foreach (MUC m in Sh.S.MUCs.Values)
+                           {
+                               m.Join();
+                               m_r.Reply("Rejoin to " + m.Jid.ToString());
+                           }
+                       }
+
+                       m_r.Reply(m_r.Agree());
 
                         break;
                     }
