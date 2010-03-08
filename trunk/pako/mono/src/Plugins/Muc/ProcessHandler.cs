@@ -1569,9 +1569,23 @@ namespace Plugin
                             short index = 1;
                             foreach (MUC m in Sh.S.MUCs.Values)
                             {
+                                try
+                                {
                                 data += "\n" + index++.ToString() + ") <" + m.Jid.ToString() + "/" + m.MyNick + ">    (" + m.Users.Count + ")\n     " +
                                     m.Language + " | " + m.Me.Affiliation + "/" + m.Me.Role + "\n     " +
                                     m.MyShow.ToString().Replace("NONE", "Online") + " (" + m.MyStatus + ")";
+                                } 
+                                catch (Exception ex)
+                                {
+                                    foreach (Jid admin in Sh.S.Config.Administartion())
+                                    {
+                                        Message msg = new Message();
+                                        msg.To = admin;
+                                        msg.Body = "MUC Show exception \n\n" + ex.Message + "\n\nPlease send this report to project developrets\nhttp://pako.googlecode.com";
+                                        msg.Type = MessageType.chat;
+                                        Sh.S.C.Send(msg);
+                                    }
+                                }
                             }
                             rs = m_r.f("mucs_list") + data + "\n-- " + Sh.S.MUCs.Count.ToString() + " --";
                         }
