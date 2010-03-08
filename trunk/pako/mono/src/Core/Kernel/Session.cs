@@ -207,7 +207,6 @@ namespace Core.Kernel
            m_con.OnMessage += delegate(object o, agsXMPP.protocol.client.Message msg)
            {
                CommandHandler cmdh = new CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
-               // TODO: add a message loghandler (html logfile)
            };
          
          
