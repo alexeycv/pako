@@ -439,6 +439,7 @@ namespace www
                                         // Replacer
                                         _resultStr = _resultStr.Replace("u003c", "<").Replace("u003e", ">").Replace("u0026quot;", "\"").Replace("\\\"", "\"").Replace("\\>", ">").Replace("\\<", "<").Replace("<b>", "").Replace("</b>", "");
 
+                                        _data = _textCopy;
                                     }
                                     rs = _resultStr;
                                 }

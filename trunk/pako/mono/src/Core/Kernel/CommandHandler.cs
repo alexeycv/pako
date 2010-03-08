@@ -324,6 +324,96 @@ namespace Core.Kernel
                     else
                         @out.exe("censored_not_found");
                     @out.exe("censored_check_finished");
+                    
+                    // Checking for a message length limit
+//NickLimit handlers
+                    int _messageTextLimit = 100;
+                    try
+                    {
+                        _messageTextLimit = Convert.ToInt16(m_muc.OptionsHandler.GetOption("length_limit"));
+                    }
+                    catch (Exception err)
+                    {
+                    }
+
+                    if (m_msg.Body.Length > _messageTextLimit)
+                    {
+                        string censored = "Your message is too long and large than "+ _messageTextLimit.ToString() + " characters.";
+                        switch (m_muc.OptionsHandler.GetOption("length_limit_overflow_result"))
+                        {
+                            case "kick":
+                                {
+                                    @out.exe("censor_next_kick");
+                                    if (m_muc.KickableForCensored(m_user))
+                                    { m_muc.Kick(null, m_user, censored); return; }
+                                    else
+                                    {
+                                        MessageType original_type = r.Msg.Type;
+                                        r.Msg.Type = MessageType.groupchat;
+                                        r.Reply(censored);
+                                        r.Msg.Type = original_type;
+                                        @out.exe("censor_next_sleeping");
+                                        Sh.S.Sleep();
+
+                                        @out.exe("censor_next_slept");
+                                    }
+                                    break;
+                                } 
+
+                            case "devoice":
+                                {
+                                    @out.exe("censor_next_devoice");
+                                    if (m_muc.KickableForCensored(m_user))
+                                    { m_muc.Devoice(null, m_user, censored); return; }
+                                    else
+                                    {
+                                        MessageType original_type = r.Msg.Type;
+                                        r.Msg.Type = MessageType.groupchat;
+                                        r.Reply(censored);
+                                        r.Msg.Type = original_type;
+                                        @out.exe("censor_next_sleeping");
+                                        Sh.S.Sleep();
+                                        @out.exe("censor_next_slept");
+                                    }
+                                    break;
+                                }
+                            case "ban":
+                                {
+                                    @out.exe("censor_next_ban");
+                                    if (m_muc.KickableForCensored(m_user))
+                                    { m_muc.Ban(null, m_user, censored); return; }
+                                    else
+                                    {
+                                        MessageType original_type = r.Msg.Type;
+                                        r.Msg.Type = MessageType.groupchat;
+                                        r.Reply(censored);
+                                        r.Msg.Type = original_type;
+                                        @out.exe("censor_next_sleeping");
+                                        Sh.S.Sleep();
+                                        @out.exe("censor_next_slept");
+                                    }
+                                    break;
+                                }
+                             
+                            case "warn":
+                                {
+                                    @out.exe("censor_next_warn");
+                                    MessageType original_type = r.Msg.Type;
+                                    r.Msg.Type = MessageType.groupchat;
+                                    r.Reply(censored);
+                                    r.Msg.Type = original_type;
+                                    @out.exe("censor_next_sleeping");
+                                    Sh.S.Sleep();
+                                    @out.exe("censor_next_slept");
+
+                                }
+                                break;
+                            default:
+                                break;
+
+                        }//switch
+                    }//m_msg.Body.Length > _messageTextLimit
+
 
                     //Initializing aliases
                     if (!m_muc.HasAlias(m_body))
