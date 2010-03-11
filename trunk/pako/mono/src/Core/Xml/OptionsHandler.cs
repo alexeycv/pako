@@ -187,7 +187,7 @@ namespace Core.Xml
                         if (!el.HasAttribute("name"))
                         {
                             el.SetAttribute("name", Name);
-                            el.SetAttribute("value", "kick");
+                            el.SetAttribute("value", "warn");
                             el.SetAttribute("possible","kick|devoice|nothing|warn|ban");
                             Save();
                             return true;
@@ -202,7 +202,7 @@ namespace Core.Xml
                         if (!el.HasAttribute("name"))
                         {
                             el.SetAttribute("name", Name);
-                            el.SetAttribute("value", "kick");
+                            el.SetAttribute("value", "warn");
                             el.SetAttribute("possible","kick|devoice|nothing|warn|ban");
                             Save();
                             return true;
@@ -247,7 +247,7 @@ namespace Core.Xml
                         if (!el.HasAttribute("name"))
                         {
                             el.SetAttribute("name", Name);
-                            el.SetAttribute("value", "200");
+                            el.SetAttribute("value", "1000");
                             el.SetAttribute("possible", "*");
                             Save();
                             return true;
