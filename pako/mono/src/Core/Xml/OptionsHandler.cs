@@ -247,7 +247,7 @@ namespace Core.Xml
                         if (!el.HasAttribute("name"))
                         {
                             el.SetAttribute("name", Name);
-                            el.SetAttribute("value", "1000");
+                            el.SetAttribute("value", "1500");
                             el.SetAttribute("possible", "*");
                             Save();
                             return true;
