@@ -410,7 +410,7 @@ namespace Core.Kernel
                 r_msg.Body = Body;
                 r_msg.Type = MessageType.chat;
                 //Try  to log message
-                if (Sh.S.Config.EnableLogging && r_msg.Body != null && Sh.S.GetMUC(r_msg.To) == null)
+                if (Sh.S.Config.EnableLogging && r_msg.Body != null && Sh.S.GetMUC(r_msg.To) == null && r_msg.Type == MessageType.groupchat)
                 {
                     Sh.S.HtmlPrivLogger.AddHtmlLog("groupchat", "chat", r_msg.To.ToString(), r_msg.To.ToString(), r_msg.Body);
                 }
