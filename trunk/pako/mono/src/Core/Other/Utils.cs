@@ -87,6 +87,8 @@ namespace Core.Other
             vars.Add("BOTVERSION");
             vars.Add("SUBJECT");
             vars.Add("ENVIRONMENT");
+            vars.Add("MONTHSHORT"); // Some users need short format of month like 3 instead of 03
+            vars.Add("DAYSHORT"); // Some users need short format of month like 3 instead of 03
             Assembly assem = Assembly.GetExecutingAssembly();
             m_dir = Path.GetDirectoryName(assem.Location);
             CD = m_dir;
@@ -390,6 +392,21 @@ namespace Core.Other
             return Source;
         }
 
+        //<summary>
+        //D Delete all chars left
+        //<s/ummary>
+        public static string TrimLeft(string str, char ch)
+        {
+            if (str.Length > 0)
+            {
+                while (str[0] == ch)
+                {
+                    str = str.Remove(0, 1);
+                }
+            }
+            return str;
+        }
+
         /// <summary>
         /// Formats escape sequences into phrases.
         /// </summary>
@@ -419,7 +436,9 @@ namespace Core.Other
                          .Replace("{" + strs[15] + "}", DateTime.Now.ToString())
                          .Replace("{" + strs[17] + "}", Bot["os"])
                          .Replace("{" + strs[18] + "}", Bot["version"])
-                         .Replace("{" + strs[20] + "}", (Environment.Version).ToString());
+                         .Replace("{" + strs[20] + "}", (Environment.Version).ToString())
+                         .Replace("{" + strs[21] + "}", TrimLeft( DateTime.Now.ToString("MM"), '0' ))
+                         .Replace("{" + strs[22] + "}", TrimLeft( DateTime.Now.ToString("dd"), '0' ));
             if (r.MUC != null && r.MUser != null)
                 res = res.Replace("{" + strs[0] + "}", r.MUser)
                          .Replace("{" + strs[2] + "}", r.MUC.Jid.ToString())
@@ -656,7 +675,7 @@ namespace Core.Other
        {
            get
            {
-               return "10.3.17 (http://pako.googlecode.com developers team)";
+               return "10.3.20 (http://pako.googlecode.com developers team)";
            }
        }
         
