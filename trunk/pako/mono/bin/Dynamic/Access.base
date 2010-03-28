@@ -2,6 +2,9 @@
    <command name="muc kick" access="40" />
    <command name="muc setsubject" access="40" />
    <command name="muc censor" access="60" />
+   <command name="muc vrcensor" access="60" />
+   <command name="muc seen" access="10" />
+   <command name="muc whowas" access="10" />
    <command name="muc mylang" access="40" />
    <command name="muc mystatus" access="40" />
    <command name="muc greet" access="40" />
@@ -55,6 +58,8 @@
    <command name="misc cmds" access="0" />
    <command name="misc test" access="0" />
    <command name="misc join" access="100" />
+   <command name="misc rejoin" access="100" />
+   <command name="misc rejoinall" access="100" />
    <command name="misc langs" access="0" />
    <command name="misc cs" access="100" />
    <command name="misc list" access="0" />
