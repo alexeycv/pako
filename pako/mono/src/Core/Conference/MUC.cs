@@ -66,6 +66,7 @@ namespace Core.Conference
         string va_dir;
         string m_password;
         SqliteConnection sqlite_conn;
+        SqliteConnection sqlite_conn_vrcensor;
         string acc_file;
         string al_file;
         LocalAccess la;
@@ -319,6 +320,15 @@ namespace Core.Conference
         {
             get { lock (sobjs[38]) { return sqlite_conn; } }
             set { lock (sobjs[38]) { sqlite_conn = value; } }
+        }
+
+        /// <summary>
+        /// The SQLite conenction, given by mainversion and resources  Censor manager.
+        /// </summary>
+        public SqliteConnection SQLiteConnectionVRCensor
+        {
+            get { lock (sobjs[52]) { return sqlite_conn_vrcensor; } }
+            set { lock (sobjs[52]) { sqlite_conn_vrcensor = value; } }
         }
 
         /// <summary>
@@ -996,6 +1006,29 @@ namespace Core.Conference
         }
 
         /// <summary>
+        /// Add the expression, which will be writen to the local censor
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="reason"></param>
+        public void AddRoomVRCensor(string source, string reason, string censorType)
+        {
+            lock (SQLiteConnectionVRCensor)
+            {
+                source = source.Replace("'", "''");
+                reason = reason.Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                     INSERT 
+                         INTO censor (muc, censor_data, reason) 
+                         VALUES ('{0}', '{3}', '{1}', '{2}');
+                                      ",
+                                          Jid.Bare, source, reason, censorType),
+                                          SQLiteConnectionVRCensor);
+                cmd.ExecuteNonQuery();
+            }
+
+        }
+
+        /// <summary>
         /// Clear the censor expressions of the local censor
         /// </summary>
         public void ClearCensor()
@@ -1009,6 +1042,25 @@ namespace Core.Conference
                          WHERE (muc = '{0}')
                                       ", room),
                                           sqlite_conn);
+                cmd.ExecuteNonQuery();
+            }
+
+        }
+
+        /// <summary>
+        /// Clear the cversion and resource ensor expressions of the local censor
+        /// </summary>
+        public void ClearVRCensor()
+        {
+            lock (SQLiteConnectionVRCensor)
+            {
+                string room = Jid.Bare.Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                     DELETE 
+                         FROM censor 
+                         WHERE (muc = '{0}')
+                                      ", room),
+                                          SQLiteConnectionVRCensor);
                 cmd.ExecuteNonQuery();
             }
 
@@ -1095,6 +1147,86 @@ namespace Core.Conference
         }
 
         /// <summary>
+        /// Delete the specified expression (or number in the list) from the list of local expressions 
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public bool DelRoomVRCensor(string source)
+        {
+            lock (SQLiteConnectionVRCensor)
+            {
+                source = source.ToLower();
+                try
+                {
+                    int num = Convert.ToInt32(source);
+
+                    source = source.Replace("'", "''");
+                    SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                     SELECT *
+                         FROM censor
+                         WHERE (muc = '{0}') 
+                                      ",
+                                          Jid.Bare),
+                                          SQLiteConnectionVRCensor);
+                    cmd.ExecuteNonQuery();
+                    SqliteDataReader sqlite_datareader = cmd.ExecuteReader();
+                    int i = 0;
+                    while (sqlite_datareader.Read())
+                    {
+                        i++;
+                        if (num == i)
+                        {
+                            string caught = sqlite_datareader.GetString(1).Replace("'", "''");
+                            string reason = sqlite_datareader.GetString(2).Replace("'", "''");
+                            cmd = new SqliteCommand(String.Format(@"
+                     DELETE 
+                         FROM censor
+                         WHERE  (censor_data = '{1}' and muc = '{0}' and reason = '{2}') 
+                                      ",
+                                                                      Jid.Bare, caught, reason),
+                                                                      SQLiteConnectionVRCensor);
+                            cmd.ExecuteNonQuery();
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                catch
+                {
+
+                    source = source.Replace("'", "''");
+                    SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                     SELECT *
+                         FROM censor
+                         WHERE (censor_data = '{1}' and muc = '{0}') 
+                                      ",
+                                          Jid.Bare, source),
+                                          SQLiteConnectionVRCensor);
+                    cmd.ExecuteNonQuery();
+                    SqliteDataReader sqlite_datareader = cmd.ExecuteReader();
+                    if (!sqlite_datareader.Read())
+                        return false;
+
+                    //(muc = '{0}') &&
+                    cmd = new SqliteCommand(String.Format(@"
+                     DELETE 
+                         FROM censor
+                         WHERE  (censor_data = '{1}' and muc = '{0}') 
+                                      ",
+                                              Jid.Bare, source),
+                                              SQLiteConnectionVRCensor);
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+
+
+                }
+
+            }
+
+        }
+
+        /// <summary>
         /// Get the list of local censor expressions  
         /// </summary>
         /// <param name="pattern"></param>
@@ -1118,6 +1250,39 @@ namespace Core.Conference
                 {
                     i++;
                     data += "\n" + pattern.Replace("{1}", i.ToString()).Replace("{2}", sqlite_datareader.GetString(1)).Replace("{3}", sqlite_datareader.GetString(2));
+
+                }
+
+                return data != "" ? data : null;
+
+            }
+
+        }
+
+        /// <summary>
+        /// Get the list of local version and resource censor expressions  
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public string GetRoomVRCensorList(string pattern)
+        {
+            lock (SQLiteConnectionVRCensor)
+            {//(muc = '{0}')  && 
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                     SELECT *
+                         FROM censor
+                         WHERE (muc = '{0}') 
+                                      ",
+                                      Jid.Bare),
+                                      SQLiteConnectionVRCensor);
+                cmd.ExecuteNonQuery();
+                SqliteDataReader sqlite_datareader = cmd.ExecuteReader();
+                string data = "";
+                int i = 0;
+                while (sqlite_datareader.Read())
+                {
+                    i++;
+                    data += "\n" + pattern.Replace("{1}", i.ToString()).Replace("{2}", sqlite_datareader.GetString(2)).Replace("{3}", sqlite_datareader.GetString(3)).Replace("{4}", sqlite_datareader.GetString(1));
 
                 }
 
@@ -1169,7 +1334,50 @@ namespace Core.Conference
             }
         }
 
-        
+        /// <summary>
+        /// Check if the "source" is caught by censor (full or only local according to the options of the MUC)
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="global"></param>
+        /// <param name="censorType"></param>
+        /// <returns>If the string "source" os caught by censor - returns the string-reaction</returns>
+        public string IsVRCensored(string source, bool global, string censorType)
+        {
+
+            lock (SQLiteConnectionVRCensor)
+            {
+                Regex reg;
+                source = source.ToLower().Replace("'", "''");
+                censorType = censorType.ToLower().Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                   SELECT  * 
+                           FROM censor 
+                           WHERE (censor_type = '{1}' AND muc = '{0}')" + (global ? " or (censor_type = '{1}' AND  muc = '*')" : "") + @"
+                                      ",
+                                          Jid.Bare, 
+                                          censorType),
+                                          SQLiteConnectionVRCensor);
+                cmd.ExecuteNonQuery();
+
+                SqliteDataReader sqlite_datareader = cmd.ExecuteReader();
+                while (sqlite_datareader.Read())
+                {
+                    string data = sqlite_datareader.GetString(2);
+                    try
+                    {
+                        reg = new Regex(data);
+                        if (reg.IsMatch(source))
+                            return sqlite_datareader.GetString(3);
+
+                    }
+                    catch
+                    {
+
+                    }
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// Join the current MUC (send presence)
@@ -1220,6 +1428,7 @@ namespace Core.Conference
             m_mynick = Nick;
             m_mystatus = Status;
             sqlite_conn = sh.S.Censor.SQLiteConnection;
+            sqlite_conn_vrcensor = sh.S.VrCensor.SQLiteConnection;
             m_lang = Lang;
             m_password = Password;
             m_users = new Hashtable();
