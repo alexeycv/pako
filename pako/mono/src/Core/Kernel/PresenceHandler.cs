@@ -208,7 +208,7 @@ namespace Core.Kernel
 
                         if (_justJoined == true)
                         {
-                            VersionCB _version = new VersionCB(user, Sh.S.GetMUC(p_jid), Sh.S.C);
+                            VersionCB _version = new VersionCB(user, Sh.S.GetMUC(p_jid), Sh, lng, Sh.S.C);
                         }
 
 

@@ -32,13 +32,15 @@ namespace Core.Kernel
         Jid m_jid;
         MUser _mUser;
         MUC _muc;
+        SessionHandler _sh;
+        string lng;
 
-
-
-        public VersionCB(MUser user, MUC muc, XmppClientConnection conn)
+        public VersionCB(MUser user, MUC muc, SessionHandler sh, string language, XmppClientConnection conn)
         {
             _mUser = user;
             _muc = muc;
+            _sh = sh;
+            lng = language;
             m_jid = _mUser.Jid;
             VersionIq vi = new VersionIq();
             vi.Type = IqType.get;
@@ -67,11 +69,98 @@ namespace Core.Kernel
 		_mUser.Version = vi.Name + " " + vi.Ver + " " + vi.Os;
 
                 // Implementing version censor
-           
+                this.VersionCensor();
         }
 
+        private void VersionCensor()
+        {
+            Response r = new Response(_sh.S.Rg[lng]);
+            r.MUC = _muc;
+            r.MUser = _mUser;
+            r.Sh = _sh;
+            // Checking uuser version for a censor
+                    string found_censored = _muc.IsVRCensored(_mUser.Version, _muc.OptionsHandler.GetOption("global_censor") == "+", "ver");
+                    @out.exe("versioncensor_next_stage");
+                    if (found_censored != null)
+                    {
+                        switch (_muc.OptionsHandler.GetOption("censor_result"))
+                        {
+                            case "kick":
+                                {
+                                    @out.exe("versioncensor_next_kick");
+                                    if (_muc.KickableForCensored(_mUser))
+                                    { _muc.Kick(null, _mUser, found_censored); return; }
+                                    else
+                                    {
+                                        MessageType original_type = r.Msg.Type;
+                                        r.Msg.Type = MessageType.groupchat;
+                                        r.Reply(found_censored);
+                                        r.Msg.Type = original_type;
+                                        @out.exe("versioncensor_next_sleeping");
+                                        _sh.S.Sleep();
 
+                                        @out.exe("versioncensor_next_slept");
+                                    }
+                                    break;
+                                } 
 
+                            case "devoice":
+                                {
+                                    @out.exe("versioncensor_next_devoice");
+                                    if (_muc.KickableForCensored(_mUser))
+                                    { _muc.Devoice(null, _mUser, found_censored); return; }
+                                    else
+                                    {
+                                        MessageType original_type = r.Msg.Type;
+                                        r.Msg.Type = MessageType.groupchat;
+                                        r.Reply(found_censored);
+                                        r.Msg.Type = original_type;
+                                        @out.exe("versioncensor_next_sleeping");
+                                        _sh.S.Sleep();
+                                        @out.exe("versioncensor_next_slept");
+                                    }
+                                    break;
+                                }
+                            case "ban":
+                                {
+                                    @out.exe("versioncensor_next_ban");
+                                    if (_muc.KickableForCensored(_mUser))
+                                    { _muc.Ban(null, _mUser, found_censored); return; }
+                                    else
+                                    {
+                                        MessageType original_type = r.Msg.Type;
+                                        r.Msg.Type = MessageType.groupchat;
+                                        r.Reply(found_censored);
+                                        r.Msg.Type = original_type;
+                                        @out.exe("versioncensor_next_sleeping");
+                                        _sh.S.Sleep();
+                                        @out.exe("versioncensor_next_slept");
+                                    }
+                                    break;
+                                }
+                             
+                            case "warn":
+                                {
+                                    @out.exe("versioncensor_next_warn");
+                                    MessageType original_type = r.Msg.Type;
+                                    r.Msg.Type = MessageType.groupchat;
+                                    r.Reply(found_censored);
+                                    r.Msg.Type = original_type;
+                                    @out.exe("versioncensor_next_sleeping");
+                                    _sh.S.Sleep();
+                                    @out.exe("versioncensor_next_slept");
+
+                                }
+                                break;
+                            default:
+                                break;
+
+                        }
+                    }
+                    else
+                        @out.exe("versioncensored_not_found");
+                    @out.exe("versioncensored_check_finished");
+        }
 
     }
 }
