@@ -31,12 +31,14 @@ namespace Core.Kernel
     {
         Jid m_jid;
         MUser _mUser;
+        MUC _muc;
 
 
 
-        public VersionCB(MUser user, XmppClientConnection conn)
+        public VersionCB(MUser user, MUC muc, XmppClientConnection conn)
         {
             _mUser = user;
+            _muc = muc;
             m_jid = _mUser.Jid;
             VersionIq vi = new VersionIq();
             vi.Type = IqType.get;

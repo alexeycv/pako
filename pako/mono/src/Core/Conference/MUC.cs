@@ -872,6 +872,7 @@ namespace Core.Conference
 
         //the method below is looking pretty cool, ye? :)
         //ye, but it determines if the alias is not following the recursion :)
+        // !!! Performance issue !!!
         public bool chkal_rec(string alias_name, int curr_level, int max_level, Response r)
         {
             @out.exe(curr_level.ToString() + "  " + alias_name);
