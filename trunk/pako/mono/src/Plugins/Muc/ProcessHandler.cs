@@ -1174,6 +1174,71 @@ namespace Plugin
                         break;
                     }
 
+                case "vrcensor": // TODO: Version and resource censor manager
+                    {
+                        rs = "Noy implemented yet.";
+                        break;
+                        ws = Utils.SplitEx(m_b, 3);
+                        if (ws.Length > 2)
+                        {
+                            if (ws[2] == "del")
+                            {
+                                if (ws.Length > 3)
+                                {
+                                    if (m_r.MUC.DelRoomCensor(ws[3]))
+                                        rs = m_r.f("censor_deleted");
+                                    else
+                                        rs = m_r.f("censor_not_existing");
+                                }
+                                else
+                                    syntax_error = true;
+                            }
+                            else
+                                if (ws[2] == "show")
+                                {
+                                    if ((ws.Length == 3))
+                                    {
+                                        string data = m_r.MUC.GetRoomCensorList("{1}) {2}   =>   \"{3}\"");
+                                        rs = data != null ? data : m_r.f("censor_list_empty");
+                                    }
+                                    else
+                                        syntax_error = true;
+                                }
+                                else
+                                    if (ws[2] == "clear")
+                                    {
+                                        if ((ws.Length == 3))
+                                        {
+                                            m_r.MUC.ClearCensor();
+                                            rs = m_r.f("censor_list_cleared");
+                                        }
+                                        else
+                                            syntax_error = true;
+                                    }
+                                    else
+                                    {
+
+                                        string reason = null;
+                                        if (m_b.IndexOf("||") > -1)
+                                        {
+                                            reason = m_b.Substring(m_b.IndexOf("||") + 2).Trim() == "" ? null : m_b.Substring(m_b.IndexOf("||") + 2).Trim();
+
+                                            if (reason != null)
+                                                m_b = m_b.Remove(m_b.IndexOf("||"));
+                                        }
+                                        if (reason == null)
+                                            reason = m_r.f("kick_censored_reason");
+                                        ws = Utils.SplitEx(m_b, 2);
+                                        m_r.MUC.AddRoomCensor(ws[2].Trim(), reason);
+                                        rs = m_r.Agree();
+                                    }
+                        }
+                        else
+                            syntax_error = true;
+                        break;
+                    }
+
+
                 case "greet":
                     {
                         Jid Room = m_r.MUC.Jid;
@@ -1926,7 +1991,12 @@ namespace Plugin
                 case "whowas":
                     {
                         if (ws.Length == 2)
-                            rs = m_r.MUC.WhoWas.ToString();
+                        {
+                            if (m_r.MUC.WhoWas != null)
+                            {
+                                rs = m_r.MUC.WhoWas.ToString();
+                            }
+                        }
                         else
                             syntax_error = true;
                         break;
@@ -2288,7 +2358,7 @@ namespace Plugin
                     {
                         if (ws.Length == 2)
                         {
-                            rs = m_r.f("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen";
+                            rs = m_r.f("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, vrcensor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen";
                         }
                         break;
                     }

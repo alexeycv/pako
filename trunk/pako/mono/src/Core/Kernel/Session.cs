@@ -48,6 +48,7 @@ namespace Core.Kernel
        string dir_ams;
        string dir_plugs;
        string dir_censor;
+       string dir_vrcensor; //version and resoyrce ccensor
        string dir_va;
        string dir_vl;
        string dir_temp;
@@ -64,6 +65,7 @@ namespace Core.Kernel
        AutoMucManager m_ams;
        PHandler m_plugs;
        Censor m_censor;
+       VrCensor m_vrcensor; //version and resource censor
        int mucs_count;
        VipAccess m_va;
        VipLang m_vl;
@@ -119,6 +121,7 @@ namespace Core.Kernel
            dir_ams = Utils.GetPath("rooms");
            dir_langs = Utils.GetPath("lang");
            dir_censor = Utils.GetPath("censor");
+           dir_vrcensor = Utils.GetPath("vrcensor"); //version and resourse censor
            dir_plugs = Utils.GetPath("plugins");
            dir_error = Utils.GetPath("errlog");
            dir_access = Utils.GetPath("accesses");
@@ -147,6 +150,7 @@ namespace Core.Kernel
                m_va = new VipAccess(dir_va, sqlv);
                m_vl = new VipLang(dir_vl, sqlv);
                m_censor = new Censor(dir_censor, sqlv);
+               m_vrcensor = new VrCensor(dir_vrcensor, sqlv);
                m_el = new ErrorLoger(dir_error);
                m_ams = new AutoMucManager(dir_ams);
                m_acsh = new AccessManager(dir_access);
@@ -199,10 +203,9 @@ namespace Core.Kernel
 
            m_con.OnSocketError += delegate(object o, Exception ex)
            {
+               //@out.write("SOCKET ERROR \n" + ex.Message);
                OnDisconnect();
            };
-
-         
  
            m_con.OnMessage += delegate(object o, agsXMPP.protocol.client.Message msg)
            {
@@ -684,6 +687,12 @@ namespace Core.Kernel
        {
            get { lock (sobjs[2]) { return m_censor; } }
            set { lock (sobjs[2]) { m_censor = value; } }
+       }
+
+       public VrCensor VrCensor
+       {
+           get { lock (sobjs[64]) { return m_vrcensor; } }
+           set { lock (sobjs[64]) { m_vrcensor = value; } }
        }
 
        public ErrorLoger ErrorLoger
