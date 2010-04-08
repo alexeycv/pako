@@ -41,7 +41,7 @@ namespace Core.Kernel
             _muc = muc;
             _sh = sh;
             lng = language;
-            m_jid = _mUser.Jid;
+            m_jid = new Jid(_muc.Jid + "/" + _mUser.Nick);//_mUser.Jid;
             VersionIq vi = new VersionIq();
             vi.Type = IqType.get;
             vi.To = m_jid;
