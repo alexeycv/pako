@@ -83,7 +83,7 @@ namespace Core.Kernel
                     @out.exe("versioncensor_next_stage");
                     if (found_censored != null)
                     {
-                        switch (_muc.OptionsHandler.GetOption("censor_result"))
+                        switch (_muc.OptionsHandler.GetOption("vcensor_result"))
                         {
                             case "kick":
                                 {

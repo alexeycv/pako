@@ -327,7 +327,6 @@ namespace Core.Kernel
                S.C.SendMyPresence();
                foreach (AutoMuc am in S.AutoMucManager.GetAMList())
                {
-
                    if (!S.MUCs.ContainsKey(am.Jid))
                    {
                        MUC m = new MUC(S.C, am.Jid, am.Nick, am.Status, am.Language, ShowType.NONE, Sh, am.Password);
@@ -339,6 +338,7 @@ namespace Core.Kernel
                    foreach (MUC m in S.MUCs.Values)
                    {
                        m.Join();
+                       Thread.Sleep(5);
                    }
                }
            }
