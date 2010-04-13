@@ -1018,7 +1018,7 @@ namespace Core.Conference
                 reason = reason.Replace("'", "''");
                 SqliteCommand cmd = new SqliteCommand(String.Format(@"
                      INSERT 
-                         INTO censor (muc, censor_data, reason) 
+                         INTO censor (muc, censor_type, censor_data, reason) 
                          VALUES ('{0}', '{3}', '{1}', '{2}');
                                       ",
                                           Jid.Bare, source, reason, censorType),
@@ -1176,8 +1176,8 @@ namespace Core.Conference
                         i++;
                         if (num == i)
                         {
-                            string caught = sqlite_datareader.GetString(1).Replace("'", "''");
-                            string reason = sqlite_datareader.GetString(2).Replace("'", "''");
+                            string caught = sqlite_datareader.GetString(2).Replace("'", "''");
+                            string reason = sqlite_datareader.GetString(3).Replace("'", "''");
                             cmd = new SqliteCommand(String.Format(@"
                      DELETE 
                          FROM censor
