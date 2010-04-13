@@ -1176,8 +1176,6 @@ namespace Plugin
 
                 case "vrcensor": // TODO: Version and resource censor manager
                     {
-                        rs = "Noy implemented yet.";
-                        break;
                         ws = Utils.SplitEx(m_b, 3);
                         if (ws.Length > 2)
                         {
@@ -1185,7 +1183,7 @@ namespace Plugin
                             {
                                 if (ws.Length > 3)
                                 {
-                                    if (m_r.MUC.DelRoomCensor(ws[3]))
+                                    if (m_r.MUC.DelRoomVRCensor(ws[3]))
                                         rs = m_r.f("censor_deleted");
                                     else
                                         rs = m_r.f("censor_not_existing");
@@ -1198,7 +1196,7 @@ namespace Plugin
                                 {
                                     if ((ws.Length == 3))
                                     {
-                                        string data = m_r.MUC.GetRoomCensorList("{1}) {2}   =>   \"{3}\"");
+                                        string data = m_r.MUC.GetRoomVRCensorList("{1}) {2}   =>   \"{3}\"");
                                         rs = data != null ? data : m_r.f("censor_list_empty");
                                     }
                                     else
@@ -1209,28 +1207,49 @@ namespace Plugin
                                     {
                                         if ((ws.Length == 3))
                                         {
-                                            m_r.MUC.ClearCensor();
+                                            m_r.MUC.ClearVRCensor();
                                             rs = m_r.f("censor_list_cleared");
                                         }
                                         else
                                             syntax_error = true;
                                     }
                                     else
-                                    {
-
-                                        string reason = null;
-                                        if (m_b.IndexOf("||") > -1)
+                                    {// censor add block
+                                        if (ws[2] == "res")
                                         {
-                                            reason = m_b.Substring(m_b.IndexOf("||") + 2).Trim() == "" ? null : m_b.Substring(m_b.IndexOf("||") + 2).Trim();
+                                            string reason = null;
+                                            if (m_b.IndexOf("||") > -1)
+                                            {
+                                                reason = m_b.Substring(m_b.IndexOf("||") + 2).Trim() == "" ? null : m_b.Substring(m_b.IndexOf("||") + 2).Trim();
 
-                                            if (reason != null)
-                                                m_b = m_b.Remove(m_b.IndexOf("||"));
+                                                if (reason != null)
+                                                    m_b = m_b.Remove(m_b.IndexOf("||"));
+                                            }
+                                            if (reason == null)
+                                                reason = m_r.f("kick_censored_reason");
+                                            ws = Utils.SplitEx(m_b, 3);
+                                            m_r.MUC.AddRoomVRCensor(ws[3].Trim(), reason, "res");
+                                            rs = m_r.Agree();
                                         }
-                                        if (reason == null)
-                                            reason = m_r.f("kick_censored_reason");
-                                        ws = Utils.SplitEx(m_b, 2);
-                                        m_r.MUC.AddRoomCensor(ws[2].Trim(), reason);
-                                        rs = m_r.Agree();
+                                        else
+                                        {
+                                            if (ws[2] == "ver")
+                                            {
+                                                string reason = null;
+                                                if (m_b.IndexOf("||") > -1)
+                                                {
+                                                    reason = m_b.Substring(m_b.IndexOf("||") + 2).Trim() == "" ? null : m_b.Substring(m_b.IndexOf("||") + 2).Trim();
+
+                                                    if (reason != null)
+                                                        m_b = m_b.Remove(m_b.IndexOf("||"));
+                                                }
+                                                if (reason == null)
+                                                    reason = m_r.f("kick_censored_reason");
+                                                ws = Utils.SplitEx(m_b, 3);
+                                                m_r.MUC.AddRoomVRCensor(ws[3].Trim(), reason, "ver");
+                                                rs = m_r.Agree();
+                                            }
+                                        }// censor add block
                                     }
                         }
                         else
