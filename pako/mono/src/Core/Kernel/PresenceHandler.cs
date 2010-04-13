@@ -464,6 +464,85 @@ namespace Core.Kernel
                                 */
                             }
 
+
+                            if ((user.Jid.Resource != null) && (user != m_muc.MyNick))
+                            {
+                                // TODO: Add censore by nick and resource
+                                string censored = Sh.S.GetMUC(p_jid).IsVRCensored(user.Jid.Resource, m_muc.OptionsHandler.GetOption("global_censor") == "+", "res");
+                                if (censored != null)
+                                {
+                                    //TODO: Censored logging
+                                    @out.exe(m_muc.KickableForCensored(user).ToString());
+                                    switch (m_muc.OptionsHandler.GetOption("rcensor_result"))
+                                    {
+                                        case "kick":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Kick(null, user, censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+                                            } break;
+                                        case "devoice":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Devoice(null, user, censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+                                                       
+                                            }
+                                            break;
+                                        case "ban":
+                                            {
+                                                if (m_muc.KickableForCensored(user))
+                                                { m_muc.Ban(null, user, censored); return; }
+                                                else
+                                                {
+                                                    Message msg = new Message();
+                                                    r.Msg = new Message();
+                                                    r.Msg.Body = pres.Status;
+                                                    r.Msg.From = pres.From;
+                                                    r.Msg.Type = MessageType.groupchat;
+                                                    r.Reply(censored);
+                                                    Sh.S.Sleep();
+                                                }
+                                                 
+                                                  
+                                            }
+                                            break;
+                                        case "warn":
+                                            {
+                                                Message msg = new Message();
+                                                r.Msg = new Message();
+                                                r.Msg.Body = pres.Status;
+                                                r.Msg.From = pres.From;
+                                                r.Msg.Type = MessageType.groupchat;
+                                                r.Reply(censored);
+                                                Sh.S.Sleep();
+                                            }
+                                            break;
+                                        default:
+                                            break;
+
+                                    }
+                                }
+                            }// end of resource censor
+
                             //NickLimit handlers
                                 int _nickLimit = 10;
                                 try
