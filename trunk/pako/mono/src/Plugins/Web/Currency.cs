@@ -93,22 +93,22 @@ namespace www
 
             string temp = sr.ReadToEnd();
             string data = "";
-            Regex reg = new Regex("<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
-            MatchCollection mc = reg.Matches(temp);
-            data = Utils.GetValue(mc[0].ToString(), "<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
-            data += " = " + Utils.GetValue(mc[1].ToString(), "<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
+            // 23.05.2010 by Alexey.cv
+            // OLD CODEE
+            // Commented temporary
+            //Regex reg = new Regex("<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
+            //MatchCollection mc = reg.Matches(temp);
+            //data = Utils.GetValue(mc[0].ToString(), "<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
+            //data += " = " + Utils.GetValue(mc[1].ToString(), "<h2 class=\"XE\" style=\"color:#333\">(.*)<!--");
 
-            //if (data == "")
-            //{
-            //    data=temp;
-            //}
-
-            //return data;
-
-            //string _sbegin = temp.Substring(temp.IndexOf("<h2 class=\"XE\""), temp.Length - temp.IndexOf("<h2 class=\"XE\"") - 1);
-            //string _send = _sbegin.Substring(1, 10);
-            //data = _send;
-
+            // 23.05.2010 by Alexey.cv
+            // xe.com result data parser
+            Regex _reg = new Regex("<td align=\"right\" class=\"rate\" >(.*)<!--");
+            MatchCollection _mc = _reg.Matches(temp);
+            data = _mc[0].ToString().Replace("<td align=\"right\" class=\"rate\" >", "").Replace("<!--", "");
+            _reg = new Regex("<td align=\"left\" class=\"rate\" >(.*)<!--");
+            _mc = _reg.Matches(temp);
+            data += " = " + _mc[0].ToString().Replace("<td align=\"left\" class=\"rate\" >", "").Replace("<!--", "");
             return data;
         }
 
