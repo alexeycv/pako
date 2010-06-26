@@ -1655,9 +1655,13 @@ namespace Plugin
                             {
                                 try
                                 {
-                                data += "\n" + index++.ToString() + ") <" + m.Jid.ToString() + "/" + m.MyNick + ">    (" + m.Users.Count + ")\n     " +
-                                    m.Language + " | " + m.Me.Affiliation + "/" + m.Me.Role + "\n     " +
-                                    m.MyShow.ToString().Replace("NONE", "Online") + " (" + m.MyStatus + ")";
+                                    if (m != null)
+                                    {
+                                        data += "\n" + index++.ToString() + ") <" + m.Jid.ToString() + "/" + 
+                                            m.MyNick + ">    (" + m.Users.Count + ")\n     " +
+                                            m.Language + " | " + m.Me.Affiliation + "/" + m.Me.Role + "\n     " +
+                                            m.MyShow.ToString().Replace("NONE", "Online") + " (" + m.MyStatus + ")";
+                                    }
                                 } 
                                 catch (Exception ex)
                                 {
