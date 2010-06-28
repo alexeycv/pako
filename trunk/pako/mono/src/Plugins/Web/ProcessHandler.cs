@@ -184,7 +184,7 @@ namespace www
                             try
                             {
 //                                string data = WhoisResolver.Whois(ws[2].Trim().ToLower());
-                                  HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.google.com/ig/api?weather=58000"));
+                                  HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.google.com/ig/api?weather="+ws[2].Trim()));
                                  _request.Method = "GET";
 
                                  HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
