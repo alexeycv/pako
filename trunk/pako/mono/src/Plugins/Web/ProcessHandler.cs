@@ -229,14 +229,15 @@ namespace www
                                      Double _tempHigh = (System.Double.Parse(_childXml.SelectSingleNode("xml/high").Attributes["data"].Value) - 32) * 5 / 9;
                                      _resultStr += "Temperature, C : " + _tempLow.ToString("##");
                                      _resultStr += " - " + _tempHigh.ToString("##");
-                //_resultStr += "" + _childXml.SelectSingleNode("xml/humidity").Attributes["data"].Value + "\n";
-                //_resultStr += "" + _childXml.SelectSingleNode("xml/wind_condition").Attributes["data"].Value + "\n";
                                  }
-                                 rs = _resultStr;
+                                 if (_resultStr != "")
+                                     rs = _resultStr;
+                                 else
+                                     rs = m_r.f("weather_not_found");
                             }
                             catch
                             {
-                                rs = m_r.f("whois_fail");
+                                rs = m_r.f("weather_fail");
                             }
                         }
                         else
