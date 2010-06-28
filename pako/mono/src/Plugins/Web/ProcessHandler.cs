@@ -1342,7 +1342,7 @@ namespace www
                     {
                         if (ws.Length == 2)
                         {
-                            rs = m_r.f("volume_list", n) + "\nlist, dns, tld, whois, google, yandex, gt, headers, rss, xep, rfc, curr, torrent, wiki, ping, svn, browse, news, worldnews, bor, anekdot";
+                            rs = m_r.f("volume_list", n) + "\nlist, dns, tld, whois, google, yandex, gt, headers, rss, xep, rfc, curr, torrent, wiki, ping, svn, browse, news, worldnews, bor, anekdot, weather";
                         }
                         break;
                     }
