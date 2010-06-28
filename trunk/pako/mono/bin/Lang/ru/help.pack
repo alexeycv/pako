@@ -159,11 +159,13 @@
    <command value="Показывает информацию о последней ревизии в заданном SVN репозитории.&#xA;Синтаксис:&#xA; {1}web svn &lt;адрес&gt;&#xA;где:&#xA; &lt;адрес&gt; - адрес SVN репозитория." name="web svn" />
    <command value="Позволяет просматривать web страницы с помощью бота.&#xA;Синтаксис:&#xA; {1}web browse &lt;адрес&gt;" name="web browse" />
    <command value="Список переменных, которые используются для форматирования сообщений при отсылке. &#xA;Синтаксис:&#xA;Каждая переменная должна быть определена в {}&#xA;Пример:&#xA;user123: {1}misc say hello, {NICK}, how is it going? :)&#xA;bot: hello, user123, how is it going? :)&#xA;Просмотр всех переменных:&#xA;{1}misc vars&#xA;Просмотр одной переменной:&#xA;{1}misc vars &lt;var&gt;&#xA;где &lt;var&gt; - название переменной." name="misc vars" />
-   <command name="muc seen" value="Показывает время последнего появления пользователя.&#xA;Формат команды: &lt;префикс&gt;muc seen [nick]&#xA;Если не ввести ник, то будет отображено 30 последних вошедших пользователей.&#xA;Пример: muc seen Вася" />
-   <command name="muc whowas" value="Отображает список пользователей, которых увидел бот за текущий сеанс" />
-   <command name="web yandex" value="Поиск в поисковой системе Яндекс.&#xA;Формат команды: &lt;префикс&gt;web yandex выражение.&#xA;Пример: web yandex Linux vs Windows" />
-   <command name="web bor" value="Выводит случайную цитату с сайта http://bash.org.ru&#xA;Если в параметрах команды указать номер, то будет отображена цитата под этим номером.&#xA;Примеры:&#xA;    web bor&#xA;    web bor 1234" />
-   <command name="web anekdot" value="Выводит случайный анекдот с сайта http://anekdots.ru" />
-   <command name="web news" value="Новости Украины (укр. язык)&#xA;В качестве параметра можна указать количество выводимых новостей." />
-   <command name="web worldnews" value="Новости мира (укр. язык)&#xA;В качестве параметра можна указать количество выводимых новостей." />
+   <command value="Показывает время последнего появления пользователя.&#xA;Формат команды: &lt;префикс&gt;muc seen [nick]&#xA;Если не ввести ник, то будет отображено 30 последних вошедших пользователей.&#xA;Пример: muc seen Вася" name="muc seen" />
+   <command value="Отображает список пользователей, которых увидел бот за текущий сеанс" name="muc whowas" />
+   <command value="Поиск в поисковой системе Яндекс.&#xA;Формат команды: &lt;префикс&gt;web yandex выражение.&#xA;Пример: web yandex Linux vs Windows" name="web yandex" />
+   <command value="Выводит случайную цитату с сайта http://bash.org.ru&#xA;Если в параметрах команды указать номер, то будет отображена цитата под этим номером.&#xA;Примеры:&#xA;    web bor&#xA;    web bor 1234" name="web bor" />
+   <command value="Выводит случайный анекдот с сайта http://anekdots.ru" name="web anekdot" />
+   <command value="Новости Украины (укр. язык)&#xA;В качестве параметра можна указать количество выводимых новостей." name="web news" />
+   <command value="Новости мира (укр. язык)&#xA;В качестве параметра можна указать количество выводимых новостей." name="web worldnews" />
+   <command name="web weather" value="Отображает информацию о погоде через Google Weather.&#xA;Использование:&#xA;&lt;префикс&gt;web weather [почтовый индекс]&#xA;&lt;префикс&gt;web weather [название города]&#xA;Примеры:&#xA;!web weather 58000&#xA;!web weather kiev" />
+   <command name="muc vrcensor" value="Работа с запретами на версии клиента или ресурсы. Позволяет Вам заблокировать вход для пользователей с нежелательными клиентами.&#xA;Синтаксис команды:&#xA;&lt;префикс&gt;muc vrcensor res|ver|del|clear expression&#xA;res - устанавливает запрет на ресурс&#xA;ver - устанавливает запрет на версию&#xA;del - удаление запрета&#xA;clear - очистка всех запретов.&#xA;&#xA;Примеры использования:&#xA;!muc vrcensor ver qip&#xA;!muc vrcensor res qip&#xA;!muc vrcensor del qip&#xA;!muc vrcensor clear" />
 </help>
