@@ -179,6 +179,8 @@ namespace Core.Kernel
            m_con.UseSSL = S.Config.UseSSL;
            m_con.UseStartTLS = S.Config.UseStartTls;
            m_con.UseCompression = S.Config.UseCompression;
+           m_con.EnableCapabilities = true;
+           m_con.Capabilities.Node = "http://pako.googlecode.com";
            m_con.SocketConnectionType = agsXMPP.net.SocketConnectionType.Direct;
            bool connect_server = S.Config.ConnectServer != "";
            m_con.AutoResolveConnectServer = !connect_server;
