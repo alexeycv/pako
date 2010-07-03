@@ -36,11 +36,13 @@ namespace Core.Plugins
         ArrayList m_names;
         Hashtable m_plugs;
         int m_count;
+        SessionHandler _session;
 
        
 
-        public PHandler(string PluginsFolder)
+        public PHandler(string PluginsFolder, SessionHandler sh)
         {
+            _session = sh;
 
             for (int i = 0; i < 11; i++)
             {
@@ -66,7 +68,8 @@ namespace Core.Plugins
                         IPlugin plugin = (IPlugin)plugObject;
                         m_plugs.Add(plugin.Name.ToLower(), plugin);
                         m_count++;        
-             
+                        // Execute plugin initialization method
+                        plugin.Start(_session);
 
                     }
                     catch
@@ -101,6 +104,8 @@ namespace Core.Plugins
                         IPlugin plugin = (IPlugin)plugObject;
                         Plugins.Add(plugin.Name, plugin);
                         m_names.Add(plugin.Name); 
+                        // Execute plugin initialization method
+                        plugin.Start(_session);
                    
                     }
                     catch (Exception)
@@ -126,6 +131,9 @@ namespace Core.Plugins
             {
                 if (m_plugs.ContainsKey(name))
                 {
+                    // Execute a stop action
+                    //m_plugs[name].Stop();
+
                     m_plugs.Remove(name);
        
                     m_names.Remove(name);

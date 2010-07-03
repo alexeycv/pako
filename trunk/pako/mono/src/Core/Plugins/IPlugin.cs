@@ -20,6 +20,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using agsXMPP;
+using agsXMPP.protocol.client;
+using agsXMPP.Xml.Dom;
+using agsXMPP.protocol.iq;
+using agsXMPP.protocol.iq.version;
+using agsXMPP.protocol.iq.time;
+using agsXMPP.protocol.extensions.ping;
+using System.IO;
+using System.Net;
+using Core.Kernel;
+using Core.Conference;
+using Core.Xml;
+using Core.Other;
+
 namespace Core.Plugins
 {
     public interface IPlugin
@@ -27,7 +41,24 @@ namespace Core.Plugins
         string File { get;}
         string Name { get;}
         string Comment { get;}
+
+        SessionHandler Session {get; set;}
+
+        bool SubscribePresence { get;}
+        bool SubscribeMessages { get;}
+        bool SubscribeIq { get;}
+
+        // Command handler
         void PerformAction(IPluginData d);
+
+        //; Plugin initialization and shut down
+        void Start(SessionHandler sh);
+        void Stop();
+
+        // Handlers
+        void CommandHandler(agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level);
+        void PresenceHandler(Presence m_pres, SessionHandler sh);
+        void IqHandler(IQ iq, XmppClientConnection Con);
     }
 }
        

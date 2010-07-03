@@ -30,6 +30,7 @@ namespace Plugin
  
     public class Main : IPlugin
     {
+        SessionHandler _session = null;
 
         public string File
         {
@@ -55,11 +56,71 @@ namespace Plugin
             }
         }
 
+        public SessionHandler Session
+        {
+            get
+            {
+                return _session;
+            }
+            set
+            {
+                _session = value;
+            }
+        } 
+
+        public bool SubscribePresence 
+        { 
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool SubscribeMessages 
+        { 
+            get
+            {
+                return false;
+            }
+        }
+        
+        public bool SubscribeIq 
+        { 
+            get
+            {
+                return false;
+            }
+        }
+
         public void PerformAction(IPluginData d)
         {
 
             DefsHandler ph = new DefsHandler(d.r, Name);
 
+        }
+
+        // IPlugin implementation
+
+        // Plugin initialization and shut down
+        public void Start(SessionHandler sh)
+        {
+        }
+
+        public void Stop()
+        {
+        }
+
+        // Handlers
+        public void CommandHandler(agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
+        {
+        }
+
+        public void PresenceHandler(Presence m_pres, SessionHandler sh)
+        {
+        }
+
+        public void IqHandler(IQ iq, XmppClientConnection Con)
+        {
         }
     }
 

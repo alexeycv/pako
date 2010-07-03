@@ -27,6 +27,7 @@ using agsXMPP.protocol;
 using agsXMPP.protocol.client;
 using agsXMPP.Xml.Dom;
 using Core.Kernel;
+using System.Threading;
 
 namespace Plugin
 {
@@ -40,16 +41,27 @@ namespace Plugin
 
         public DiscoCB(Response r, Jid Jid, int number)
         {
-        	conferences = Jid.ToString().StartsWith("conference.");
+            conferences = Jid.ToString().StartsWith("conference.") || Jid.ToString().StartsWith("muc.");
             m_r = r;
             m_jid = Jid;
+            //DiscoItemsIq ti = new DiscoItemsIq();
+            //ti.Type = IqType.get;
+            //ti.To = m_jid;
+            //ti.GenerateId();
+            num = number;
+            //m_r.Connection.IqGrabber.SendIq(ti, new IqCB(DiscoExtractor), null);
+            //Thread.Start(new delegare(thr));
+            Thread _discoTh = new Thread (thr);
+            _discoTh.Start();
+        }
+
+        private void thr()
+        {
             DiscoItemsIq ti = new DiscoItemsIq();
             ti.Type = IqType.get;
             ti.To = m_jid;
             ti.GenerateId();
-            num = number;
             m_r.Connection.IqGrabber.SendIq(ti, new IqCB(DiscoExtractor), null);
-
         }
 
 
