@@ -1657,10 +1657,34 @@ namespace Plugin
                                 {
                                     if (m != null)
                                     {
-                                        data += "\n" + index++.ToString() + ") <" + m.Jid.ToString() + "/" + 
-                                            m.MyNick + ">    (" + m.Users.Count + ")\n     " +
-                                            m.Language + " | " + m.Me.Affiliation + "/" + m.Me.Role + "\n     " +
-                                            m.MyShow.ToString().Replace("NONE", "Online") + " (" + m.MyStatus + ")";
+                                        data += "\n" + index++.ToString() + ") <";
+                                        if (m.Jid != null) 
+                                            data += m.Jid.ToString() + "/";
+                                        else
+                                            data += "NULL /";
+
+                                        if (m.MyNick != null)
+                                            data += m.MyNick + ">    (" ;
+                                        else
+                                            data += "NULL>    (" ;
+
+                                        if (m.Users != null)
+                                            data += m.Users.Count + ")\n     ";
+                                        else
+                                            data += "0)\n     ";
+
+                                        if (m.Language != null)
+                                            data += m.Language + " | " ;
+                                        else
+                                            data += "NULL | " ;
+
+                                        if (m.Me != null)
+                                            data += m.Me.Affiliation + "/" + m.Me.Role + "\n     ";
+                                        else
+                                            data += "NULL/" + "NULL\n     ";
+
+                                       if (m.MyShow != null && m.MyStatus != null)
+                                            data += m.MyShow.ToString().Replace("NONE", "Online") + " (" + m.MyStatus + ")";
                                     }
                                 } 
                                 catch (Exception ex)
