@@ -130,7 +130,7 @@ namespace Core.Kernel
            dir_html_log = Utils.GetPath("logmuc");
            dir_html_priv_log = Utils.GetPath("logprivate");
            GetReady();  
-		   Utils.Sh = sh;
+           Utils.Sh = sh;
            Utils.Sh.S = this;
            @out.write("Location : " + Utils.CD + "");
            @out.write("Working set: " + (Environment.WorkingSet).ToString() + " bytes");
@@ -210,6 +210,11 @@ namespace Core.Kernel
            m_con.OnMessage += delegate(object o, agsXMPP.protocol.client.Message msg)
            {
                CommandHandler cmdh = new CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
+               // Plugins handlers
+               foreach (object _plugin in Sh.S.PluginHandler.Plugins)
+               {
+                    ((IPlugin)_plugin).CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
+               }
            };
          
          
@@ -231,7 +236,7 @@ namespace Core.Kernel
            };
 
            m_con.OnLogin += new ObjectHandler(OnLogin);
-           m_plugs = new PHandler(dir_plugs);
+           m_plugs = new PHandler(dir_plugs, Sh);
        }
 
        void OnDisconnect()
