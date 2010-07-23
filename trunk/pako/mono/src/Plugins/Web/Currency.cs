@@ -104,10 +104,15 @@ namespace www
             // 23.05.2010 by Alexey.cv
             // xe.com result data parser
             Regex _reg = new Regex("<td align=\"right\" class=\"rate\" >(.*)<!--");
+
             MatchCollection _mc = _reg.Matches(temp);
+
             data = _mc[0].ToString().Replace("<td align=\"right\" class=\"rate\" >", "").Replace("<!--", "");
+
             _reg = new Regex("<td align=\"left\" class=\"rate\" >(.*)<!--");
+
             _mc = _reg.Matches(temp);
+
             data += " = " + _mc[0].ToString().Replace("<td align=\"left\" class=\"rate\" >", "").Replace("<!--", "");
             return data;
         }

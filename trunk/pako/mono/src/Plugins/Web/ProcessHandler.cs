@@ -185,50 +185,94 @@ namespace www
                             {
 //                                string data = WhoisResolver.Whois(ws[2].Trim().ToLower());
                                   HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.google.com/ig/api?weather="+ws[2].Trim()));
+
                                  _request.Method = "GET";
 
+
+
                                  HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+
                                  Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+
                                  StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
 
+
+
                                  String _data = "";
+
                                  _data = _reader.ReadToEnd();
+
                                  String _resultStr = "";
 
+
+
                                  XmlDocument _xml = new XmlDocument();
+
                                  _xml.LoadXml(_data);
+
                                  //_resultStr = _data;
+
                                  XmlNodeList _nodes = _xml.SelectNodes("xml_api_reply/weather/current_conditions");
 
+
+
                                  foreach (XmlNode _node in _nodes)
+
                                  {
+
                                      XmlDocument _childXml = new XmlDocument();
+
                                      _childXml.LoadXml("<xml>" + _node.InnerXml + "</xml>");
 
+
+
                                     // fill weather insormation:
+
                                     _resultStr += "Current weather information:\n";
+
                                     _resultStr += _childXml.SelectSingleNode("xml/condition").Attributes["data"].Value + "\n";
+
                                     _resultStr += "Temperature, F : " + _childXml.SelectSingleNode("xml/temp_f").Attributes["data"].Value + "\n";
+
                                     _resultStr += "Temperature, C : " + _childXml.SelectSingleNode("xml/temp_c").Attributes["data"].Value + "\n";
+
                                     _resultStr += "" + _childXml.SelectSingleNode("xml/humidity").Attributes["data"].Value + "\n";
+
                                     _resultStr += "" + _childXml.SelectSingleNode("xml/wind_condition").Attributes["data"].Value;
+
                                 }
+
+
 
                                 _nodes = _xml.SelectNodes("xml_api_reply/weather/forecast_conditions");
 
+
+
                                 foreach (XmlNode _node in _nodes)
+
                                 {
                                      _resultStr += "\n\n";
+
                                      XmlDocument _childXml = new XmlDocument();
+
                                      _childXml.LoadXml("<xml>" + _node.InnerXml + "</xml>");
 
+
+
                                      // fill weather insormation:
+
                                      _resultStr += "Weather information on " + _childXml.SelectSingleNode("xml/day_of_week").Attributes["data"].Value.Replace("Mon", "Monday").Replace("Tue", "Tuesday").Replace("Wed", "Wednesday").Replace("Thu", "Thursday").Replace("Fri", "Friday").Replace("Sat", "Saturday").Replace("Sun", "Sunday") + "\n"; ;
+
                                      _resultStr += _childXml.SelectSingleNode("xml/condition").Attributes["data"].Value + "\n";
+
                                      Double _tempLow = (System.Double.Parse(_childXml.SelectSingleNode("xml/low").Attributes["data"].Value) - 32) * 5 / 9;
+
                                      Double _tempHigh = (System.Double.Parse(_childXml.SelectSingleNode("xml/high").Attributes["data"].Value) - 32) * 5 / 9;
+
                                      _resultStr += "Temperature, C : " + _tempLow.ToString("##");
+
                                      _resultStr += " - " + _tempHigh.ToString("##");
+
                                  }
                                  if (_resultStr != "")
                                      rs = _resultStr;
