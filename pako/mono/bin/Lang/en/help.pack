@@ -20,7 +20,7 @@
    <command value="гг" name="bgaga" />
    <command value="ogo" name="aha" />
    <command value="The list of variables, used to format messages when sending. &#xA;Syntax:&#xA;Every variables has to be located in {}&#xA;Example:&#xA;user123: {1}misc say hello, {NICK}, how is it going? :)&#xA;bot: hello, user123, how is it going? :)&#xA;Review of all variables:&#xA;{1}misc vars&#xA;Review of one single variable:&#xA;{1}misc vars &lt;var&gt;&#xA;where &lt;var&gt; - name of a variable." name="misc vars" />
-   <command name="web weather" value="Get a weather forecast from Google Weather.&#xA;&lt;prefix&gt;web weather code|city" />
+   <command name="web weather" value="Get a weather forecast from Google Weather.&#xA;{1}web weather code|city" />
    <command name="muc seen" value="Use this command to get last 30 visitors that's visit your room or get a last time of youser visit.&#xA;&lt;prefix&gt;muc seen [Nickname]" />
    <command name="muc vrcensor" value="Allows you to deny some clients or users with some resourses in your chatroom.&#xA;&lt;prefix&gt;muc vrcensor res|ver|del|clear expression&#xA;res - deny resourse&#xA;ver - deny version&#xA;del - delete item&#xA;clear - cltar all items" />
 </help>
