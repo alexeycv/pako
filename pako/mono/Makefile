@@ -19,6 +19,7 @@ plugins:
 	gmcs src/Plugins/Misc/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Misc.dll
 	gmcs src/Plugins/Muc/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Muc.dll
 	gmcs src/Plugins/Web/*.cs -r:System.Data,System.Web,System.Web.Services,bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Web.dll
+	gmcs src/Plugins/Mucfilter/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Mucfilter.dll
 	echo Compiling plug-ins... Done
 
 install:

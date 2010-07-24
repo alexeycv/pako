@@ -181,6 +181,8 @@ namespace Core.Kernel
            m_con.UseCompression = S.Config.UseCompression;
            m_con.EnableCapabilities = true;
            m_con.Capabilities.Node = "http://pako.googlecode.com";
+           m_con.KeepAlive = true;
+           m_con.KeepAliveInterval = 60;
            m_con.SocketConnectionType = agsXMPP.net.SocketConnectionType.Direct;
            bool connect_server = S.Config.ConnectServer != "";
            m_con.AutoResolveConnectServer = !connect_server;
@@ -215,7 +217,8 @@ namespace Core.Kernel
                // Plugins handlers
                foreach (object _plugin in Sh.S.PluginHandler.Plugins)
                {
-                    ((IPlugin)_plugin).CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
+                    if (((IPlugin)_plugin).SubscribeMessages)
+                        ((IPlugin)_plugin).CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
                }
            };
          
@@ -229,12 +232,24 @@ namespace Core.Kernel
            m_con.OnPresence += delegate(object obj, Presence pres)
            {
                PresenceHandler pr_handler = new PresenceHandler(pres,Sh);
+               // Plugins handlers
+               foreach (object _plugin in Sh.S.PluginHandler.Plugins)
+               {
+                    if (((IPlugin)_plugin).SubscribePresence)
+                        ((IPlugin)_plugin).PresenceHandler(pres,Sh);
+               }
            };
 
            m_con.OnIq += delegate(object obj, IQ iq)
            {
                IQHandler iq_handler = new IQHandler();
                iq_handler.Handle(iq, S.C);
+               // Plugins handlers
+               foreach (object _plugin in Sh.S.PluginHandler.Plugins)
+               {
+                    if (((IPlugin)_plugin).SubscribeIq)
+                        ((IPlugin)_plugin).IqHandler(iq, S.C);
+               }
            };
 
            m_con.OnLogin += new ObjectHandler(OnLogin);
