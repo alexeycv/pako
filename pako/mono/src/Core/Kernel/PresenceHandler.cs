@@ -29,6 +29,8 @@ using Core.Conference;
 using Core.Other;
 using Core.Xml;
 
+using Core.Plugins;
+
 namespace Core.Kernel
 {
     public class PresenceHandler
@@ -40,13 +42,22 @@ namespace Core.Kernel
         {
             pres = m_pres;
             Sh = sh;
-            Handle();
+//            Handle();
+
+            Thread thr = new Thread(new ThreadStart(Handle));
+            thr.Start();            
         }
         public void Handle()
         {
             try
             {
                 _Handle();
+                // Plugins handlers
+                //foreach (object _plugin in sh.S.PluginHandler.Plugins)
+                //{
+                //     if (((IPlugin)_plugin).SubscribePresence)
+                //         ((IPlugin)_plugin).PresenceHandler(pres,Sh);
+                //}
             }
             catch (Exception ex)
             {
