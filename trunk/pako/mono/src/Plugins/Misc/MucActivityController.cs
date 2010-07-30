@@ -50,7 +50,7 @@ namespace Plugin
                {
                    if (pres.MucUser != null)
                    {
-                       m_r.Sh.S.AutoMucManager.AddMuc(m_muc.Jid, m_muc.MyNick, m_muc.MyStatus, m_muc.Language, m_muc.Password);
+                        m_r.Sh.S.AutoMucManager.AddMuc(m_muc.Jid, m_muc.MyNick, m_muc.MyStatus, m_muc.Language, m_muc.Password);
                         Jid querer = m_r.Msg.From;
                         m_r.Reply(m_r.f("muc_join_success", m_jid.Bare, m_muc.MyNick));
                         foreach (Jid j in m_r.Sh.S.Config.Administartion())
@@ -61,6 +61,7 @@ namespace Plugin
                             m_r.Reply("Re(" + querer.ToString() + ": misc join):\n" + m_r.f("muc_join_success", m_jid.Bare, m_muc.MyNick));
                         }
                    }
+
                }
                else
                {
@@ -77,11 +78,5 @@ namespace Plugin
                m_r.Connection.OnPresence -= new agsXMPP.protocol.client.PresenceHandler(this.Connection_OnPresence);
            }
        }
-
-
-
-
-
-
     }
 }

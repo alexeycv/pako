@@ -233,11 +233,11 @@ namespace Core.Kernel
            {
                PresenceHandler pr_handler = new PresenceHandler(pres,Sh);
                // Plugins handlers
-               foreach (object _plugin in Sh.S.PluginHandler.Plugins)
-               {
-                    if (((IPlugin)_plugin).SubscribePresence)
-                        ((IPlugin)_plugin).PresenceHandler(pres,Sh);
-               }
+               //foreach (object _plugin in Sh.S.PluginHandler.Plugins)
+               //{
+               //     if (((IPlugin)_plugin).SubscribePresence)
+               //         ((IPlugin)_plugin).PresenceHandler(pres,Sh);
+               //}
            };
 
            m_con.OnIq += delegate(object obj, IQ iq)
