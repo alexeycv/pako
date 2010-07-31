@@ -72,7 +72,7 @@ namespace Plugin
         { 
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -117,6 +117,57 @@ namespace Plugin
 
         public void PresenceHandler(Presence m_pres, SessionHandler sh)
         {
+            Presence pres = m_pres;
+            Response m_r = null;
+            Jid m_jid = null;
+            MUC m_muc = null;
+           
+            if (sh.S.MUCJustJoined.Contains(pres.From.Bare))
+            {
+                m_r = (Response)sh.S.MUCJustJoined[pres.From.Bare];
+                m_jid = pres.From;
+
+                if (sh.S.MUCJustJoined_Mucs.Contains(pres.From.Bare)) 
+                    m_muc = (MUC)sh.S.MUCJustJoined_Mucs[pres.From.Bare];
+            }
+
+            if (m_r != null && m_muc != null)
+            {
+                if (pres.Type != PresenceType.error)
+                {
+                    if (pres.MucUser != null)
+                    {
+                         m_r.Sh.S.AutoMucManager.AddMuc(m_muc.Jid, m_muc.MyNick, m_muc.MyStatus, m_muc.Language, m_muc.Password);
+                         Jid querer = m_r.Msg.From;
+                         m_r.Reply(m_r.f("muc_join_success", m_jid.Bare, m_muc.MyNick));
+                         foreach (Jid j in m_r.Sh.S.Config.Administartion())
+                         {
+                             m_r.Msg.From = j;
+                             m_r.Msg.Type = MessageType.chat;
+                             m_r.MUC = null;
+                             m_r.Reply("Re NEW(" + querer.ToString() + ": misc join):\n" + m_r.f("muc_join_success", m_jid.Bare, m_muc.MyNick));
+                         }
+                    }
+
+                }
+                else
+                {
+                   m_r.Reply(m_r.f("muc_join_failed", m_jid.Bare, pres.Error.GetAttribute("code") + " - " +pres.Error.Condition.ToString()));
+                   Jid querer = m_r.Msg.From;
+                    foreach (Jid j in m_r.Sh.S.Config.Administartion())
+                   {
+                       m_r.Msg.From = j;
+                       m_r.Msg.Type = MessageType.chat;
+                       m_r.MUC = null;
+                       m_r.Reply("Re("+querer.ToString()+": misc join):\n"+m_r.f("muc_join_failed", m_jid.Bare, pres.Error.GetAttribute("code") + " - " + pres.Error.Condition.ToString()));
+                   }
+                }
+                //m_r.Connection.OnPresence -= new agsXMPP.protocol.client.PresenceHandler(this.Connection_OnPresence);
+
+                //Clearing
+                sh.S.MUCJustJoined.Remove(pres.From.Bare);
+                sh.S.MUCJustJoined_Mucs.Remove(pres.From.Bare);
+            }
         }
 
         public void IqHandler(IQ iq, XmppClientConnection Con)

@@ -38,7 +38,10 @@ namespace Plugin
            m_jid = muc.Jid;
            m_r = r;
            m_muc = muc;
-           m_r.Connection.OnPresence += new agsXMPP.protocol.client.PresenceHandler(Connection_OnPresence);
+           //m_r.Connection.OnPresence += new agsXMPP.protocol.client.PresenceHandler(Connection_OnPresence);
+           // HACK! Handler below is mover to main
+           r.Sh.S.MUCJustJoined.Add(m_jid.Bare, m_r);
+           r.Sh.S.MUCJustJoined_Mucs.Add(m_jid.Bare, m_muc);
            muc.Join();
        }
 
