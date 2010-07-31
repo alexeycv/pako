@@ -1362,6 +1362,7 @@ namespace www
                             _request.Method = "GET";
             
                             HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+
                             Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
                             StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
 
@@ -1369,12 +1370,13 @@ namespace www
                             _data = _reader.ReadToEnd();
                             String _resultStr = "";
 
-                            int _begin = _data.IndexOf("<div style=\"margin-top:15px\" align=\"center\"><h1>Случайный анекдот</h1></div>") + 80;
-                            int _end = _data.IndexOf("</p>", _begin);
+                            String header = "<h1>Случайный анекдот</h1>";
+                            _data = _data.Substring(_data.IndexOf(header) + header.Length);
+                            
+                            String html_data = Utils.GetValue(_data, "<p class=\"main\">(.*)</p>");
+                            String result = html_data.Replace("<br />", "\n");
 
-                            _resultStr += "\n" + _data.Substring(_begin, _end - _begin).Replace("\"", "").Replace("\"", "").Replace("<br>", "\n").Replace("<div>", "").Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;", "\"").Replace("class=\"main\">", "").Replace("class=main>", "").Replace("<br />", "");
-
-                            rs = _resultStr;
+                            rs = result;
                         }
                         catch (Exception err)
                         {
