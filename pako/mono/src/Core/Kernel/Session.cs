@@ -81,6 +81,10 @@ namespace Core.Kernel
        Logger _seenlogger;
        Logger _htmllogger;
        Logger _htmlPrivlogger;
+
+       Hashtable _justJoined; // Just joined MUCs. For misc.join handler.
+       Hashtable _justJoined_Mucs; // Just joined MUCs. For misc.join handler.
+
        object[] sobjs = new object[70];
 
 
@@ -112,6 +116,10 @@ namespace Core.Kernel
            {
                sobjs[i] = new object();
            }
+
+           _justJoined = new Hashtable();
+           _justJoined_Mucs = new Hashtable();
+
            Sh = sh;
            dir_config = Utils.GetPath("config");
            m_config = new Config(dir_config);
@@ -215,8 +223,9 @@ namespace Core.Kernel
            {
                CommandHandler cmdh = new CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
                // Plugins handlers
-               foreach (object _plugin in Sh.S.PluginHandler.Plugins)
+               foreach (DictionaryEntry _d in Sh.S.PluginHandler.Plugins)
                {
+                    object _plugin = _d.Value;
                     if (((IPlugin)_plugin).SubscribeMessages)
                         ((IPlugin)_plugin).CommandHandler(msg, Sh, null, CmdhState.PREFIX_NULL, 1);
                }
@@ -233,11 +242,14 @@ namespace Core.Kernel
            {
                PresenceHandler pr_handler = new PresenceHandler(pres,Sh);
                // Plugins handlers
-               //foreach (object _plugin in Sh.S.PluginHandler.Plugins)
-               //{
-               //     if (((IPlugin)_plugin).SubscribePresence)
-               //         ((IPlugin)_plugin).PresenceHandler(pres,Sh);
-               //}
+               foreach (DictionaryEntry _d in Sh.S.PluginHandler.Plugins)
+               {
+                    object _plugin = _d.Value;
+                    if (((IPlugin)_plugin).SubscribePresence)
+                    {                        
+                        ((IPlugin)_plugin).PresenceHandler(pres,Sh);
+                    }
+               }
            };
 
            m_con.OnIq += delegate(object obj, IQ iq)
@@ -245,8 +257,9 @@ namespace Core.Kernel
                IQHandler iq_handler = new IQHandler();
                iq_handler.Handle(iq, S.C);
                // Plugins handlers
-               foreach (object _plugin in Sh.S.PluginHandler.Plugins)
+               foreach (DictionaryEntry _d in Sh.S.PluginHandler.Plugins)
                {
+                    object _plugin = _d.Value;
                     if (((IPlugin)_plugin).SubscribeIq)
                         ((IPlugin)_plugin).IqHandler(iq, S.C);
                }
@@ -775,11 +788,17 @@ namespace Core.Kernel
            }
        }
 
+       public Hashtable MUCJustJoined
+       {
+           get { lock (sobjs[65]) { return _justJoined; } }
+           set { lock (sobjs[65]) { _justJoined = value; } }
+       }
 
-     
-
-
-
+       public Hashtable MUCJustJoined_Mucs
+       {
+           get { lock (sobjs[66]) { return _justJoined_Mucs; } }
+           set { lock (sobjs[66]) { _justJoined_Mucs = value; } }
+       }
 
        public bool AddMUC(MUC muc)
        {

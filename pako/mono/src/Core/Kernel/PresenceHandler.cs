@@ -51,13 +51,7 @@ namespace Core.Kernel
         {
             try
             {
-                _Handle();
-                // Plugins handlers
-                //foreach (object _plugin in sh.S.PluginHandler.Plugins)
-                //{
-                //     if (((IPlugin)_plugin).SubscribePresence)
-                //         ((IPlugin)_plugin).PresenceHandler(pres,Sh);
-                //}
+                _Handle();                
             }
             catch (Exception ex)
             {
@@ -85,7 +79,7 @@ namespace Core.Kernel
 
         public void _Handle()
         {
-
+            // Handle Muc-Join
 
             pres.From = new Jid(pres.From.Bare.ToLower() + (pres.From.Resource != "" ? "/" + pres.From.Resource : ""));
             if (pres.MucUser != null)
