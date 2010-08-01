@@ -135,12 +135,20 @@ namespace Plugin
                             {
                                 if (def != null)
                                 {
-                                    Message msg = new Message();
-                                    msg.To = new Jid(m_msg.From.Bare + "/" + nick);
-                                    msg.Body = def;
-                                    msg.Type = MessageType.chat;
-                                    msg.From = m_msg.From;
-                                    m_r.Connection.Send(msg);
+                                    //sending a messsage
+                                    try
+                                    {
+                                        Message msg = new Message();
+                                        msg.To = new Jid(m_msg.From.Bare + "/" + nick);
+                                        msg.Body = def;
+                                        msg.Type = MessageType.chat;
+                                        msg.From = m_msg.From;
+                                        m_r.Connection.Send(msg);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        @out.exe(ERROR:\n\n + ex.Message + "\n\n" + ex.StackTrace);
+                                    }
                                 }
                             }
                             else
