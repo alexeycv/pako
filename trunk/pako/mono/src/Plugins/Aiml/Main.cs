@@ -97,7 +97,7 @@ namespace Plugin
         { 
             get
             {
-                return true;
+                return false;
             }
         }
         
@@ -172,6 +172,7 @@ namespace Plugin
                sobjs[i] = new object();
            }
 
+/*
             _aimlbot = new AIMLbot.Bot();
             _aimlUser = new AIMLbot.User("Default", _aimlbot);
             Assembly assem = Assembly.GetExecutingAssembly();
@@ -199,6 +200,7 @@ namespace Plugin
             //loader.loadAIML(_basedir + "AIML/en/");
             loader.loadAIML(_aimlbot.PathToAIML);
             _aimlbot.isAcceptingUserInput = true;
+*/
 
             @out.write("===> AIML initialization end.");
         }
