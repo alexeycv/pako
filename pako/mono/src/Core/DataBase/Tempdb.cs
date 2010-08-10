@@ -97,6 +97,39 @@ namespace Core.DataBase
                 cmd.ExecuteNonQuery();
 
             }
+            else // Check wheter that tables exists and recreate if not
+            {
+                SqliteCommand cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS tell (jid varchar, phrase varchar, author varchar, date varchar);
+                                      ", sqlite_conn);
+
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS greet (jid varchar, room varchar, phrase varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS automoderator (jid varchar, room varchar, updated bigint, period bigint);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS autokick (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+              
+                cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS autovisitor (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+            }
 
         }
 
