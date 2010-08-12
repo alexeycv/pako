@@ -275,7 +275,7 @@ namespace Core.DataBase
                 while (sqlite_datareader.Read())
                 {
                     count++;
-                    data += sqlite_datareader.GetString(2) + " - " + sqlite_datareader.GetString(3) + "\n";
+                    data += count.ToString() + ") " + sqlite_datareader.GetString(2) + " - " + sqlite_datareader.GetString(3) + "\n";
                 }
 
                 return data;

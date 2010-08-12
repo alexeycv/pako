@@ -48,8 +48,7 @@ namespace Core.DataBase
         string db_file;
         int ver;
         string m_dir;
-
-
+        SessionHandler Sh;
 
         public SqliteConnection SQLiteConnection
         {
@@ -141,6 +140,9 @@ namespace Core.DataBase
             }
             ver = version;
             db_file = DBfile;
+
+            this.Sh = Core.Other.Utils.Sh;
+
             LoadBase();
         }
 
@@ -165,10 +167,26 @@ namespace Core.DataBase
                                ORDER BY phrase DESC
                                       ",
                                            nick), sqlite_conn);
-                cmd.ExecuteNonQuery();
+                //cmd.ExecuteNonQuery();
 
+                try
+                {
+                    sqr = cmd.ExecuteReader();
+                }
+                catch (SqliteSyntaxException ex)
+                {
+                    string clrf = "\n";
+                    string _sqlText = cmd.CommandText;
 
-                sqr = cmd.ExecuteReader();
+                    if (Core.Other.Utils.OS == Platform.Windows)
+                    {
+                        clrf = "\r\n";
+                    }
+                    string data = "====== [" + DateTime.Now.ToString() + "] ===================================================>" + clrf + _sqlText;
+                    Sh.S.ErrorLoger.Write(data);
+
+                    return al;
+                }
 
                 while (sqr.Read())
                 {
@@ -183,13 +201,7 @@ namespace Core.DataBase
                                         nick), sqlite_conn);
                 cmd.ExecuteNonQuery();
 
-
-
                 return al;
-
-
-
-
             }
         }
 
@@ -210,8 +222,25 @@ namespace Core.DataBase
                                ORDER BY jid DESC
                                       ",
                                            jid, room), sqlite_conn);
-                cmd.ExecuteNonQuery();
-                sqr = cmd.ExecuteReader();
+                //cmd.ExecuteNonQuery();
+                try
+                {
+                    sqr = cmd.ExecuteReader();
+                }
+                catch (SqliteSyntaxException ex)
+                {
+                    string clrf = "\n";
+                    string _sqlText = cmd.CommandText;
+
+                    if (Core.Other.Utils.OS == Platform.Windows)
+                    {
+                        clrf = "\r\n";
+                    }
+                    string data = "====== [" + DateTime.Now.ToString() + "] ===================================================>" + clrf + _sqlText;
+                    Sh.S.ErrorLoger.Write(data);
+
+                    return false;
+                }
 
                 if (sqr.Read())
                 {
@@ -235,12 +264,6 @@ namespace Core.DataBase
                     }
                 }
                 return false;
-
-               
-
-
-
-
             }
         }
 
@@ -259,7 +282,7 @@ namespace Core.DataBase
                                WHERE (jid = '{0}' and room = '{1}')
                                       ",
                                             jid, room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+                //cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 return sqr.Read();
 
@@ -326,7 +349,7 @@ namespace Core.DataBase
                            WHERE (determiner = '{0}' and value = '{1}' and reason = '{2}' and room = '{3}')
                                       ",
                                             type, value, reason, room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 return sqr.Read();
 
@@ -349,7 +372,7 @@ namespace Core.DataBase
                            WHERE (determiner = '{0}' and value = '{1}' and reason = '{2}' and room = '{3}')
                                       ",
                                             type, value, reason, room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 return sqr.Read();
 
@@ -437,7 +460,7 @@ namespace Core.DataBase
                                WHERE (room = '{0}')
                                       ",
                                          room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 sqr = cmd.ExecuteReader();
 
                 while (sqr.Read())
@@ -482,7 +505,7 @@ namespace Core.DataBase
                                WHERE (room = '{0}')
                                       ",
                                          room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 sqr = cmd.ExecuteReader();
 
                 while (sqr.Read())
@@ -525,7 +548,7 @@ namespace Core.DataBase
                                WHERE (room = '{0}')
                                       ",
                                              room), sqlite_conn);
-                    cmd.ExecuteNonQuery();
+//                    cmd.ExecuteNonQuery();
                     sqr = cmd.ExecuteReader();
 
                     while (sqr.Read())
@@ -569,7 +592,7 @@ namespace Core.DataBase
                            WHERE (room = '{0}')
                                       ",
                                        room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 int i = 0;
                 while (sqr.Read())
@@ -608,7 +631,7 @@ namespace Core.DataBase
                            WHERE (room = '{0}')
                                       ",
                                        room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 string data = "";
                 int num = 0;
@@ -646,7 +669,7 @@ namespace Core.DataBase
                                ORDER BY updated DESC
                                       ",
                                             room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 @out.exe("akick_sqlite_executed");
 
@@ -805,7 +828,7 @@ namespace Core.DataBase
                            WHERE (room = '{0}')
                                       ",
                                        room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 int i = 0;
                 while (sqr.Read())
@@ -845,7 +868,7 @@ namespace Core.DataBase
                            WHERE (room = '{0}')
                                       ",
                                        room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 string data = "";
                 int num = 0;
@@ -883,7 +906,7 @@ namespace Core.DataBase
                                ORDER BY updated DESC
                                       ",
                                             room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
 
                 while (sqr.Read())
@@ -1091,7 +1114,7 @@ namespace Core.DataBase
                                ORDER BY phrase DESC
                                       ",
                                         room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 string phrase = "";
                 Jid Jid = new Jid("");
@@ -1133,7 +1156,7 @@ namespace Core.DataBase
                                ORDER BY jid DESC
                                       ",
                                         room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 string jid = "";
                 int i = 0;
@@ -1176,7 +1199,25 @@ namespace Core.DataBase
                                LIMIT 1
                                       ",
                                             jid, room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqliteSyntaxException ex)
+                {
+                    string clrf = "\n";
+                    string _sqlText = cmd.CommandText;
+
+                    if (Core.Other.Utils.OS == Platform.Windows)
+                    {
+                        clrf = "\r\n";
+                    }
+                    string data = "====== [" + DateTime.Now.ToString() + "] ===================================================>" + clrf + _sqlText;
+                    Sh.S.ErrorLoger.Write(data);
+
+                    return null;
+                }
+
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 if (sqr.Read())
                 {
@@ -1200,7 +1241,7 @@ namespace Core.DataBase
                                ORDER BY jid DESC
                                       ",
                                             room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 int i = 0;
                 string data = "";
@@ -1228,7 +1269,7 @@ namespace Core.DataBase
                                ORDER BY phrase DESC
                                       ",
                                             room), sqlite_conn);
-                cmd.ExecuteNonQuery();
+//                cmd.ExecuteNonQuery();
                 SqliteDataReader sqr = cmd.ExecuteReader();
                 int i = 0;
                 string data = "";
@@ -1259,9 +1300,7 @@ namespace Core.DataBase
                                ORDER BY phrase DESC
                                       ",
                                            nick), sqlite_conn);
-                cmd.ExecuteNonQuery();
-
-
+//                cmd.ExecuteNonQuery();
                 sqr = cmd.ExecuteReader();
 
                 while (sqr.Read())
@@ -1269,15 +1308,8 @@ namespace Core.DataBase
                     al.Add(new string[] { sqr.GetString(0), sqr.GetString(1), sqr.GetString(2) });
                 }
                 return al;
-
-
-
-
             }
         }
-
-
-
 
         public bool AddTell(Jid Jid, string phrase, Jid author)
         {
