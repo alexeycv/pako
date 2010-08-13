@@ -42,10 +42,10 @@ namespace Core.Kernel
         {
             pres = m_pres;
             Sh = sh;
-//            Handle();
+            Handle();
 
-            Thread thr = new Thread(new ThreadStart(Handle));
-            thr.Start();            
+            //Thread thr = new Thread(new ThreadStart(Handle));
+            //thr.Start();            
         }
         public void Handle()
         {
