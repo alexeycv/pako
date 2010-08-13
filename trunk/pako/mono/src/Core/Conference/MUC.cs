@@ -744,7 +744,7 @@ namespace Core.Conference
         /// <returns></returns>
         public bool HasAlias(string phrase)
         {
-
+            // TODO:NEED TO BE RE-WORKED. Parsing XML Take a long time. The best way is to use HashTables
             lock (Aliases)
             {
                 if (OptionsHandler.GetOption("aliases") == "-") return false;
