@@ -123,7 +123,7 @@ namespace Core.Kernel
             while (true)
             {
                 GC.Collect();
-                Thread.Sleep(500);
+                Thread.Sleep(5000);
             }
          }
 
