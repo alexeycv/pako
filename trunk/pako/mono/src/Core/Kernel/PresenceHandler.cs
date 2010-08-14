@@ -69,11 +69,15 @@ namespace Core.Kernel
                                         "   Stanza:" + clrf + msg_source + clrf + clrf + ex.ToString() + clrf + clrf + clrf;
 
                 Sh.S.ErrorLoger.Write(data);
-                Message _msg = new Message();
-                _msg.To = Sh.S.Config.Administartion()[0];
-                _msg.Type = MessageType.chat;
-                _msg.Body = "ERROR:   " + ex.ToString();
-                Sh.S.C.Send(_msg);
+
+                if (Sh.S.Config.SendErrorMessagesToAdmin)
+                {
+                    Message _msg = new Message();
+                    _msg.To = Sh.S.Config.Administartion()[0];
+                    _msg.Type = MessageType.chat;
+                    _msg.Body = "ERROR:   " + ex.ToString();
+                    Sh.S.C.Send(_msg);
+                }
             }
         }
 
