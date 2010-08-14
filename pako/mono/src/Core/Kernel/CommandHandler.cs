@@ -98,13 +98,17 @@ namespace Core.Kernel
                                         "   Stanza:" + clrf + msg_source + clrf + clrf + ex.ToString() + clrf + clrf + clrf;
 
                 Sh.S.ErrorLoger.Write(data);
-                foreach (Jid j in Sh.S.Config.Administartion())
+
+                if (Sh.S.Config.SendErrorMessagesToAdmin)
                 {
-                    Message _msg = new Message();
-                    _msg.To = j;
-                    _msg.Type = MessageType.chat;
-                    _msg.Body = "ERROR:   " + ex.ToString() + "\n\nStack trace: \n" + ex.StackTrace + "\nSource:\n" + msg_source;
-                    Sh.S.C.Send(_msg);
+                    foreach (Jid j in Sh.S.Config.Administartion())
+                    {
+                        Message _msg = new Message();
+                        _msg.To = j;
+                        _msg.Type = MessageType.chat;
+                        _msg.Body = "ERROR:   " + ex.ToString() + "\n\nStack trace: \n" + ex.StackTrace + "\nSource:\n" + msg_source;
+                        Sh.S.C.Send(_msg);
+                    }
                 }
             }
         }

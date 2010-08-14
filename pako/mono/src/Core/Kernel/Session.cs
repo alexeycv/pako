@@ -238,6 +238,7 @@ namespace Core.Kernel
                m_con.OnWriteXml += new XmlHandler(OnWriteXml);
                m_con.OnReadXml += new XmlHandler(OnReadXml);
            }
+
            m_con.OnPresence += delegate(object obj, Presence pres)
            {
                PresenceHandler pr_handler = new PresenceHandler(pres,Sh);

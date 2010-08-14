@@ -573,5 +573,33 @@ namespace Core.Xml
 
         }
 
+        public bool SendErrorMessagesToAdmin
+        {
+            get
+            {
+                lock (Document)
+                {
+                    try
+                    {
+                        return Document.RootElement.SelectSingleElement("bot").SelectSingleElement("SendErrorMessagesToAdmin").GetAttributeBool("value");
+                    }
+                    catch (Exception err)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            set
+            {
+                lock (Document)
+                {
+                    Document.RootElement.SelectSingleElement("bot").SelectSingleElement("SendErrorMessagesToAdmin").SetAttribute("value", value.ToString());
+                    Save();
+                }
+            }
+
+        }
+
     }
 }
