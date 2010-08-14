@@ -57,7 +57,10 @@ namespace Core.Conference
         string m_name;
         string m_server;
         Hashtable m_users;
+
         Document m_aliases;
+        Hashtable m_aliases_cache;
+
         string m_mynick;
         string m_mystatus;
         string m_lang;
@@ -600,6 +603,20 @@ namespace Core.Conference
         }
 
         /// <summary>
+        /// Aliases cache hashtable for aliases quick search
+        /// </summary>
+        public Hashtable Aliases_cache
+        {
+            get
+            {
+                lock (sobjs[53])
+                {
+                    return m_aliases_cache;
+                }
+            }
+        }
+
+        /// <summary>
         /// The count of aliases in the current MUC
         /// </summary>
         /// <returns></returns>
@@ -633,6 +650,9 @@ namespace Core.Conference
             {
       
                 if (OptionsHandler.GetOption("aliases") == "-") return phrase;
+
+                // TODO: Review code: use HashTable for performance improvement
+                /*
                 foreach (Element el in Aliases.RootElement.SelectElements("alias"))
                 {
 
@@ -651,6 +671,33 @@ namespace Core.Conference
                         return to;
                     }
 
+                }
+                return phrase;
+                */
+
+                string[] _phrases = phrase.Split(' ');
+                string _wordsConstructor = "";
+                for (int _index = 0; _index < _phrases.Length && _index < 5; _index++)
+                {
+                    if (_wordsConstructor != "")
+                        _wordsConstructor += " ";
+                    _wordsConstructor += _phrases[_index];
+
+                    if (Aliases_cache.Contains(_wordsConstructor))
+                    {
+                        string name = _wordsConstructor;
+                        string value = (string)Aliases_cache[name];
+
+                        value = Utils.FormatEnvironmentVariables(value, r);
+                        val = value;
+                        from = name;
+
+                        string basic = phrase.Remove(0, name.Length);
+                        value = Utils.FormatMsg(value, basic, "#", true, false);
+                        value = Utils.FormatMsg(value, basic, "%", true, true);
+                        to = value.Trim();
+                        return to;
+                    }
                 }
                 return phrase;
             }
@@ -748,14 +795,26 @@ namespace Core.Conference
             lock (Aliases)
             {
                 if (OptionsHandler.GetOption("aliases") == "-") return false;
-                foreach (Element el in Aliases.RootElement.SelectElements("alias"))
-                {
-                    string name = el.GetAttribute("name");
-                    string value = el.GetAttribute("value");
 
-                    if ((phrase.IndexOf(name + " ") == 0) || (phrase == name))
+                string[] _phrases = phrase.Split(' ');
+                string _wordsConstructor = "";
+                for (int _index = 0; _index < _phrases.Length && _index < 5; _index++)
+                {
+                    if (_wordsConstructor != "")
+                        _wordsConstructor += " ";
+                    _wordsConstructor += _phrases[_index];
+
+                    if (Aliases_cache.Contains(_wordsConstructor))
                         return true;
                 }
+                //foreach (Element el in Aliases.RootElement.SelectElements("alias"))
+                //{
+                //    string name = el.GetAttribute("name");
+                //    string value = el.GetAttribute("value");
+
+                //    if ((phrase.IndexOf(name + " ") == 0) || (phrase == name))
+                //        return true;
+                //}
                 return false;
 
 
@@ -813,6 +872,9 @@ namespace Core.Conference
                 Aliases.Clear();
                 Aliases.LoadXml("<Aliases></Aliases>");
                 Aliases.Save(al_file);
+
+                // Clear cache
+                Aliases_cache.Clear();
             }
         }
 
@@ -841,6 +903,12 @@ namespace Core.Conference
                                 Aliases.Clear();
                                 Aliases.LoadXml(m_source);
                                 Aliases.Save(al_file);
+
+                                // Delete from cache
+                                string name = el.GetAttribute("name");
+                                if (Aliases_cache.Contains(name))
+                                    Aliases_cache.Remove(name);
+
                                 return true;
                             }
                         }
@@ -859,6 +927,12 @@ namespace Core.Conference
                                 Aliases.Clear();
                                 Aliases.LoadXml(m_source);
                                 Aliases.Save(al_file);
+
+                                // Delete from cache
+                                string name = el.GetAttribute("name");
+                                if (Aliases_cache.Contains(name))
+                                    Aliases_cache.Remove(name);
+
                                 return true;
                             }
                         }
@@ -930,6 +1004,11 @@ namespace Core.Conference
                             el.SetAttribute("name", alias);
                             el.SetAttribute("value", cmd);
                             Aliases.Save(al_file);
+
+                            // Add to a cache
+                            if (!Aliases_cache.Contains(alias))
+                                Aliases_cache.Add(alias, cmd);
+
                             return true;
                         }
                     }
@@ -1417,7 +1496,7 @@ namespace Core.Conference
             for (int i = 0; i < 60; i++)
             {
                 sobjs[i] = new object();
-            }
+            } // last - 53
 
             DirBuilder db = new DirBuilder();
             m_con = con;
@@ -1439,9 +1518,11 @@ namespace Core.Conference
             @out.exe("options_hnd_starting");
             m_dir = Utils.GetPath("mucdata", this);
             @out.exe("options_hnd_fnished");
+
             m_aliases = new Document();
             if (!Directory.Exists(m_dir))
                 m_aliases.LoadFile(al_file);
+
             Directory.CreateDirectory(m_dir);
  
             if (File.Exists(al_file))
@@ -1451,6 +1532,20 @@ namespace Core.Conference
                 m_aliases.LoadXml("<Aliases></Aliases>");
                 m_aliases.Save(al_file);
             }
+
+            // Load an aliases hashtable
+            m_aliases_cache = new Hashtable();
+            lock (Aliases)
+            {
+                foreach (Element el in Aliases.RootElement.SelectElements("alias"))
+                {
+                    string name = el.GetAttribute("name");
+                    string value = el.GetAttribute("value");
+
+                    m_aliases_cache.Add(name, value);
+                }
+            }
+
             int sqlv = int.Parse(sh.S.Config.GetTag("sqlite"));
             opth = new OptionsHandler(Utils.GetPath("local_options", this));
             la = new LocalAccess(acc_file);

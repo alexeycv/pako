@@ -23,6 +23,7 @@ using agsXMPP;
 using agsXMPP.protocol.iq.version;
 using agsXMPP.protocol.client;
 using Core.Kernel;
+using System.Threading;
 
 namespace Plugin
 {
@@ -31,23 +32,30 @@ namespace Plugin
         Response m_r;
         Jid m_jid;
         long ticks;
-
+        VersionIq vi;
 
         public PingCB(Response r, Jid Jid)
         {
 
             m_r = r;
             m_jid = Jid;
-            VersionIq vi = new VersionIq();
+            vi = new VersionIq();
             vi.Type = IqType.get;
             vi.To = m_jid;
             vi.GenerateId();
-            m_r.Connection.IqGrabber.SendIq(vi, new IqCB(VersionExtractor), null);
-            ticks = DateTime.Now.Ticks;
+            //m_r.Connection.IqGrabber.SendIq(vi, new IqCB(VersionExtractor), null);
+            //ticks = DateTime.Now.Ticks;
 
+            Thread thr = new Thread(new ThreadStart(SendIqTh));
+            thr.Start();     
         }
 
-
+        private void SendIqTh()
+        {
+            //VersionIq vi = new VersionIq();
+            m_r.Connection.IqGrabber.SendIq(vi, new IqCB(VersionExtractor), null);
+            ticks = DateTime.Now.Ticks;
+        }
 
 
         private void VersionExtractor(object obj, IQ iq, object arg)
