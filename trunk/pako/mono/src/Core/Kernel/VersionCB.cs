@@ -22,6 +22,7 @@ using System.Text;
 using agsXMPP;
 using agsXMPP.protocol.iq.version;
 using agsXMPP.protocol.client;
+using agsXMPP.protocol.x.muc;
 using Core.Kernel;
 using Core.Conference;
 
@@ -79,6 +80,22 @@ namespace Core.Kernel
             r.MUser = _mUser;
             r.Sh = _sh;
             // Checking uuser version for a censor
+
+            Affiliation _aff = Affiliation.none;
+            if (_muc.OptionsHandler.GetOption("vcensor_affiliation") == "none")
+                _aff = Affiliation.none;
+            if (_muc.OptionsHandler.GetOption("vcensor_affiliation") == "member")
+                _aff = Affiliation.member;
+
+            bool _executeRCensor = false;
+            if (_mUser.Affiliation == _aff)
+                _executeRCensor = true;
+            if (_muc.OptionsHandler.GetOption("vcensor_affiliation") == "visitor")
+                if (_mUser.Affiliation == Affiliation.none && _mUser.Role == Role.visitor)
+                    _executeRCensor = true;
+
+            if (_executeRCensor)
+            {
                     string found_censored = _muc.IsVRCensored(_mUser.Version, _muc.OptionsHandler.GetOption("global_censor") == "+", "ver");
                     @out.exe("versioncensor_next_stage");
                     if (found_censored != null)
@@ -160,6 +177,7 @@ namespace Core.Kernel
                     else
                         @out.exe("versioncensored_not_found");
                     @out.exe("versioncensored_check_finished");
+            }
         }
 
     }
