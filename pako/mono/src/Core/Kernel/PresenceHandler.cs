@@ -473,8 +473,20 @@ namespace Core.Kernel
                                 */
                             }
 
+                            Affiliation _aff = Affiliation.none;
+                            if (m_muc.OptionsHandler.GetOption("vcensor_affiliation") == "none")
+                                _aff = Affiliation.none;
+                            if (m_muc.OptionsHandler.GetOption("vcensor_affiliation") == "member")
+                                _aff = Affiliation.member;
 
-                            if ((user.Jid.Resource != null) && (user != m_muc.MyNick))
+                            bool _executeRCensor = false;
+                            if (user.Affiliation == _aff)
+                                _executeRCensor = true;
+                            if (m_muc.OptionsHandler.GetOption("vcensor_affiliation") == "visitor")
+                                if (user.Affiliation == Affiliation.none && user.Role == Role.visitor)
+                                    _executeRCensor = true;
+
+                            if ((user.Jid.Resource != null) && (user != m_muc.MyNick) && _executeRCensor)
                             {
                                 // TODO: Add censore by nick and resource
                                 string censored = Sh.S.GetMUC(p_jid).IsVRCensored(user.Jid.Resource, m_muc.OptionsHandler.GetOption("global_censor") == "+", "res");
