@@ -49,6 +49,7 @@ namespace Core.Conference
         long msg_time;
         string _version;
         bool _isBot;
+        bool _versionExists;
 
 
         /// <summary>
@@ -193,7 +194,6 @@ namespace Core.Conference
             set { lock (sobjs[5]) { m_role = value; } }
         }
 
-
         /// <summary>
         /// Returns if the user is bot's admin
         /// </summary>
@@ -255,7 +255,15 @@ namespace Core.Conference
             get { lock (sobjs[11]) { return _isBot; } }
             set { lock (sobjs[14]) { _isBot = value; } }
         }
-     
+
+        /// <summary>
+        /// Determine weather that user have a version info
+        /// </summary>
+        public bool VersionExists
+        {
+            get { lock (sobjs[11]) { return _versionExists; } }
+            set { lock (sobjs[14]) { _versionExists = value; } }
+        }
 
     }
 
