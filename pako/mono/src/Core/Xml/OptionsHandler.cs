@@ -29,7 +29,7 @@ namespace Core.Xml
 	public class OptionsHandler : XMLContainer
 	{
 		
-		public OptionsHandler(string file)
+        public OptionsHandler(string file)
         {
             if (!System.IO.File.Exists(file))
             {
@@ -40,7 +40,7 @@ namespace Core.Xml
             Open(file, 10);
             
            @out.exe("option_hnd_created_or_opened");
-           string[] opts = new string[] { "global_censor", "censor_result", "vcensor_result", "vcensor_affiliation", "rcensor_result", "amoderator", "akick", "avisitor", "aliases", "mode", "cmdaccess", "cleanup_unit", "enable_logging", "nick_limit", "nick_limit_result", "length_limit", "length_limit_overflow_result" };
+           string[] opts = new string[] { "global_censor", "censor_result", "vcensor_result", "vcensor_affiliation", "rcensor_result", "amoderator", "akick", "avisitor", "aliases", "mode", "cmdaccess", "cleanup_unit", "enable_logging", "nick_limit", "nick_limit_result", "length_limit", "length_limit_overflow_result", "users_without_version_info", "users_without_vcard_info", "show_newuser_vcard" };
            foreach (string opt in opts)
                AddOption(opt); 
             
@@ -149,7 +149,7 @@ namespace Core.Xml
                         }
                     }
                     break;
-                     
+
                  case "enable_logging":
         	         Document.RootElement.AddTag("option");
                     foreach (Element el in Document.RootElement.SelectElements("option"))
@@ -158,6 +158,21 @@ namespace Core.Xml
                         {
                             el.SetAttribute("name", Name);
                             el.SetAttribute("value", "+");
+                            el.SetAttribute("possible","+|-");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+                     
+                 case "show_newuser_vcard":
+        	         Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "-");
                             el.SetAttribute("possible","+|-");
                             Save();
                             return true;
@@ -249,6 +264,36 @@ namespace Core.Xml
                             el.SetAttribute("name", Name);
                             el.SetAttribute("value", "warn");
                             el.SetAttribute("possible","kick|devoice|nothing|warn|ban");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+
+                case "users_without_version_info":
+                   Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "allow");
+                            el.SetAttribute("possible","kick|devoice|allow|warn|ban");
+                            Save();
+                            return true;
+                        }
+                    }
+                    break;
+
+                case "users_without_vcard_info":
+                   Document.RootElement.AddTag("option");
+                    foreach (Element el in Document.RootElement.SelectElements("option"))
+                    {
+                        if (!el.HasAttribute("name"))
+                        {
+                            el.SetAttribute("name", Name);
+                            el.SetAttribute("value", "allow");
+                            el.SetAttribute("possible","kick|devoice|allow|warn|ban");
                             Save();
                             return true;
                         }
