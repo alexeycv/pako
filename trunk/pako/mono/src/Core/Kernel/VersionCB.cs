@@ -69,14 +69,35 @@ namespace Core.Kernel
 		//Return a version to mucuser object
                 if (vi != null)
                 {
-                    _mUser.Version = vi.Name + " " + vi.Ver + " " + vi.Os;
+                    //_mUser.Version = vi.Name + " " + vi.Ver + " " + vi.Os;
+                    _mUser.Version = "";
+
+                   if (!String.IsNullOrEmpty(vi.Name))
+                      _mUser.Version += vi.Name + " ";
+
+                   if (!String.IsNullOrEmpty(vi.Ver))
+                      _mUser.Version += vi.Ver + " ";
+
+                   if (!String.IsNullOrEmpty(vi.Os))
+                      _mUser.Version += vi.Os;
+
                     _mUser.VersionExists = true;
+                    if (vi.Name == "" && vi.Ver == "" && vi.Os == "")
+                        _mUser.VersionExists = false;
+
+                   if (iq.Type == IqType.error)
+                   {
+                       _mUser.VersionExists = false;
+                   }
                 }
                 else
                 {
                     _mUser.Version = "";
                     _mUser.VersionExists = true;
                 }
+
+                if (_mUser.Version == "")
+                   _mUser.VersionExists = false;
 
                 // Implementing version censor
                 this.VersionCensor();
@@ -188,12 +209,12 @@ namespace Core.Kernel
                     @out.exe("versioncensored_check_finished");
             }
         // Censor: if no version exists
-        if (_mUser.Affiliation == Affiliation.none && _mUser.VersionExists == false)
+        if (_mUser.VersionExists == false && _mUser.Affiliation == Affiliation.none)
         {
-            if (_muc.OptionsHandler.GetOption("vcensor_result") != "allow")
+            if (_muc.OptionsHandler.GetOption("users_without_version_info") != "allow")
             {
                 string found_censored = "No version informstion exisis!";
-                switch (_muc.OptionsHandler.GetOption("vcensor_result"))
+                switch (_muc.OptionsHandler.GetOption("users_without_version_info"))
                 {
                     case "kick":
                         {
