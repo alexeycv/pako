@@ -223,7 +223,8 @@ namespace Core.Kernel
                 this.acc_type = AccessType.None;
                 @out.exe("cmd_no_access_notifies_found_access=0");
             }
-            if (volume == "admin" || volume == "misc")
+            //if (volume == "admin" || volume == "misc")
+            if (volume == "admin")
             {
                 naccess = naccess ?? 100;
             }
