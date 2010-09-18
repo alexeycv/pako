@@ -95,6 +95,12 @@ namespace Core.DataBase
                                       ", sqlite_conn);
                 cmd.ExecuteNonQuery();
 
+                cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE  userstat (room varchar, jid varchar, nick varchar, words bigint, phrases bigint, kicks bigint, joins bigint, censores bigint, firstjoin datetime, totaltime varchar, minping varchar, maxping varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+
             }
             else // Check wheter that tables exists and recreate if not
             {
@@ -126,6 +132,12 @@ namespace Core.DataBase
                 cmd = new SqliteCommand(@"
                     CREATE 
                           TABLE IF NOT EXISTS autovisitor (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS userstat (room varchar, jid varchar, nick varchar, words bigint, phrases bigint, kicks bigint, joins bigint, censores bigint, firstjoin datetime, totaltime varchar, minping varchar, maxping varchar);
                                       ", sqlite_conn);
                 cmd.ExecuteNonQuery();
             }
@@ -1338,6 +1350,15 @@ namespace Core.DataBase
             }
         }
 
+        #region User Statistic Methods
+
+        public bool UserExists(string room, string jid)
+        {
+            return true;
+        }
+
+        #endregion
 
     }
+
 }

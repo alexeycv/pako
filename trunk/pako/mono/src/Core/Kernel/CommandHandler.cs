@@ -249,7 +249,28 @@ namespace Core.Kernel
                     // Checking user input text for a censored phrases
                     string found_censored = Utils.FormatEnvironmentVariables(Sh.S.GetMUC(s_jid).IsCensored(m_msg.Body, m_muc.OptionsHandler.GetOption("global_censor") == "+"), r);
                     @out.exe("censor_next_stage");
-                    if (found_censored != null)
+
+                    bool _warningExecuted = false;
+
+                    if (found_censored != null && Convert.ToInt32(m_muc.OptionsHandler.GetOption("user_warnings_count")) > 0)
+                    {
+                        if (m_user.WarningsCount < Convert.ToInt32(m_muc.OptionsHandler.GetOption("user_warnings_count")))
+                        {
+                            m_user.WarningsCount++;
+                            _warningExecuted = true;
+
+                            @out.exe("censor_next_warn");
+                            MessageType original_type = r.Msg.Type;
+                            r.Msg.Type = MessageType.groupchat;
+                            r.Reply(r.f("censor_warning"));
+                            r.Msg.Type = original_type;
+                            @out.exe("censor_next_sleeping");
+                            Sh.S.Sleep();
+                            @out.exe("censor_next_slept");
+                        }
+                    }
+
+                    if (found_censored != null && !_warningExecuted)
                     {
                         switch (m_muc.OptionsHandler.GetOption("censor_result"))
                         {

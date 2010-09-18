@@ -675,7 +675,7 @@ namespace Core.Other
        {
            get
            {
-               return "10.8.23 (http://pako.googlecode.com developers team)";
+               return "10.9.18 (http://pako.googlecode.com developers team)";
            }
        }
         

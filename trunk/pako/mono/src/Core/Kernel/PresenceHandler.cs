@@ -213,7 +213,7 @@ namespace Core.Kernel
                             ""
                         );
 
-                        // Checking version
+                        // Checking version and vcard
 
                         if (_justJoined == true)
                         {
