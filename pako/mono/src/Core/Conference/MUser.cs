@@ -49,7 +49,10 @@ namespace Core.Conference
         long msg_time;
         string _version;
         bool _isBot;
-        bool _versionExists;
+        bool _versionExists; 
+        Int32 _warningsCount;
+
+        MUserStats _userStats;
 
 
         /// <summary>
@@ -133,6 +136,7 @@ namespace Core.Conference
             _version=user_version;
             _isBot=false;
 
+            // Load MUserStats
         }
         /// <summary>
         /// Nick of the user
@@ -265,6 +269,30 @@ namespace Core.Conference
             set { lock (sobjs[14]) { _versionExists = value; } }
         }
 
+        /// <summary>
+        /// Number of warnings
+        /// </summary>
+        public Int32 WarningsCount
+        {
+            get { lock (sobjs[11]) { return _warningsCount; } }
+            set { lock (sobjs[14]) { _warningsCount = value; } }
+        }
+
+        /// <summary>
+        /// User statistics
+        /// </summary>
+        public MUserStats UserStats
+        {
+            get { lock (sobjs[11]) { return _userStats; } }
+            set { lock (sobjs[14]) { _userStats = value; } }
+        }
+
     }
 
+    /// <summary>
+    /// MUser statistics data
+    /// </summary>
+    public class MUserStats
+    {
+    }
 }
