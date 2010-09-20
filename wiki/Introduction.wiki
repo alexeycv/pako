@@ -1,5 +1,5 @@
 #labels Featured
-*Klichuk* and *Alex.cv* are the main developers of the curent project. The founder of this project is *Klichuk*, and if you want to join the project notify him:
+*Klichuk* and *Xak* are the main developers of the curent project. The founder of this project is *Klichuk*, and if you want to join the project notify him:
 [http://www.klichuk.info/contacts/ www.klichuk.info]
 
 *Labels:*
@@ -295,14 +295,14 @@ New ideas and comments are always welcomed. Mail me about your idea and i will t
 
 See the [http://www.klichuk.info author] contact information here.
 
+Please leave your feedback [http://code.google.com/p/pako/issues/list there].
+
 
 = Special thanks =
 
 *Alex* agsXMPP author and code support,
 
 *vt* code support and testing,
-
-*Xak* tester, code support,
 
 *Pily* hoster, documentator,
 
