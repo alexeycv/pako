@@ -183,10 +183,7 @@ namespace Core.Other
 
         static public string ConsoleEscape(string Source)
         {
-        	return "\""+Source.Replace(@"\",@"\\")
-        									  .Replace(@"\'",@"\\\'")
-                                             .Replace("\"","\\\"")
-                                             .Replace("`","\\`")+"\"";
+        	return "\""+Source.Replace(@"\",@"\\").Replace(@"\'",@"\\\'").Replace("\"","\\\"").Replace("`","\\`").Replace("\n","").Replace("\r","")+"\"";
 		}
 
         /// <summary>
@@ -675,7 +672,7 @@ namespace Core.Other
        {
            get
            {
-               return "10.9.18 (http://pako.googlecode.com developers team)";
+               return "10.9.22 (http://pako.googlecode.com developers team)";
            }
        }
         
