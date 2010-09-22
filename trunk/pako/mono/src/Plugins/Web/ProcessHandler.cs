@@ -818,7 +818,7 @@ namespace www
                                 if (repos.EndsWith(" --verbose"))
                                     repos = repos.Substring(0, repos.Length - 9);
                                 bool verbose = repos != _r;
-                                repos = Utils.ConsoleEscape(repos.Trim());
+                                repos = Utils.ConsoleEscape(repos.Trim()).Replace("\n","").Replace("\r","");
                                 @out.exe("web_svn_repos_formatted: " + repos);
                                 Stdior std = new Stdior();
                                 rs = std.Execute("svn log " + repos + (verbose ? " -v" : "") + " --limit " + number.ToString(), Sh.S).TrimStart('-');
