@@ -106,9 +106,9 @@ namespace Core.Conference
         /// </summary>
         /// <param name="res"></param>
         /// <param name="count"></param>
-        public void GetOutcastlist(Jid[] jids, int? count)
+        public void GetOutcastlist(Jid[] jids, int? count, bool isLoaded)
         {
-            manager.RequestBanList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.OUTCAST_LIST});
+            manager.RequestBanList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.OUTCAST_LIST, isLoaded});
         }
 
         /// <summary>
@@ -116,9 +116,9 @@ namespace Core.Conference
         /// </summary>
         /// <param name="res"></param>
         /// <param name="count"></param>
-        public void GetMemberlist(Jid[] jids, int? count)
+        public void GetMemberlist(Jid[] jids, int? count, bool isLoaded)
         {
-            manager.RequestMemberList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.MEMBER_LIST });
+            manager.RequestMemberList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.MEMBER_LIST, isLoaded });
         }
 
         /// <summary>
@@ -126,9 +126,9 @@ namespace Core.Conference
         /// </summary>
         /// <param name="res"></param>
         /// <param name="count"></param>
-        public void GetAdminlist(Jid[] jids, int? count)
+        public void GetAdminlist(Jid[] jids, int? count, bool isLoaded)
         {
-            manager.RequestAdminList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.ADMIN_LIST });
+            manager.RequestAdminList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.ADMIN_LIST, isLoaded });
         }
 
         /// <summary>
@@ -136,9 +136,9 @@ namespace Core.Conference
         /// </summary>
         /// <param name="res"></param>
         /// <param name="count"></param>
-        public void GetOwnerlist(Jid[] jids, int? count)
+        public void GetOwnerlist(ref Jid[] jids, int? count, bool isLoaded)
         {
-            manager.RequestOwnerList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.OWNER_LIST });
+            manager.RequestOwnerList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.OWNER_LIST, isLoaded });
         }
 
 
@@ -154,6 +154,9 @@ namespace Core.Conference
             object[] args = (object[])arg;
             Response r = null; //(Response)args[0];
             Jid[] _jids = null;
+            bool _isLoaded = false;
+
+            @out.write("Request type: " + args[0].GetType().ToString());
 
             // Determine a type of objects to use
             if (args[0].GetType() == typeof (Response))
@@ -163,14 +166,18 @@ namespace Core.Conference
 
             if (args[0].GetType() == typeof (Jid[]))
             {
+                @out.write("Jids OK");
                 _jids = (Jid[])args[0];
+
+               _isLoaded = (bool)args[3];
             }
 
             int? count = (int?)args[1];
             AdminQueryType type = (AdminQueryType)args[2];
             if (iq.Error != null)
             {
-                r.Reply(r.f("version_error"));
+                if (args[0].GetType() == typeof (Response))
+                    r.Reply(r.f("version_error"));
                 return;
             }
 
@@ -216,8 +223,10 @@ namespace Core.Conference
 
                     if (args[0].GetType() == typeof (Jid[]))
                     {
+                        @out.write("Array clear OK");
                         Array.Clear(_jids, 0, _jids.Length);
                         Array.Resize(ref _jids, 0);
+                        @out.write("Array.Resize OK");
                     }
 
                     return;
@@ -226,11 +235,11 @@ namespace Core.Conference
                  
                 int i = 0; 
                 int all = els.Count;
-                data = r.f(data);
 
                 // Action for text-request
                 if (args[0].GetType() == typeof (Response))
                 {
+                    data = r.f(data);
                     foreach (Element el in els)
                     {
                        i++;
@@ -247,23 +256,28 @@ namespace Core.Conference
                 // Output an array of JIDs
                 if (args[0].GetType() == typeof (Jid[]))
                 {
-                    int _c = count != null ? (int)count : 0;
+                    int _c = els.Count; //count != null ? (int)count : 0;
                     Array.Resize(ref _jids, _c);
+
+                    @out.write("Output: coubt = " + _c + " length = " + _jids.Length);
 
                     foreach (Element el in els)
                     {
                        _jids[i] = new Jid(el.GetAttribute("jid"));
+                        @out.write(el.GetAttribute("jid"));
 
                        i++;
-                       if (count != null && i == count - 1)
-                           break;
+//                       if ( i == _c)
+//                           break;
                     }
+
+                    _isLoaded = true;
 
                     return;
                 }
             }
-
-            r.Reply(r.f(error));
+            if (args[0].GetType() == typeof (Response))
+                r.Reply(r.f(error));
 
         }
 

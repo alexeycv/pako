@@ -2406,74 +2406,28 @@ namespace Plugin
                         if (ws.Length > 2)
                         {
                             Jid[] _jids = {};
+                            bool isLoaded = false;
+
                             if (ws[2].ToLower() == "members")
                             {
-                                MucConfig mc = new MucConfig(m_r.MUC, m_r.Connection);
-                                mc.GetMemberlist(_jids, null);
-
-                                if (_jids != null && _jids.Length > 0)
-                                {
-                                    string _reasonMany = "You have been invited by " + m_r.MUser.Nick;
-                                    if (ws.Length > 3)
-                                    {
-                                        _reasonMany = ws[3];
-                                    }
-
-                                    m_r.MUC.Manager.Invite(_jids, m_r.MUC.Jid, _reasonMany);
-                                    rs = m_r.f("invite_members_ok");
-                                }
-                                else
-                                {
-                                    rs = m_r.f("invite__fail");
-                                }
-
+                                 this.InviteMemberlist(_jids, null, isLoaded, m_r.MUC.Manager, m_r.MUC.Jid);
+                                 rs = m_r.f("invite_members_ok");
+                               
                                 break;
                             }
 
                             if (ws[2].ToLower() == "admins")
                             {
-                                MucConfig mc = new MucConfig(m_r.MUC, m_r.Connection);
-                                mc.GetAdminlist(_jids, null);
-
-                                if (_jids != null && _jids.Length > 0)
-                                {
-                                    string _reasonMany = "You have been invited by " + m_r.MUser.Nick;
-                                    if (ws.Length > 3)
-                                    {
-                                        _reasonMany = ws[3];
-                                    }
-
-                                    m_r.MUC.Manager.Invite(_jids, m_r.MUC.Jid, _reasonMany);
-                                    rs = m_r.f("invite_members_ok");
-                                }
-                                else
-                                {
-                                    rs = m_r.f("invite__fail");
-                                }
+                                 this.InviteAdminlist(_jids, null, isLoaded, m_r.MUC.Manager, m_r.MUC.Jid);
+                                 rs = m_r.f("invite_members_ok");
 
                                 break;
                             }
 
                             if (ws[2].ToLower() == "owners")
                             {
-                                MucConfig mc = new MucConfig(m_r.MUC, m_r.Connection);
-                                mc.GetOwnerlist(_jids, null);
-
-                                if (_jids != null && _jids.Length > 0)
-                                {
-                                    string _reasonMany = "You have been invited by " + m_r.MUser.Nick;
-                                    if (ws.Length > 3)
-                                    {
-                                        _reasonMany = ws[3];
-                                    }
-
-                                    m_r.MUC.Manager.Invite(_jids, m_r.MUC.Jid, _reasonMany);
-                                    rs = m_r.f("invite_members_ok");
-                                }
-                                else
-                                {
-                                    rs = m_r.f("invite__fail");
-                                }
+                                 this.InviteOwnerlist(ref _jids, null, isLoaded, m_r.MUC.Manager, m_r.MUC.Jid);
+                                 rs = m_r.f("invite_members_ok");
 
                                 break;
                             }
@@ -2532,6 +2486,157 @@ namespace Plugin
                 if (rs != null)
                     m_r.Reply(rs);
 
+        }
+
+// Get an JIDs array of owbers, admins, members and outcasts
+
+        /// <summary>
+        /// invite users of the outcasts list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void InviteOutcastlist(Jid[] jids, int? count, bool isLoaded, MucManager manager, Jid m_jid)
+        {
+            manager.RequestBanList(m_jid, new IqCB(Invite_users), new object[] { jids, count, AdminQueryType.OUTCAST_LIST, isLoaded, manager, m_jid});
+        }
+
+        /// <summary>
+        /// invite users of the members list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void InviteMemberlist(Jid[] jids, int? count, bool isLoaded, MucManager manager, Jid m_jid)
+        {
+            manager.RequestMemberList(m_jid, new IqCB(Invite_users), new object[] { jids, count, AdminQueryType.MEMBER_LIST, isLoaded, manager, m_jid });
+        }
+
+        /// <summary>
+        /// invite users of the administrators list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void InviteAdminlist(Jid[] jids, int? count, bool isLoaded, MucManager manager, Jid m_jid)
+        {
+            manager.RequestAdminList(m_jid, new IqCB(Invite_users), new object[] { jids, count, AdminQueryType.ADMIN_LIST, isLoaded, manager, m_jid });
+        }
+
+        /// <summary>
+        /// invite users of the owners list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void InviteOwnerlist(ref Jid[] jids, int? count, bool isLoaded, MucManager manager, Jid m_jid)
+        {
+            manager.RequestOwnerList(m_jid, new IqCB(Invite_users), new object[] { jids, count, AdminQueryType.OWNER_LIST, isLoaded, manager, m_jid });
+        }
+
+        /// <summary>
+        /// Send group invites
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="iq"></param>
+        /// <param name="arg"></param>
+        private void Invite_users(object o, IQ iq, object arg)
+        {
+            object[] args = (object[])arg;
+            Jid[] _jids = null;
+            bool _isLoaded = false;
+
+            MucManager manager = (MucManager)args[4];
+            Jid mucJid = (Jid)args[5];
+
+            // Determine a type of objects to use
+
+            if (args[0].GetType() == typeof (Jid[]))
+            {
+                @out.write("Jids OK");
+                _jids = (Jid[])args[0];
+
+               _isLoaded = (bool)args[3];
+            }
+
+            int? count = (int?)args[1];
+            AdminQueryType type = (AdminQueryType)args[2];
+            if (iq.Error != null)
+            {
+                return;
+            }
+
+            string data = null;
+            string error = null;
+            string empty = null;
+            switch (type)
+            {
+
+                case AdminQueryType.OUTCAST_LIST:
+                    data =  "ban_list";
+                    empty = "ban_list_empty";
+                    error = "ban_list_error";
+                    break;
+
+                case AdminQueryType.MEMBER_LIST:
+                    data =  "member_list";
+                    empty = "member_list_empty";
+                    error = "member_list_error";
+                    break;
+
+                case AdminQueryType.ADMIN_LIST:
+                    data =  "admin_list";
+                    empty = "admin_list_empty";
+                    error = "admin_list_error";
+                    break;
+                
+                case AdminQueryType.OWNER_LIST:
+                    data =  "owner_list";
+                    empty = "owner_list_empty";
+                    error = "owner_list_error";
+                    break;
+            }
+           
+            if (iq.Query != null)
+            {
+                ElementList els = iq.Query.SelectElements("item");
+                if (els.Count == 0)
+                {
+                    // Empty action
+                    if (args[0].GetType() == typeof (Jid[]))
+                    {
+                        @out.write("Array clear OK");
+                        Array.Clear(_jids, 0, _jids.Length);
+                        Array.Resize(ref _jids, 0);
+                        @out.write("Array.Resize OK");
+                    }
+
+                    return;
+                }
+              
+                 
+                int i = 0; 
+                int all = els.Count;
+
+                // Output an array of JIDs
+                if (args[0].GetType() == typeof (Jid[]))
+                {
+                    int _c = els.Count; //count != null ? (int)count : 0;
+                    Array.Resize(ref _jids, _c);
+
+                    foreach (Element el in els)
+                    {
+                       _jids[i] = new Jid(el.GetAttribute("jid"));
+
+                       manager.Invite(new Jid(el.GetAttribute("jid")), mucJid );
+
+                       i++;
+//                       if ( i == _c)
+//                           break;
+                    }
+
+                    _isLoaded = true;
+
+                    return;
+                }
+            }
+            //end
         }
 
     }
