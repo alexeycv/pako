@@ -2401,11 +2401,118 @@ namespace Plugin
                         }
                     }
 
+                case "invite":
+                    {
+                        if (ws.Length > 2)
+                        {
+                            Jid[] _jids = {};
+                            if (ws[2].ToLower() == "members")
+                            {
+                                MucConfig mc = new MucConfig(m_r.MUC, m_r.Connection);
+                                mc.GetMemberlist(_jids, null);
+
+                                if (_jids != null && _jids.Length > 0)
+                                {
+                                    string _reasonMany = "You have been invited by " + m_r.MUser.Nick;
+                                    if (ws.Length > 3)
+                                    {
+                                        _reasonMany = ws[3];
+                                    }
+
+                                    m_r.MUC.Manager.Invite(_jids, m_r.MUC.Jid, _reasonMany);
+                                    rs = m_r.f("invite_members_ok");
+                                }
+                                else
+                                {
+                                    rs = m_r.f("invite__fail");
+                                }
+
+                                break;
+                            }
+
+                            if (ws[2].ToLower() == "admins")
+                            {
+                                MucConfig mc = new MucConfig(m_r.MUC, m_r.Connection);
+                                mc.GetAdminlist(_jids, null);
+
+                                if (_jids != null && _jids.Length > 0)
+                                {
+                                    string _reasonMany = "You have been invited by " + m_r.MUser.Nick;
+                                    if (ws.Length > 3)
+                                    {
+                                        _reasonMany = ws[3];
+                                    }
+
+                                    m_r.MUC.Manager.Invite(_jids, m_r.MUC.Jid, _reasonMany);
+                                    rs = m_r.f("invite_members_ok");
+                                }
+                                else
+                                {
+                                    rs = m_r.f("invite__fail");
+                                }
+
+                                break;
+                            }
+
+                            if (ws[2].ToLower() == "owners")
+                            {
+                                MucConfig mc = new MucConfig(m_r.MUC, m_r.Connection);
+                                mc.GetOwnerlist(_jids, null);
+
+                                if (_jids != null && _jids.Length > 0)
+                                {
+                                    string _reasonMany = "You have been invited by " + m_r.MUser.Nick;
+                                    if (ws.Length > 3)
+                                    {
+                                        _reasonMany = ws[3];
+                                    }
+
+                                    m_r.MUC.Manager.Invite(_jids, m_r.MUC.Jid, _reasonMany);
+                                    rs = m_r.f("invite_members_ok");
+                                }
+                                else
+                                {
+                                    rs = m_r.f("invite__fail");
+                                }
+
+                                break;
+                            }
+
+                            string _reason = "You have been invited by " + m_r.MUser.Nick;
+                            if (ws.Length > 3)
+                            {
+                                _reason = ws[3];
+                            }
+
+                            // Invite method
+                            if (Utils.JidValid(ws[2]))
+                            {
+                                try
+                                {
+                                    m_r.MUC.Manager.Invite(new Jid(ws[2]), m_r.MUC.Jid, _reason);
+                                    rs = m_r.f("invite_ok");
+                                    break;
+                                }
+                                catch (Exception exx)
+                                {
+                                    rs = m_r.f("invite_fail");
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            syntax_error = true;
+                        }
+                            
+                        break;
+                    }
+
                 case "list":
                     {
                         if (ws.Length == 2)
                         {
-                            rs = m_r.f("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, vrcensor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen";
+                            rs = m_r.f("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, vrcensor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen, invite";
                         }
                         break;
                     }
