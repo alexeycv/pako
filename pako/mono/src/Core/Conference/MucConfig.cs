@@ -57,6 +57,7 @@ namespace Core.Conference
             manager = new MucManager(con);
         }
 
+        // Get the TEXT data of owbers, admins, members and outcasts
 
         /// <summary>
         /// Get the list of the outcasts list
@@ -98,6 +99,49 @@ namespace Core.Conference
             manager.RequestOwnerList(m_jid, new IqCB(get_list), new object[] { res, count, AdminQueryType.OWNER_LIST });
         }
 
+        // Get an JIDs array of owbers, admins, members and outcasts
+
+        /// <summary>
+        /// Get the list of the outcasts list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void GetOutcastlist(Jid[] jids, int? count)
+        {
+            manager.RequestBanList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.OUTCAST_LIST});
+        }
+
+        /// <summary>
+        /// Get the list of the members list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void GetMemberlist(Jid[] jids, int? count)
+        {
+            manager.RequestMemberList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.MEMBER_LIST });
+        }
+
+        /// <summary>
+        /// Get the list of the administrators list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void GetAdminlist(Jid[] jids, int? count)
+        {
+            manager.RequestAdminList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.ADMIN_LIST });
+        }
+
+        /// <summary>
+        /// Get the list of the owners list
+        /// </summary>
+        /// <param name="res"></param>
+        /// <param name="count"></param>
+        public void GetOwnerlist(Jid[] jids, int? count)
+        {
+            manager.RequestOwnerList(m_jid, new IqCB(get_list), new object[] { jids, count, AdminQueryType.OWNER_LIST });
+        }
+
+
 
         /// <summary>
         /// A private callback method for an "admin" iq, which 
@@ -108,7 +152,20 @@ namespace Core.Conference
         private void get_list(object o, IQ iq, object arg)
         {
             object[] args = (object[])arg;
-            Response r = (Response)args[0];
+            Response r = null; //(Response)args[0];
+            Jid[] _jids = null;
+
+            // Determine a type of objects to use
+            if (args[0].GetType() == typeof (Response))
+            {
+                r = (Response)args[0];
+            }
+
+            if (args[0].GetType() == typeof (Jid[]))
+            {
+                _jids = (Jid[])args[0];
+            }
+
             int? count = (int?)args[1];
             AdminQueryType type = (AdminQueryType)args[2];
             if (iq.Error != null)
@@ -153,7 +210,16 @@ namespace Core.Conference
                 ElementList els = iq.Query.SelectElements("item");
                 if (els.Count == 0)
                 {
-                    r.Reply(r.f(empty));
+                    // Empty action
+                    if (args[0].GetType() == typeof (Response))
+                        r.Reply(r.f(empty));
+
+                    if (args[0].GetType() == typeof (Jid[]))
+                    {
+                        Array.Clear(_jids, 0, _jids.Length);
+                        Array.Resize(ref _jids, 0);
+                    }
+
                     return;
                 }
               
@@ -161,17 +227,40 @@ namespace Core.Conference
                 int i = 0; 
                 int all = els.Count;
                 data = r.f(data);
-                foreach (Element el in els)
-                {
-                   i++;
-                   data += "\n" + i.ToString() + ") " + el.GetAttribute("jid") + (el.HasTag("resaon") && el.GetTag("reason") != "" ? "     '"+el.GetTag("reason")+"' " : "");
-                   if (count != null && i == count)
-                       break;
-                }
-                data += "\n-- " + all.ToString() +" --";
 
-                r.Reply(data);
-                return;
+                // Action for text-request
+                if (args[0].GetType() == typeof (Response))
+                {
+                    foreach (Element el in els)
+                    {
+                       i++;
+                       data += "\n" + i.ToString() + ") " + el.GetAttribute("jid") + (el.HasTag("resaon") && el.GetTag("reason") != "" ? "     '"+el.GetTag("reason")+"' " : "");
+                       if (count != null && i == count)
+                           break;
+                    }
+                    data += "\n-- " + all.ToString() +" --";
+   
+                    r.Reply(data);
+                    return;
+                }
+
+                // Output an array of JIDs
+                if (args[0].GetType() == typeof (Jid[]))
+                {
+                    int _c = count != null ? (int)count : 0;
+                    Array.Resize(ref _jids, _c);
+
+                    foreach (Element el in els)
+                    {
+                       _jids[i] = new Jid(el.GetAttribute("jid"));
+
+                       i++;
+                       if (count != null && i == count - 1)
+                           break;
+                    }
+
+                    return;
+                }
             }
 
             r.Reply(r.f(error));
