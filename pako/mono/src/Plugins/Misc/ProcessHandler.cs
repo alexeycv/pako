@@ -474,7 +474,7 @@ namespace Plugin
                             {                                
                                 Message msg = new Message();
                                 msg.To = admin;
-                                msg.Body = "Admin notify command by: " + m_r.Msg.From.ToString() + _mucName + "\nMessage:\n" + m_b;
+                                msg.Body = "Admin notify command by: " + m_r.Msg.From.ToString() + _mucName + "\nMessage:\n" + ws[2];
                                 msg.Type = MessageType.chat;
                                 Sh.S.C.Send(msg);
                             }
