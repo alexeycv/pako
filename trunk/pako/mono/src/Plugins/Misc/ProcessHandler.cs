@@ -457,11 +457,41 @@ namespace Plugin
                         break;
                     }
 
+                case "notifyadmin":
+                    {
+                        if (ws.Length > 2)
+                        {
+                            string _mucName = "";
 
+                            // TODO: Add timer
+
+                            if (m_r.MUC != null)
+                            {
+                                _mucName = " From MUC: " + m_r.MUC.Jid.ToString();
+                            }
+
+                            foreach (Jid admin in Sh.S.Config.Administartion())
+                            {                                
+                                Message msg = new Message();
+                                msg.To = admin;
+                                msg.Body = "Admin notify command by: " + m_r.Msg.From.ToString() + _mucName + "\nMessage:\n" + m_b;
+                                msg.Type = MessageType.chat;
+                                Sh.S.C.Send(msg);
+                            }
+                            return;
+
+                        }
+                        else
+                            syntax_error = true;
+
+                        break;
+                    }
+
+// ================= Commands list ================
 
                 case "list":
                     {
-                        rs = m_r.f("volume_list", n) + "\nlist, access, calc, cs, make, say, test, langs, join, leave, cmds, vars, rejoin, rejoinall";
+                        rs = m_r.f("volume_list", n) + "\nlist, access, calc, cs, make, say, test, langs, join, leave, cmds, vars, rejoin, rejoinall, notifyadmin";
                         break;
                     }
 
