@@ -780,12 +780,25 @@ namespace Core.Kernel
            set { lock (sobjs[0]) { S.m_mucs = value; } }
        }
 
-       public MUC GetMUC(Jid Jid)
+       public MUC GetMUC(Jid jid)
        {
            lock (sobjs[1])
            {
-               Jid j = new Jid(Jid.Bare.ToLower());
-               return S.MUCs.ContainsKey(j) ? S.MUCs[j] : null;
+               if (jid != null)
+               {
+                   Jid j = new Jid(jid.Bare);
+                   if (S.MUCs.ContainsKey(j))
+                       return  S.MUCs[j];
+                   else
+                   {
+                       j = new Jid(jid.Bare.ToLower());
+                       return S.MUCs.ContainsKey(j) ? S.MUCs[j] : null;
+                   }
+               }
+               else
+               {
+                   return null;
+               }
            }
        }
 
