@@ -2041,7 +2041,20 @@ namespace Plugin
                         {
                             if (m_r.MUC.WhoWas != null)
                             {
-                                rs = m_r.MUC.WhoWas.ToString();
+                                //rs = m_r.MUC.WhoWas.ToString();
+                                String[] _users = m_r.MUC.WhoWas.ToString().Split('\n');
+                                rs = "";
+                                for (int _index = 0; _index < _users.Length - 1; _index++)
+                                {
+                                    if (m_r.MUC.UserExists(_users[_index].Trim('\n')))
+                                    {
+                                        rs += _users[_index].Trim('\n') + " (Online) \n";
+                                    }
+                                    else
+                                    {
+                                        rs += _users[_index].Trim('\n') + " (Left) \n";
+                                    }
+                                }
                             }
                         }
                         else
@@ -2380,14 +2393,21 @@ namespace Plugin
                         MUser m_user = null;
                         if (ws.Length > 2)
                         {
-                            string _time = Sh.S.SeenLogger.FindEntities(ws[2], m_r.MUC.Jid.ToString());
-                            
-                            if (_time.Length == 0)
-                                rs = m_r.f("user_seen_not_found", ws[2]);
+                            if (m_r.MUC.UserExists(ws[2]))
+                            {
+                                rs = m_r.f("user_seen_inmuc");
+                                break;
+                            }
                             else
-                                rs = m_r.f("user_seen_found") + " " + _time;
-                            break;
+                            {
+                                string _time = Sh.S.SeenLogger.FindEntities(ws[2], m_r.MUC.Jid.ToString());
                             
+                                if (_time.Length == 0)
+                                    rs = m_r.f("user_seen_not_found", ws[2]);
+                                else
+                                    rs = m_r.f("user_seen_found") + " " + _time;
+                                break;
+                            }
                         }
                         else
                         {
