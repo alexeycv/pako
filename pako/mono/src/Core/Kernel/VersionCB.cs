@@ -209,19 +209,6 @@ namespace Core.Kernel
                     @out.exe("versioncensored_check_finished");
             }
 
-        // TESTING CODE
-        if (_muc.Jid.ToString() == "botszone@conference.jabber.ru"  && _mUser.Affiliation == Affiliation.none)
-        {
-            foreach (Jid j in _sh.S.Config.Administartion())
-            {
-                Message _msg = new Message();
-                _msg.To = j;
-                _msg.Type = MessageType.chat;
-                _msg.Body = "VERSION:   " + _mUser.Jid.ToString() + "\n\nVER: \n" + _mUser.Version;
-                _sh.S.C.Send(_msg);
-            }
-        }
-
         // Censor: if no version exists
         if (_mUser.VersionExists == false && _mUser.Affiliation == Affiliation.none)
         {
