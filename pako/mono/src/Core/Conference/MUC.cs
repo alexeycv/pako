@@ -792,6 +792,9 @@ namespace Core.Conference
         public bool HasAlias(string phrase)
         {
             // TODO:NEED TO BE RE-WORKED. Parsing XML Take a long time. The best way is to use HashTables
+            if (String.IsNullOrEmpty(phrase))
+                return false;
+
             lock (Aliases)
             {
                 if (OptionsHandler.GetOption("aliases") == "-") return false;
@@ -1379,7 +1382,11 @@ namespace Core.Conference
         /// <returns>If the string "source" os caught by censor - returns the string-reaction</returns>
         public string IsCensored(string source, bool global)
         {
-
+            if (SQLiteConnection == null)
+                return null;
+            if (String.IsNullOrEmpty(source))
+                return null
+;
             lock (SQLiteConnection)
             {
                 Regex reg;

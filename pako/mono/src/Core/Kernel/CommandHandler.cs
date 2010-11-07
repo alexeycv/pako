@@ -122,25 +122,44 @@ namespace Core.Kernel
                 if (Sh.S.GetMUC(s_jid) != null)
                 Sh.S.GetMUC(s_jid).Subject = m_msg.Subject;
             }
-            m_muc = Sh.S.GetMUC(s_jid);
+
+            // Get MUC object
+            if (Sh.S.GetMUC(s_jid) != null)
+            {
+                m_muc = Sh.S.GetMUC(s_jid);
+            }
+
+            // Get MUC User object
             m_user = null;
             if (m_muc != null)
             {
                 if (s_jid.Resource == null)
-                    return;
-                m_user = m_muc.GetUser(s_jid.Resource);
-
+                    return; // MUC mode woth a null MUC user. Stop process
+                
+                if (m_muc.GetUser(s_jid.Resource) != null)
+                    m_user = m_muc.GetUser(s_jid.Resource);
+                else
+                    return; // Because of null MUC user in MUC mode
             }
+
+            // Determine a delomoter
             string d = Sh.S.Config.Delimiter;
+
+            // User nick in MUC
             s_nick = s_jid.Resource;
+
+            // Get message type
             msgType m_type = Utils.GetTypeOfMsg(m_msg, m_user);
             bool is_muser = m_type == msgType.MUC;
 
+            // Get message sender jid
             m_jid = is_muser ? m_user.Jid : s_jid;
+
+            // Get MUC User (TODO: Refactoring)
             if (m_type == msgType.MUC)
             {
                 Sh.S.GetMUC(s_jid).GetUser(s_jid.Resource).Idle = DateTime.Now.Ticks;
-                m_user = m_muc.GetUser(s_jid.Resource);
+                //m_user = m_muc.GetUser(s_jid.Resource);
             }
             if ((m_type == msgType.MUC) || (m_type == msgType.Roster))
             {
@@ -167,9 +186,11 @@ namespace Core.Kernel
                 {
                 }
 
+                //Get message body
                 m_msg.Body = m_msg.Body.TrimStart(' ');
                 original = m_msg.Body;
                 string m_body = m_msg.Body;
+
                 string vl = null;
                 if (m_muc != null)
                     vl = m_muc.VipLang.GetLang(m_jid);
@@ -185,7 +206,9 @@ namespace Core.Kernel
                               Sh.S.Config.Language
                          ]);
 
-                int? access = Sh.S.GetAccess(m_msg, m_user, m_muc);
+                // Get user access
+                int? access = 0;
+                access = Sh.S.GetAccess(m_msg, m_user, m_muc);
 
                 if (access != null)
                     r.Access = access;
@@ -352,7 +375,7 @@ namespace Core.Kernel
                     
                     // Checking for a message length limit
 //NickLimit handlers
-                    int _messageTextLimit = 100;
+                    int _messageTextLimit = 500;
                     try
                     {
                         _messageTextLimit = Convert.ToInt16(m_muc.OptionsHandler.GetOption("length_limit"));
