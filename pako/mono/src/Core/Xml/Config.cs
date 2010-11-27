@@ -347,7 +347,7 @@ namespace Core.Xml
 
         }
 
- public int RecursionLevel
+ 		public int RecursionLevel
         {
             get
             {
@@ -600,6 +600,97 @@ namespace Core.Xml
             }
 
         }
+		
+		/// <summary>
+		/// Get a custom configuration parameter
+		/// parameterName - name of parameter.
+		/// Return value - object with a parameter data or null if no parameter exists.
+		/// </summary>
+		/// 
+		public object GetCustomParameter(String parameterName)
+		{
+			lock (Document)
+            {
+                try
+                {
+                    return Document.RootElement.SelectSingleElement("bot").SelectSingleElement(parameterName).GetAttributeBool("value");
+                }
+                catch (Exception err)
+                {
+                    return null;
+                }
+            }
+		}
+		
+		/// <summary>
+		/// Set a custom configuration parameter
+		/// </summary>
+		/// <param name="parameterName">
+		/// A <see cref="String"/>
+		/// </param>
+
+		public void SetCustomParameter(String parameterName, int val)
+		{
+			lock (Document)
+            {
+                Document.RootElement.SelectSingleElement("bot").SelectSingleElement(parameterName).SetAttribute("value", val);
+                Save();
+            }
+		}
+		
+		/// <summary>
+		/// Set a custom configuration parameter
+		/// </summary>
+		/// <param name="parameterName">
+		/// A <see cref="String"/>
+		/// </param>
+		/// <param name="val">
+		/// A <see cref="System.Boolean"/>
+		/// </param>
+		public void SetCustomParameter(String parameterName, bool val)
+		{
+			lock (Document)
+            {
+                Document.RootElement.SelectSingleElement("bot").SelectSingleElement(parameterName).SetAttribute("value", val);
+                Save();
+            }
+		}
+		
+		/// <summary>
+		/// Set a custom configuration parameter
+		/// </summary>
+		/// <param name="parameterName">
+		/// A <see cref="String"/>
+		/// </param>
+		/// <param name="val">
+		/// A <see cref="String"/>
+		/// </param>
+		public void SetCustomParameter(String parameterName, String val)
+		{
+			lock (Document)
+            {
+                Document.RootElement.SelectSingleElement("bot").SelectSingleElement(parameterName).SetAttribute("value", val);
+                Save();
+            }
+		}
+		
+		/// <summary>
+		/// Set a custom configuration parameter
+		/// </summary>
+		/// <param name="parameterName">
+		/// A <see cref="String"/>
+		/// </param>
+		/// <param name="val">
+		/// A <see cref="System.Single"/>
+		/// </param>
+		public void SetCustomParameter(String parameterName, float val)
+		{
+			lock (Document)
+            {
+                Document.RootElement.SelectSingleElement("bot").SelectSingleElement(parameterName).SetAttribute("value", val);
+                Save();
+            }
+		}
 
     }
 }

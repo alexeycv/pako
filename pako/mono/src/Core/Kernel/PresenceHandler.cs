@@ -1,4 +1,4 @@
-﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Pako Jabber-bot. Bbodio's Lab.                                                *
  * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
  * Contact information is here: http://code.google.com/p/pako                    *
@@ -109,8 +109,6 @@ namespace Core.Kernel
                         Sh.S.C.Send(pr);
                         pr.Type = PresenceType.subscribe;
                         Sh.S.C.Send(pr);
-
-                        //TODO: Logging subscribes
                     }
                     else
                     {
@@ -119,8 +117,6 @@ namespace Core.Kernel
                         pr.Type = PresenceType.unsubscribed;
                         pr.Nickname = new agsXMPP.protocol.extensions.nickname.Nickname(Sh.S.Config.Nick);
                         Sh.S.C.Send(pr);
-
-                        //TODO: Logging subscribes
                     }
                     break;
 
@@ -133,6 +129,7 @@ namespace Core.Kernel
                     _pr.Type = PresenceType.unsubscribe;
                     Sh.S.C.Send(_pr);
                     break;
+				
                 case PresenceType.error:
                     if (m_muc != null)
                     {
@@ -228,13 +225,13 @@ namespace Core.Kernel
                         r.MUser = user;
                         r.Sh = Sh;
 
-                        // Logging entering the room
 
                         if (m_muc != null)
                         {
                             string ak;
                             m_muc = Sh.S.GetMUC(p_jid);
                             
+							#region Join logging and whowas
                             // muc whowas adder
                             if (m_muc.WhoWas != null && _justJoined == true)
                             {
@@ -274,7 +271,11 @@ namespace Core.Kernel
                             //{
                             //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_muc.Jid.ToString(), user.Nick, m_muc.Subject);
                             //}
+						
+							#endregion
                             
+							#region Automation
+						
                             if (m_muc.OptionsHandler.GetOption("akick") == "+")
                             {
                                 ak = Sh.S.Tempdb.IsAutoKick(Jid, p_jid.Resource, p_jid, Sh);
@@ -292,6 +293,7 @@ namespace Core.Kernel
                                     }
                                 }
                             }
+						
                             if (m_muc.OptionsHandler.GetOption("avisitor") == "+")
                             {
                                 
@@ -306,13 +308,17 @@ namespace Core.Kernel
 
                                 }
                             }
+						
                             if (m_muc.OptionsHandler.GetOption("amoderator") == "+")
                             {
                                 if (Sh.S.Tempdb.AutoModerator(Jid, m_muc.Jid))
                                     m_muc.Moderator(null, user, null);
                             }
                             
+							#endregion
                             
+							#region Censor : Status
+						
                             if ((pres.Status != null) && (user != m_muc.MyNick))
                             {
                                 // TODO: Add censore by nick and resource
@@ -389,89 +395,9 @@ namespace Core.Kernel
 
                                     }
                                 }
-                                //Status handlers
-                                /*int _nickLimit = 10;
-                                try
-                                {
-                                    _nickLimit = Convert.ToInt16(m_muc.OptionsHandler.GetOption("nick_limit"));
-                                }
-                                catch (Exception err)
-                                {
-                                }
-
-                                if (user.Nick.Length > _nickLimit)
-                                {
-                                    censored = "Nick Limit is no more than "+ _nickLimit.ToString();
-                                    switch (m_muc.OptionsHandler.GetOption("nick_limit_result"))
-                                    {
-                                        case "kick":
-                                            {
-                                                if (m_muc.KickableForCensored(user))
-                                                { m_muc.Kick(null, user, m_muc.MyNick + ">> " + censored); return; }
-                                                else
-                                                {
-                                                    Message msg = new Message();
-                                                    r.Msg = new Message();
-                                                    r.Msg.Body = pres.Status;
-                                                    r.Msg.From = pres.From;
-                                                    r.Msg.Type = MessageType.groupchat;
-                                                    r.Reply(censored);
-                                                    Sh.S.Sleep();
-                                                }
-                                            } break;
-                                        case "devoice":
-                                            {
-                                                if (m_muc.KickableForCensored(user))
-                                                { m_muc.Devoice(null, user, censored); return; }
-                                                else
-                                                {
-                                                    Message msg = new Message();
-                                                    r.Msg = new Message();
-                                                    r.Msg.Body = pres.Status;
-                                                    r.Msg.From = pres.From;
-                                                    r.Msg.Type = MessageType.groupchat;
-                                                    r.Reply(censored);
-                                                    Sh.S.Sleep();
-                                                }
-
-                                            }
-                                            break;
-                                        case "ban":
-                                            {
-                                                if (m_muc.KickableForCensored(user))
-                                                { m_muc.Ban(null, user, m_muc.MyNick + ">> " + censored); return; }
-                                                else
-                                                {
-                                                    Message msg = new Message();
-                                                    r.Msg = new Message();
-                                                    r.Msg.Body = pres.Status;
-                                                    r.Msg.From = pres.From;
-                                                    r.Msg.Type = MessageType.groupchat;
-                                                    r.Reply(censored);
-                                                    Sh.S.Sleep();
-                                                }
-
-
-                                            }
-                                            break;
-                                        case "warn":
-                                            {
-                                                Message msg = new Message();
-                                                r.Msg = new Message();
-                                                r.Msg.Body = pres.Status;
-                                                r.Msg.From = pres.From;
-                                                r.Msg.Type = MessageType.groupchat;
-                                                r.Reply(censored);
-                                                Sh.S.Sleep();
-                                            }
-                                            break;
-                                        default:
-                                            break;
-
-                                    }//switch
-                                }//if (user.Nick.Length > _nickLimit)
-                                */
                             }
+						
+							#endregion
 
                             Affiliation _aff = Affiliation.none;
                             if (m_muc.OptionsHandler.GetOption("vcensor_affiliation") == "none")
@@ -486,6 +412,8 @@ namespace Core.Kernel
                                 if (user.Affiliation == Affiliation.none && user.Role == Role.visitor)
                                     _executeRCensor = true;
 
+							#region Censor : Resourse
+						
                             if ((user.Jid.Resource != null) && (user != m_muc.MyNick) && _executeRCensor)
                             {
                                 // TODO: Add censore by nick and resource
@@ -563,7 +491,11 @@ namespace Core.Kernel
                                     }
                                 }
                             }// end of resource censor
+						
+							#endregion
 
+							#region Censor: NickLimit
+						
                             //NickLimit handlers
                                 int _nickLimit = 10;
                                 try
@@ -645,7 +577,11 @@ namespace Core.Kernel
 
                                     }//switch
                                 }//if (user.Nick.Length > _nickLimit)
+						
+							#endregion 
 
+							#region Greet
+						
                             if (m_user == null)
                             {
                                 string data = Sh.S.Tempdb.Greet(Jid, m_muc.Jid);
@@ -658,12 +594,12 @@ namespace Core.Kernel
                                     r.Msg.Type = MessageType.groupchat;
                                     r.Reply(Utils.FormatEnvironmentVariables(data, r));
                                 }
-
-
-
                             }
+						
+							#endregion
 
-
+							#region Tell
+						
                             ArrayList ar = Sh.S.Tempdb.CheckAndAnswer(p_jid);
                             if (ar.Count > 0)
                             {
@@ -682,6 +618,8 @@ namespace Core.Kernel
 
                                 }
                             }
+						
+							#endregion
 
                         }
                     }
@@ -695,9 +633,6 @@ namespace Core.Kernel
                     m_user = m_muc != null ? m_muc.GetUser(pres.From.Resource) : null;
                     Jid _calcjid = m_muc != null ? pres.From : new Jid(pres.From.Bare);
                     Sh.S.CalcHandler.DelHandle(_calcjid);
-
-                    //TODO: leave logging - DONE
-                    
 
                     if (pres.MucUser != null)
                     {

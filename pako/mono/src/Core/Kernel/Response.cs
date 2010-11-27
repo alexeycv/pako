@@ -48,7 +48,8 @@ namespace Core.Kernel
         AccessType m_at;
         Message emulation;
 	    int level;
-
+		bool _internalReply;
+		bool _cmdNotFound;
 
         /// <summary>
         /// Creates The Response instance
@@ -66,6 +67,8 @@ namespace Core.Kernel
             m_access = null;
             m_help = new XMLContainer();
             m_help.Open(Folder + Utils.d + "help.pack", 10);
+			_internalReply = false;
+			_cmdNotFound = false;
         }
 
 
@@ -81,7 +84,8 @@ namespace Core.Kernel
             m_msg = basic.m_msg;
             m_help = basic.m_help;
             m_sh = basic.m_sh;
-
+			_internalReply = basic.InternalReply;
+			_cmdNotFound = basic.CmdNotFound;
         }
 
         /// <summary>
@@ -113,11 +117,24 @@ namespace Core.Kernel
             }
         }
 
-
-
-
-
-
+		/// <summary>
+		/// Gets or sets wether that this response is for internal use
+		/// </summary>
+		public bool InternalReply
+		{
+			get { lock (aso[38]) { return _internalReply; } }
+            set { lock (aso[38]) { _internalReply = value; } }
+		}
+		
+		/// <summary>
+		/// True if no command found dusing command execution
+		/// </summary>
+		public bool CmdNotFound
+		{
+			get { lock (aso[37]) { return _cmdNotFound; } }
+            set { lock (aso[37]) { _cmdNotFound = value; } }
+		}
+		
         public int? Access
         {
             get { lock (aso[4]) { return m_access; } }
@@ -360,6 +377,9 @@ namespace Core.Kernel
 
         public void Reply(string Body)
         {
+			// TODO: Inserts sub-commands handling
+			
+			// Reply generator
             int limit = Convert.ToInt32(Sh.S.Config.GetTag("msglimit"));
             @out.exe(Body == null ? "reply_body_null" : "reply_body_not_null");
             Body = Format ? Utils.FormatEnvironmentVariables(Body, this) : Body;
@@ -415,9 +435,13 @@ namespace Core.Kernel
                     Sh.S.HtmlPrivLogger.AddHtmlLog("groupchat", "chat", r_msg.To.ToString(), r_msg.To.ToString(), r_msg.Body);
                 }
             }
-            @out.exe("message_response_ready");
-            Connection.Send(r_msg);
-            @out.exe("message_response_replied");
+			
+			if (!this.InternalReply)
+			{
+	            @out.exe("message_response_ready");
+    	        Connection.Send(r_msg);
+        	    @out.exe("message_response_replied");
+			}
 
         }
 

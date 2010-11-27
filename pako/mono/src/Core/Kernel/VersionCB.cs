@@ -1,4 +1,4 @@
-﻿/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Pako Jabber-bot. Bbodio's Lab.                                                *
  * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
  * Contact information is here: http://code.google.com/p/pako                    *
@@ -126,6 +126,8 @@ namespace Core.Kernel
 
             if (_executeRCensor)
             {
+				#region Censor : Version
+				
                     string found_censored = _muc.IsVRCensored(_mUser.Version, _muc.OptionsHandler.GetOption("global_censor") == "+", "ver");
                     @out.exe("versioncensor_next_stage");
                     if (found_censored != null)
@@ -207,6 +209,8 @@ namespace Core.Kernel
                     else
                         @out.exe("versioncensored_not_found");
                     @out.exe("versioncensored_check_finished");
+			
+				#endregion
             }
 
         // Censor: if no version exists
@@ -214,6 +218,8 @@ namespace Core.Kernel
         {
             if (_muc.OptionsHandler.GetOption("users_without_version_info") != "allow")
             {
+				#region Censor : Empty version
+					
                 string found_censored = "No version informstion exisis!";
                 switch (_muc.OptionsHandler.GetOption("users_without_version_info"))
                 {
@@ -287,6 +293,8 @@ namespace Core.Kernel
                         break;
 
                 }
+					
+				#endregion
             }
         }
 
