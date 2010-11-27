@@ -171,12 +171,6 @@ namespace Core.Kernel
                    //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "topic", m_muc.Jid.ToString(), m_user.Nick, m_muc.Subject);
                    //}
 
-                   //topic
-                   //if (Sh.S.Config.EnableLogging && m_msg.Body != null && Sh.S.GetMUC(m_msg.From) == null)
-                   //{
-                   //    Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
-                   //}
-
                    if (Sh.S.Config.EnableLogging && m_muc.OptionsHandler.GetOption("enable_logging") == "+"  && m_user != null && m_msg.Body != null && m_msg.Type == MessageType.groupchat)
                    {
                        Sh.S.HtmlLogger.AddHtmlLog("groupchat", "chat", m_muc.Jid.ToString(), m_user.Nick, m_msg.Body);
