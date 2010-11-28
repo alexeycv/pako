@@ -88,7 +88,7 @@ namespace Core.DataBase
         {
             for (int i = 0; i < userStatsCollection.Count; i++)
             {
-                this.Add(awardValues[i]);
+                this.Add(userStatsCollection[i]);
             }
         }
 
