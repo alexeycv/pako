@@ -36,6 +36,7 @@ namespace Core.API.Data
 		string _version;
 		SqliteConnection _connection;
 		object[] _lockers = new object[10];
+		bool _dbJustCreated;
 		
 		#region Properties
 		
@@ -45,6 +46,12 @@ namespace Core.API.Data
             set { lock (_lockers[1]) { _connection = value; } }
         }
 		
+		public bool JustCreated
+        {
+            get { lock (_lockers[1]) { return _dbJustCreated; } }
+            set { lock (_lockers[1]) { _dbJustCreated = value; } }
+        }
+		
 		#endregion 
 		
 		#region Constructors
@@ -52,6 +59,7 @@ namespace Core.API.Data
 		DataController(String dbFile, String version)
 		{
             _dbName = dbFile;
+			_dbJustCreated = false;
 			
 			this.Load();
 		}
@@ -62,7 +70,7 @@ namespace Core.API.Data
 		
 		public void Load()
 		{
-			bool to_create = !File.Exists(_dbName);
+			JustCreated = !File.Exists(_dbName);
             SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
             SQLiteConn.Open();
             //if (to_create)
