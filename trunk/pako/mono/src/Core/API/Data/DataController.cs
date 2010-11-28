@@ -17,66 +17,81 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 using System;
-using agsXMPP;
-using Core.Conference;
-using Core.Xml;
-using Core.DataBase;
-using agsXMPP.Xml.Dom;
-using agsXMPP.protocol.client;
+using System.Collections.Generic;
+using System.Collections;
+using System.Text;
+using Mono.Data.SqliteClient;
+using System.Threading;
+using System.IO;
 using Core.Other;
-using System.Timers;
-using Core.API.Data;
 
-namespace Core.Kernel
+namespace Core.API.Data
 {
     /// <summary>
-    /// Internal sheduller class that make internal events for bot like save timers
+    /// Class for data driving
     /// </summary>
-    public class InternalScheduler
+    public class DataController
     {
-		Timer _saveTimer;
+		string _dbName;
+		string _version;
+		SqliteConnection _connection;
+		object[] _lockers = new object[10];
 		
 		#region Properties
 		
-		public Timer SaveTimer
-		{
-			get {return _saveTimer;}
-			set {_saveTimer = value;}
-		}
+		public SqliteConnection SQLiteConn
+        {
+            get { lock (_lockers[1]) { return _connection; } }
+            set { lock (_lockers[1]) { _connection = value; } }
+        }
 		
-		#endregion
+		#endregion 
 		
 		#region Constructors
 		
-		InternalScheduler()
+		DataController(String dbFile, String version)
 		{
-			SaveTimer = new Timer();
-			SaveTimer.Interval = 300;
+            _dbName = dbFile;
 			
-			// Add an event handler
-			SaveTimer.Elapsed += new ElapsedEventHandler(SaveTimerElapsed);
-			
-			SaveTimer.Enabled = true;
+			this.Load();
 		}
 		
 		#endregion
 		
 		#region Methods
 		
-		public void SaveMethod()
+		public void Load()
 		{
+			bool to_create = !File.Exists(_dbName);
+            SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
+            SQLiteConn.Open();
+            //if (to_create)
+            //{
+            //    SqliteCommand cmd = new SqliteCommand(@"CREATE TABLE logs ();", SQLiteConn);
+
+            //    cmd.ExecuteNonQuery();
+            //}
+		}
+		
+		public void Close()
+		{
+			SQLiteConn.Close();
+		}
+		
+		public int ExecuteNonQuery(String command)
+		{
+			try
+			{
+			SqliteCommand cmd = new SqliteCommand(@"" + command, SQLiteConn);
+
+            return cmd.ExecuteNonQuery();
+			}
+			catch (Exception exx)
+			{
+				return -1;
+			}
 		}
 		
 		#endregion
-		
-		#region Event handlers
-		
-		private void SaveTimerElapsed(object source, ElapsedEventArgs e)
-		{
-			this.SaveMethod();
-		}
-		
-		#endregion		
 	}
-	
 }

@@ -1,0 +1,10 @@
+Pako API
+
+This is an interfays for plug-ins and macroses to interact with Pako's kernel.
+It must give an interface to use the next fwatures:
+ - Database support.
+ - Interface to call commands.
+ - Call kernel commands.
+ - Check censor, automoderator and other internal lists.
+ - Send xmpp messages and IQ.
+ - Utilities.

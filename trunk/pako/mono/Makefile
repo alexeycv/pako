@@ -5,7 +5,7 @@ exe:   core plugins src/Pako/Program.cs
 
 core:
 	echo Compiling Core.dll...
-	gmcs src/Core/Conference/*.cs src/Core/DataBase/*.cs src/Core/Kernel/*.cs src/Core/Other/*.cs src/Core/Plugins/*.cs src/Core/Xml/*.cs -r:lib/agsXMPP.dll,Mono.Data.SqliteClient -target:library -out:bin/Core.dll -o+
+	gmcs src/Core/Conference/*.cs src/Core/API/*.cs src/Core/API/Data/*.cs src/Core/DataBase/*.cs src/Core/Kernel/*.cs src/Core/Other/*.cs src/Core/Plugins/*.cs src/Core/Xml/*.cs -r:lib/agsXMPP.dll,Mono.Data.SqliteClient -target:library -out:bin/Core.dll -o+
 	echo Compiling Core.dll...
 
 
