@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Pako Jabber-bot. Bbodio's Lab.                                                *
+ * Pako Jabber-bot.                                                *
  * Copyright. All rights reserved © 2007-2010 by Pako bot developers team        *
  * Contact information is here: http://code.google.com/p/pako                    *
  *                                                                               *
