@@ -23,6 +23,7 @@ using System.Text;
 using Mono.Data.SqliteClient;
 using System.Threading;
 using System.IO;
+using System.Data;
 using Core.Other;
 
 namespace Core.API.Data
@@ -73,12 +74,6 @@ namespace Core.API.Data
 			JustCreated = !File.Exists(_dbName);
             SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
             SQLiteConn.Open();
-            //if (to_create)
-            //{
-            //    SqliteCommand cmd = new SqliteCommand(@"CREATE TABLE logs ();", SQLiteConn);
-
-            //    cmd.ExecuteNonQuery();
-            //}
 		}
 		
 		public void Close()
@@ -90,9 +85,37 @@ namespace Core.API.Data
 		{
 			try
 			{
-			SqliteCommand cmd = new SqliteCommand(@"" + command, SQLiteConn);
+				SqliteCommand cmd = new SqliteCommand(@"" + command, SQLiteConn);
 
-            return cmd.ExecuteNonQuery();
+            	return cmd.ExecuteNonQuery();
+			}
+			catch (Exception exx)
+			{
+				return -1;
+			}
+		}
+		
+		public SqliteDataReader ExecuteReader(String command)
+		{
+			try
+			{
+				SqliteCommand cmd = new SqliteCommand(@"" + command, SQLiteConn);
+
+            	return cmd.ExecuteReader();
+			}
+			catch (Exception exx)
+			{
+				return null;
+			}
+		}
+		
+		public int ExecuteDANonQuery(String command, DataTable table)
+		{
+			try
+			{
+				SqliteDataAdapter _da = new SqliteDataAdapter(@""+command, SQLiteConn);
+				
+				return 0;
 			}
 			catch (Exception exx)
 			{
