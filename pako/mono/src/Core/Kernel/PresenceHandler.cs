@@ -236,7 +236,7 @@ namespace Core.Kernel
                             if (m_muc.WhoWas != null && _justJoined == true)
                             {
                                 //m_muc.WhoWas.Append(pres.From + "\n");
-                                if (m_muc.WhoWas.ToString().IndexOf(user.Nick + "\n") <= 0)
+                                if (!m_muc.WhoWas.ToString().Contains(user.Nick + "\n"))
                                 {
                                     m_muc.WhoWas.Append(user.Nick + "\n");
                                 }
