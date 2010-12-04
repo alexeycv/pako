@@ -20,6 +20,8 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 
+using Core.API.Data;
+
 namespace Core.DataBase
 {
     public class UserStats : IDisposable
@@ -35,7 +37,6 @@ namespace Core.DataBase
         public UserStats()
         {
             this._innerDataRow = UserStats.GetEmptyTable().NewRow();
-
         }
 
         public UserStats(DataRow dataRow)
@@ -78,24 +79,24 @@ namespace Core.DataBase
 
         #region Collection methods
 
-        public static UserStatsCollection Load(String room)
+        public static UserStatsCollection Load(DataController dc, String room)
         {
             UserStatsCollection retValue = null;
 
             return retValue;
         }
 
-        public static void Save(UserStatsCollection userStatsCollection)
+        public static void Save(DataController dc, UserStatsCollection userStatsCollection)
         {
             
         }
 
-		public static void Save(UserStats userStats)
+		public static void Save(DataController dc, UserStats userStats)
         {
             
         }
 		
-        public static void Delete(String room, String jid)
+        public static void Delete(DataController dc, String room, String jid)
         {
             
         }

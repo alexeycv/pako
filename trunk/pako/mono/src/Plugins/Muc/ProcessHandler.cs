@@ -1877,7 +1877,8 @@ namespace Plugin
                 case "clean":
                     {
                         int number = 20;
-                        rs = m_r.f("clean_up_done");
+						bool silent = false;
+                        
                         if (ws.Length > 2)
                         {
                             try
@@ -1887,8 +1888,16 @@ namespace Plugin
                             }
                             catch
                             {
-                                syntax_error = true;
+								if (ws[2] == "silent")
+								{
+									silent = true;
+								}
+								else
+								{
+                                	syntax_error = true;
+								}
                                 break;
+						
                             }
                         }
 
@@ -1918,6 +1927,12 @@ namespace Plugin
                         }
                         Sh.S.Sleep();
                         Sh.S.Sleep();
+				
+						if (!silent)
+							rs = m_r.f("clean_up_done");
+						else
+							rs = "";
+				
                         break;
 
                     }
@@ -2046,14 +2061,17 @@ namespace Plugin
                                 rs = "";
                                 for (int _index = 0; _index < _users.Length - 1; _index++)
                                 {
-                                    if (m_r.MUC.UserExists(_users[_index].Trim('\n')))
-                                    {
-                                        rs += _users[_index].Trim('\n') + " (Online) \n";
-                                    }
-                                    else
-                                    {
-                                        rs += _users[_index].Trim('\n') + " (Left) \n";
-                                    }
+									if (_users[_index] != "" || _users[_index] != "\n")
+									{
+                                    	if (m_r.MUC.UserExists(_users[_index].Trim('\n')))
+                                    	{
+	                                        rs += _users[_index].Trim('\n') + " (Online) \n";
+                                    	}
+                                    	else
+                                    	{
+	                                        rs += _users[_index].Trim('\n') + " (Left) \n";
+                                    	}
+									}
                                 }
                             }
                         }
@@ -2503,7 +2521,7 @@ namespace Plugin
                 m_r.se(self);
             else
 
-                if (rs != null)
+                if (rs != null && rs != "")
                     m_r.Reply(rs);
 
         }
