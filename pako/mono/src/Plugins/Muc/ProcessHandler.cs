@@ -1891,6 +1891,7 @@ namespace Plugin
 								if (ws[2] == "silent")
 								{
 									silent = true;
+									number = 20;
 								}
 								else
 								{
