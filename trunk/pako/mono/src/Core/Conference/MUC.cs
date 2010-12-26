@@ -86,6 +86,8 @@ namespace Core.Conference
 
         //Whowas collector (StringBuilder)
         StringBuilder _whowas;
+		
+		Hashtable _customObjects;
 
 
         /// <summary>
@@ -252,6 +254,18 @@ namespace Core.Conference
                     _whowas = value;
                 }
             }
+        }
+		
+		/// <summary>
+		/// Use this property to put/get a custom objects.
+		/// It's usefull for plug-in developers who wants to ling some object to this object.
+		/// Please use such name rules to prevent bou's unstable work or data loss:
+		/// ojbect name : "pluginname_objectname".
+		/// </summary>
+		public Hashtable CustomObjects
+        {
+            get { lock (sobjs[54]) { return _customObjects; } }
+            set { lock (sobjs[54]) { _customObjects = value; } }
         }
 
 
@@ -1503,7 +1517,9 @@ namespace Core.Conference
             for (int i = 0; i < 60; i++)
             {
                 sobjs[i] = new object();
-            } // last - 53
+            } // last - 54
+			
+			_customObjects = new Hashtable();
 
             DirBuilder db = new DirBuilder();
             m_con = con;

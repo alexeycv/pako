@@ -53,6 +53,8 @@ namespace Core.Conference
         Int32 _warningsCount;
 
         MUserStats _userStats;
+		
+		Hashtable _customObjects;
 
 
         /// <summary>
@@ -122,6 +124,8 @@ namespace Core.Conference
             {
                 sobjs[i] = new object();
             }
+			
+			_customObjects = new Hashtable();
 
             m_jid = UserJid;
             m_nick = UserNick;
@@ -256,7 +260,7 @@ namespace Core.Conference
         /// </summary>
         public bool IsBot
         {
-            get { lock (sobjs[11]) { return _isBot; } }
+            get { lock (sobjs[14]) { return _isBot; } }
             set { lock (sobjs[14]) { _isBot = value; } }
         }
 
@@ -265,8 +269,8 @@ namespace Core.Conference
         /// </summary>
         public bool VersionExists
         {
-            get { lock (sobjs[11]) { return _versionExists; } }
-            set { lock (sobjs[14]) { _versionExists = value; } }
+            get { lock (sobjs[15]) { return _versionExists; } }
+            set { lock (sobjs[15]) { _versionExists = value; } }
         }
 
         /// <summary>
@@ -274,8 +278,8 @@ namespace Core.Conference
         /// </summary>
         public Int32 WarningsCount
         {
-            get { lock (sobjs[11]) { return _warningsCount; } }
-            set { lock (sobjs[14]) { _warningsCount = value; } }
+            get { lock (sobjs[16]) { return _warningsCount; } }
+            set { lock (sobjs[16]) { _warningsCount = value; } }
         }
 
         /// <summary>
@@ -283,10 +287,21 @@ namespace Core.Conference
         /// </summary>
         public MUserStats UserStats
         {
-            get { lock (sobjs[11]) { return _userStats; } }
-            set { lock (sobjs[14]) { _userStats = value; } }
+            get { lock (sobjs[17]) { return _userStats; } }
+            set { lock (sobjs[17]) { _userStats = value; } }
         }
 
+		/// <summary>
+		/// Use this property to put/get a custom objects.
+		/// It's usefull for plug-in developers who wants to ling some object to this object.
+		/// Please use such name rules to prevent bou's unstable work or data loss:
+		/// ojbect name : "pluginname_objectname".
+		/// </summary>
+		public Hashtable CustomObjects
+        {
+            get { lock (sobjs[18]) { return _customObjects; } }
+            set { lock (sobjs[18]) { _customObjects = value; } }
+        }
     }
 
     /// <summary>
