@@ -1592,9 +1592,8 @@ namespace Plugin
 							
 						} catch {
 								syntax_error = true;
+								break;
 							}
-							break;
-							
 						}
 					}
 					
