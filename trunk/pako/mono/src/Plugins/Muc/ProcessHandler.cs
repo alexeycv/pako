@@ -1582,14 +1582,15 @@ namespace Plugin
 					bool silent = false;
 					
 					if (ws.Length > 2) {
+						if (ws[2] == "silent") {
+							silent = true;
+							number = 22;
+						}
+					else{
 						try {
 							number = Convert.ToInt32 (ws[2]);
 							
 						} catch {
-							if (ws[2] == "silent") {
-								silent = true;
-								number = 20;
-							} else {
 								syntax_error = true;
 							}
 							break;
@@ -1614,10 +1615,8 @@ namespace Plugin
 						} catch (Exception err) {
 						}
 						Sh.S.Sleep ();
-						Sh.S.Sleep ();
 						
 					}
-					Sh.S.Sleep ();
 					Sh.S.Sleep ();
 					
 					if (!silent)
