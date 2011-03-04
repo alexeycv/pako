@@ -84,6 +84,8 @@ namespace Core.Kernel
 
        Hashtable _justJoined; // Just joined MUCs. For misc.join handler.
        Hashtable _justJoined_Mucs; // Just joined MUCs. For misc.join handler.
+		
+		List<object> _messageTransformers = null;
 
        object[] sobjs = new object[70];
 
@@ -116,6 +118,8 @@ namespace Core.Kernel
            {
                sobjs[i] = new object();
            }
+			
+			_messageTransformers = new List<object>();
 
            _justJoined = new Hashtable();
            _justJoined_Mucs = new Hashtable();

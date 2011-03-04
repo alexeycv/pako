@@ -43,7 +43,7 @@ namespace Plugin
 		
 		#region IMessageTransformerObject implementation
 		
-		public String TransformMessage(String message, SessionHandler sh)
+		public String TransformMessage(String message, SessionHandler sh, int userAccessLevel)
 		{
 			return "";
 		}
