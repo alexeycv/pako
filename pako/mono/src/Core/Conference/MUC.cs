@@ -81,6 +81,8 @@ namespace Core.Conference
         OptionsHandler opth;
         string m_subject;
         static object[] sobjs = new object[60];
+		
+		SessionHandler _sh;
 
         XmppClientConnection m_con;
 
@@ -646,6 +648,11 @@ namespace Core.Conference
             return res;
         }
 
+		public SessionHandler Sh
+        {
+            get { lock (sobjs[55]) { return _sh; } }
+            set { lock (sobjs[55]) { _sh = value; } }
+        }
        
         /// <summary>
         /// Retrieves an alias by the original phrase, user, who called the command,
@@ -696,6 +703,9 @@ namespace Core.Conference
                     if (_wordsConstructor != "")
                         _wordsConstructor += " ";
                     _wordsConstructor += _phrases[_index];
+					
+					if (!this.Sh.S.Config.CaseSensitivityAliases)
+						_wordsConstructor = _wordsConstructor.ToLower();
 
                     if (Aliases_cache.Contains(_wordsConstructor))
                     {
@@ -820,6 +830,9 @@ namespace Core.Conference
                     if (_wordsConstructor != "")
                         _wordsConstructor += " ";
                     _wordsConstructor += _phrases[_index];
+					
+					if (!this.Sh.S.Config.CaseSensitivityAliases)
+						_wordsConstructor = _wordsConstructor.ToLower();
 
                     if (Aliases_cache.Contains(_wordsConstructor))
                         return true;
@@ -1520,6 +1533,8 @@ namespace Core.Conference
             } // last - 54
 			
 			_customObjects = new Hashtable();
+			
+			this._sh = sh;
 
             DirBuilder db = new DirBuilder();
             m_con = con;

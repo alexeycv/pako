@@ -39,7 +39,7 @@ namespace Core.Plugins
     public interface IMessageTransformerObject
     {
         // Handlers
-        String TransformMessage(String message, SessionHandler sh);
+        String TransformMessage(String message, SessionHandler sh, int userAccessLevel);
     }
 }
        
