@@ -105,6 +105,7 @@ namespace Plugin
         // Plugin initialization and shut down
         public void Start(SessionHandler sh)
         {
+			_session = sh;
         }
 
         public void Stop()
