@@ -110,6 +110,8 @@ namespace Core.Kernel
 		public void _Handle ()
 		{
 			_signed = _signed == CmdhState.PREFIX_NULL ? m_msg.Type == MessageType.groupchat ? CmdhState.PREFIX_REQUIRED : CmdhState.PREFIX_POSSIBLE : _signed;
+			
+			//Get a muc subject
 			if (m_msg.Subject != null && m_msg.Type == MessageType.groupchat) {
 				if (Sh.S.GetMUC (s_jid) != null)
 					Sh.S.GetMUC (s_jid).Subject = m_msg.Subject;
