@@ -24,108 +24,81 @@ using Core.Kernel;
 using Core.Conference;
 using agsXMPP;
 using agsXMPP.protocol.client;
+using System.Threading;
 
 namespace Plugin
 {
- 
-    public class Main : IPlugin
-    {
-        SessionHandler _session = null;
 
-        public string File
-        {
-            get
-            {
-                return "Muc.dll";
-            }
-        }
+	public class Main : IPlugin
+	{
+		SessionHandler _session = null;
+
+		public string File {
+			get { return "Muc.dll"; }
+		}
 
 
-        public string Name
-        {
-            get
-            {
-                return "Muc";
-            }
-        }
+		public string Name {
+			get { return "Muc"; }
+		}
 
-        public string Comment
-        {
-            get
-            {
-                return "Can serve muc users" ;
-            }
-        }
+		public string Comment {
+			get { return "Can serve muc users"; }
+		}
 
-        public SessionHandler Session
-        {
-            get
-            {
-                return _session;
-            }
-            set
-            {
-                _session = value;
-            }
-        } 
+		public SessionHandler Session {
+			get { return _session; }
+			set { _session = value; }
+		}
 
-        public bool SubscribePresence 
-        { 
-            get
-            {
-                return false;
-            }
-        }
+		public bool SubscribePresence {
+			get { return false; }
+		}
 
-        public bool SubscribeMessages 
-        { 
-            get
-            {
-                return false;
-            }
-        }
-        
-        public bool SubscribeIq 
-        { 
-            get
-            {
-                return false;
-            }
-        }
+		public bool SubscribeMessages {
+			get { return true; }
+		}
 
-        public void PerformAction(IPluginData d)
-        {
-           
-            MucHandler ph = new MucHandler(d.r, Name);
+		public bool SubscribeIq {
+			get { return false; }
+		}
 
-        }
+		public void PerformAction (IPluginData d)
+		{
+			
+			MucHandler ph = new MucHandler (d.r, Name);
+			
+		}
 
-        // IPlugin implementation
+		// IPlugin implementation
 
-        // Plugin initialization and shut down
-        public void Start(SessionHandler sh)
-        {
+		// Plugin initialization and shut down
+		public void Start (SessionHandler sh)
+		{
 			_session = sh;
-        }
+		}
 
-        public void Stop()
-        {
-        }
+		public void Stop ()
+		{
+		}
 
-        // Handlers
-        public void CommandHandler(agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
-        {
-        }
+		// Handlers
+		public void CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
+		{
+			MessageHandler _handler = new MessageHandler(msg, s, emulation, signed, level);
+			Thread thr = new Thread (new ThreadStart (_handler.Handle));
+			thr.Start ();
+		}
 
-        public void PresenceHandler(Presence m_pres, SessionHandler sh)
-        {
-        }
+		public void PresenceHandler (Presence m_pres, SessionHandler sh)
+		{
+		}
 
-        public void IqHandler(IQ iq, XmppClientConnection Con)
-        {
-        }
-    }
-
-
-
+		public void IqHandler (IQ iq, XmppClientConnection Con)
+		{
+		}
+	}
+	
+	
+	
 }
