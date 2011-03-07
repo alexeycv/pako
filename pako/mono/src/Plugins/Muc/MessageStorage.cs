@@ -12,5 +12,13 @@ namespace Plugin
 
 	public class MessageStorage
 	{
+		public string _message;
+		public DateTime _timestamp;
+		
+		public MessageStorage(DateTime timestamp, String message)
+		{
+			this._message = message;
+			this._timestamp = timestamp;
+		}
 	}
 }

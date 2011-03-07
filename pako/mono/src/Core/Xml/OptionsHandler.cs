@@ -41,7 +41,7 @@ namespace Core.Xml
 			@out.exe ("option_hnd_created_or_opened");
 			string[] opts = new string[] { "global_censor", "censor_result", "vcensor_result", "vcensor_affiliation", "rcensor_result", "amoderator", "akick", "avisitor", "aliases", "mode",
 			"cmdaccess", "cleanup_unit", "enable_logging", "nick_limit", "nick_limit_result", "length_limit", "length_limit_overflow_result", "users_without_version_info", "users_without_vcard_info", "show_newuser_vcard",
-			"user_warnings_count", "user_max_kicks", "user_max_kicks_action", "antiflood", "antiflood_messages_count" };
+			"user_warnings_count", "user_max_kicks", "user_max_kicks_action", "antiflood", "antiflood_messages_count", "antiflood_result" };
 			foreach (string opt in opts)
 				AddOption (opt);
 			
@@ -402,7 +402,7 @@ namespace Core.Xml
 					foreach (Element el in Document.RootElement.SelectElements ("option")) {
 						if (!el.HasAttribute ("name")) {
 							el.SetAttribute ("name", Name);
-							el.SetAttribute ("value", "+");
+							el.SetAttribute ("value", "-");
 							el.SetAttribute ("possible", "+|-");
 							Save ();
 							return true;
@@ -424,6 +424,21 @@ namespace Core.Xml
 						}
 					}
 
+					break;
+					
+				case "antiflood_result":
+					Document.RootElement.AddTag ("option");
+					foreach (Element el in Document.RootElement.SelectElements ("option")) {
+						if (!el.HasAttribute ("name")) {
+							el.SetAttribute ("name", Name);
+							el.SetAttribute ("value", "warn");
+							el.SetAttribute ("possible", "kick|devoice|nothing|warn|ban");
+							Save ();
+							return true;
+						}
+					}
+
+					
 					break;
 				#endregion
 					
