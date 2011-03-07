@@ -86,7 +86,7 @@ namespace Plugin
 		public void CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
 		{
 			MessageHandler _handler = new MessageHandler(msg, s, emulation, signed, level);
-			Thread thr = new Thread (new ThreadStart (_handler.Handle));
+			Thread thr = new Thread (new ThreadStart (_handler.HandleMessage));
 			thr.Start ();
 		}
 
