@@ -496,8 +496,10 @@ namespace Core.Kernel
 					
 					//Initializing aliases
 					if (!m_muc.HasAlias (m_body)) {
+						#region Replace nick from command
 						String _cmdBody = m_msg.Body;
 						
+						// split bot nick and command, to correct answer on commands like Pako: *muc echo test
 						if (is_muser) {
 							String[] _cmds = _cmdBody.Split (':');
 							if (_cmds.Length > 0) {
@@ -524,6 +526,9 @@ namespace Core.Kernel
 						
 						//@out.write(m_msg.Body + "\n");
 						
+						#endregion
+						
+						#region Check prefix and remove it from message
 						// if no alias fount
 						@out.exe ("alias_not_found: stage1");
 						if (!m_msg.Body.StartsWith (d)) {
@@ -543,11 +548,14 @@ namespace Core.Kernel
 								return;
 						}
 						
+						#endregion
+						
 					} else
 						@out.exe ("alias_found");
 				} else {
 					@out.exe ("roster_user");
 					
+					#region Log
 					//Write to log
 					try {
 						if (Sh.S.Config.EnableLogging && m_msg.Body != null && Sh.S.GetMUC (m_msg.From) == null) {
@@ -564,6 +572,10 @@ namespace Core.Kernel
 					} catch (Exception ex) {
 					}
 					
+					#endregion
+					
+					#region Check prefix and remove it from message
+					
 					if (!m_msg.Body.StartsWith (d)) {
 						if (_signed == CmdhState.PREFIX_REQUIRED)
 							return;
@@ -575,6 +587,9 @@ namespace Core.Kernel
 						if (m_msg.Body.Trim () == "")
 							return;
 					}
+					
+					#endregion
+					
 				}
 				
 				// Executing a command

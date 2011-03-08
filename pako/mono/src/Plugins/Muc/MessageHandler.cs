@@ -95,7 +95,7 @@ namespace Plugin
 			
 			if (msg.Body == null || msg.Body == "")
 				return;
-			if (_mucUser.Jid.Bare == Session.S.C.MyJID.Bare)
+			if (_mucUser != null && _mucUser.Jid.Bare == Session.S.C.MyJID.Bare)
 				return;
 			
 			#region Response
