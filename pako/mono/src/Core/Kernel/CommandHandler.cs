@@ -53,6 +53,9 @@ namespace Core.Kernel
 		Message emulate;
 		CmdhState _signed;
 		int _level;
+		
+		bool _allowMyJid = false;
+		int? userAccessLevel;
 
 		#endregion ;
 
@@ -73,6 +76,35 @@ namespace Core.Kernel
 			Thread thr = new Thread (new ThreadStart (Handle));
 			thr.Start ();
 			
+		}
+		
+		public CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level, bool allowMyJid, int? userAccessLevel)
+		{
+			msg.From = new Jid (msg.From.Bare.ToLower () + (msg.From.Resource != "" ? "/" + msg.From.Resource : ""));
+			m_msg = msg;
+			s_jid = msg.From;
+			Sh = s;
+			if (msg.Body == null || msg.Body == "")
+				return;
+			
+			if (!allowMyJid){
+				if (s_jid.Bare == Sh.S.C.MyJID.Bare)
+				{
+					//@out.write ("Handler EXIT");
+					return;
+				}
+			}
+			
+			emulate = emulation;
+			_signed = signed;
+			_level = level;
+			
+			this._allowMyJid = allowMyJid;
+			
+			Thread thr = new Thread (new ThreadStart (Handle));
+			thr.Start ();
+			
+			//@out.write ("Handler OK");
 		}
 
 		public void Handle ()
@@ -126,12 +158,18 @@ namespace Core.Kernel
 			m_user = null;
 			if (m_muc != null) {
 				if (s_jid.Resource == null)
+				{
+					//@out.write ("Handler EXIT (if (s_jid.Resource == null))");
 					return;
+				}
 				// MUC mode woth a null MUC user. Stop process
 				if (m_muc.GetUser (s_jid.Resource) != null)
 					m_user = m_muc.GetUser (s_jid.Resource);
 				else
+				{
+					//@out.write ("Handler EXIT m_muc.GetUser (s_jid.Resource) != null");
 					return;
+				}
 				// Because of null MUC user in MUC mode
 			}
 			
@@ -234,7 +272,10 @@ namespace Core.Kernel
 					if (emulate == null) {
 						@out.exe ("emulate_non_existing");
 						if (m_user == m_muc.MyNick)
-							return;
+							if (!this._allowMyJid)
+							{
+								return;
+							}
 					} else {
 						@out.exe ("emulate_existing");
 						r.Access = 100;
@@ -243,6 +284,14 @@ namespace Core.Kernel
 						r.Emulation = emulate;
 					}
 					@out.exe ("emulate_extistence_determining_finished");
+					
+					//userAccessLevel
+					if (userAccessLevel != null)
+					{
+						r.Access = userAccessLevel;
+						access = userAccessLevel;
+						m_user.Access = userAccessLevel;
+					}
 					
 					// Checking user input text for a censored phrases
 					string found_censored = Utils.FormatEnvironmentVariables (Sh.S.GetMUC (s_jid).IsCensored (m_msg.Body, m_muc.OptionsHandler.GetOption ("global_censor") == "+"), r);
@@ -532,36 +581,6 @@ namespace Core.Kernel
 				string m_retort = null;
 				Cmd cmd = null;
 				try {
-					// Excluding a nick before command
-										/*
-					String _cmdBody = m_body;
-										
-					if (is_muser)
-					{
-						String[] _cmds = _cmdBody.Split(':');
-						if (_cmds.Length>0)
-						{
-							if (d + _cmds[0].TrimEnd(':').TrimEnd() == m_muc.MyNick)
-							{
-								_cmdBody = _cmdBody.Replace(m_muc.MyNick + ":", "").TrimStart();
-							}
-						}
-						
-						_cmds = _cmdBody.Split(',');
-						if (_cmds.Length>0)
-						{
-							if (_cmds[0].TrimEnd(',').TrimEnd() == m_muc.MyNick)
-							{
-								_cmdBody = _cmdBody.Replace(m_muc.MyNick + ",", "").TrimStart();
-							}
-						}
-					}
-					
-					@out.write(_cmdBody + "\n");
-					
-                    cmd = Cmd.CreateInstance(_cmdBody, r, null);
-					*/
-					
 					cmd = Cmd.CreateInstance (m_body, r, null);
 					switch (cmd.Accessibility) {
 					case CmdAccessibilityType.Accessible:
