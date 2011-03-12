@@ -11,7 +11,7 @@ core:
 
 plugins: 
 	echo Compiling plug-ins...
-	gmcs src/Plugins/Admin/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Admin.dll
+	gmcs src/Plugins/Admin/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient,System.Data.dll -t:library -out:bin/Plugins/Admin.dll
 	gmcs src/Plugins/Alias/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Alias.dll
 	gmcs src/Plugins/Def/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Def.dll
 	gmcs src/Plugins/Dict/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Dict.dll
