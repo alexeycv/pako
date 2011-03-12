@@ -38,6 +38,7 @@ namespace Core.API.Data
 		SqliteConnection _connection;
 		object[] _lockers = new object[10];
 		bool _dbJustCreated;
+		bool _canCreate = false;
 		
 		#region Properties
 		
@@ -57,12 +58,19 @@ namespace Core.API.Data
 		
 		#region Constructors
 		
-		DataController(String dbFile, String version)
+		public DataController(String dbFile, String version, bool canCreate)
 		{
             _dbName = dbFile;
 			_dbJustCreated = false;
+			this._canCreate = canCreate;
 			
-			this.Load();
+			try{
+				this.Load();
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 		}
 		
 		#endregion
@@ -72,8 +80,21 @@ namespace Core.API.Data
 		public void Load()
 		{
 			JustCreated = !File.Exists(_dbName);
-            SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
-            SQLiteConn.Open();
+			
+			if (JustCreated && !this._canCreate)
+			{
+				throw new Exception("Database not exists\n" + this._dbName);
+				return;
+			}
+			
+			try{
+            	SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
+            	SQLiteConn.Open();
+			}
+			catch (Exception exx)
+			{
+				throw new Exception("Error while loading database " + this._dbName + " Message: " + exx.Message);
+			}
 		}
 		
 		public void Close()
@@ -101,7 +122,7 @@ namespace Core.API.Data
 			}
 			catch (Exception exx)
 			{
-				return -1;
+				throw new Exception("Error while executing querry in " + this._dbName + " Message: " + exx.Message);
 			}
 		}
 		
@@ -125,7 +146,7 @@ namespace Core.API.Data
 			}
 			catch (Exception exx)
 			{
-				return null;
+				throw new Exception("Error while executing querry in " + this._dbName + " Message: " + exx.Message);
 			}
 		}
 		
@@ -161,7 +182,7 @@ namespace Core.API.Data
 			}
 			catch (Exception exx)
 			{
-				return null;
+				throw new Exception("Error while executing querry in " + this._dbName + " Message: " + exx.Message);
 			}
 		}
 		
@@ -202,7 +223,7 @@ namespace Core.API.Data
 			}
 			catch (Exception exx)
 			{
-				return -1;
+				throw new Exception("Error while executing querry in " + this._dbName + " Message: " + exx.Message);
 			}
 		}
 		

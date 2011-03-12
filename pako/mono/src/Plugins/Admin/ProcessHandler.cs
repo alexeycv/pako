@@ -26,6 +26,7 @@ using agsXMPP.protocol.client;
 using agsXMPP.Xml.Dom;
 using System.Threading;
 using System.IO;
+using System.Data;
 using Core.Kernel;
 using Core.Conference;
 using Core.Other;
@@ -35,6 +36,7 @@ using agsXMPP.protocol.x.muc.iq.admin;
 using agsXMPP.protocol.x.muc.iq.owner;
 using System.Diagnostics;
 using Mono.Data.SqliteClient;
+using Core.API.Data;
 
 namespace Plugin
 {
@@ -186,10 +188,111 @@ namespace Plugin
 
 				
 			case "sql":
+			{
+				if (m_r.Access == 100)
 				{
-					rs = "Not implemented yet";
-				break;
+					@out.write ("admin sql : access is 100, OK"); 
+					ws = Utils.SplitEx (m_b, 3);
+					
+					if (ws.Length > 3){
+						@out.write ("admin sql : there is more then 3 words, OK"); 
+						String _database = ws[2];
+						String _dbPath = Utils.GetPath(_database);
+						
+						@out.write ("admin sql : dbpath : "+ _dbPath + " dbname : " + _database); 
+						
+						if (_dbPath == _database)
+						{
+							rs = "Incorrect database name.";
+							@out.write ("admin sql : Incorrect db name, EXIT"); 
+							break;
+						}
+						else{
+							// Loading database	
+							@out.write ("admin sql : Prepare to load db, OK"); 
+							int sqlv = int.Parse(Sh.S.Config.GetTag("sqlite"));
+							
+							DataController _dc = null;
+							DataTable _dt = null;
+							
+							int _resLength = 0;
+							
+							@out.write ("admin sql : Loading db : " + _dbPath + " - " + ws[3] + ", RUN");
+						
+							try{
+								_dc = new DataController(_dbPath, sqlv.ToString(), false);
+								@out.write ("admin sql : Load db, OK"); 
+							}
+							catch (Exception exx)
+							{
+								@out.write ("admin sql : load db, FAIL"); 
+								rs = exx.Message;
+								_dc = null;
+								break;
+							}
+							
+							// Executing querry
+							@out.write ("admin sql : Prepare to execute command "+ ws[3] +", OK"); 
+							if (_dc != null)
+							{
+								@out.write ("admin sql : dc init correctly, OK"); 
+								String _cmd = ws[3].Trim();
+								
+								String[] _params = _cmd.Split(' ');
+								
+								@out.write ("admin sql : param[0] = " +_params[0]+", GO"); 
+								
+								if (_params.Length > 1 &&  _params[0].ToLower() == "select")
+								{
+									try{
+										@out.write ("admin sql : Preparing to execute command, OK"); 
+										_dt = _dc.ExecuteDALoad(_cmd);
+										//_resLength = _dt.Rows.Count;
+										@out.write ("admin sql : Command executed, OK"); 
+									}
+									catch (Exception exx)
+									{
+										@out.write ("admin sql : Command execute, FAIL"); 
+										rs = exx.Message;
+										break;
+									}
+								}
+								else{
+									@out.write ("admin sql : ws[3] != select, OK"); 
+								}
+							}
+							else{
+								@out.write ("admin sql : dc is null, EXIT"); 
+								rs = "dc is null";
+								break;
+							}
+							
+							// Parsing results
+							if (_resLength > 0)
+								rs = "Accected " + _resLength + " rows.";
+							
+							if (_dt != null)
+							{
+								rs = "\n\nTake " + _dt.Rows.Count + " rows.";
+							}
+							
+							if (_dt == null && _resLength == 0)
+								rs = "No results.";
+							
+							// Close a database
+							_dc.Close();
+						}
+					}
+					else{
+						rs = "Not all parameters supplied";
+					}
 				}
+				else{
+					rs = "Access level must be 100"	;
+				}
+					//rs = "Not implemented yet";
+				break;
+			}
 			
 			case "muc_lang":
 				
