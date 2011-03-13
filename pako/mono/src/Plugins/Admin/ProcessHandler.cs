@@ -145,7 +145,7 @@ namespace Plugin
 			case "list":
 				
 				{
-					rs = m_r.f ("volume_list", n) + "\nlist, emul, censor, config, set_help, set_pattern, get_pattern, pl_load, pl_info, pl_unload, proc_show, proc_kill, proc_new, muc_lang, muc_status, muc_nick, cmdaccess, dict_clear, vipaccess, viplang, gmsg, cmd, quit, restart, find, langs, eval, myroot, errors, pako, heap, sql, macro_add, macro_list, macro_show, macro_del, macro_exec";
+					rs = m_r.f ("volume_list", n) + "\nlist, emul, censor, config, set_help, set_pattern, get_pattern, pl_load, pl_info, pl_unload, proc_show, proc_kill, proc_new, muc_lang, muc_status, muc_nick, cmdaccess, dict_clear, vipaccess, viplang, gmsg, cmd, quit, restart, find, langs, eval, myroot, errors, pako, heap, macro_add, macro_list, macro_show, macro_del, macro_exec";
 					break;
 				}
 
@@ -186,7 +186,7 @@ namespace Plugin
 					break;
 				}
 
-				
+			/*
 			case "sql":
 			{
 				if (m_r.Access == 100)
@@ -293,7 +293,8 @@ namespace Plugin
 					//rs = "Not implemented yet";
 				break;
 			}
-			
+			*/
+					
 			case "muc_lang":
 				
 				{
