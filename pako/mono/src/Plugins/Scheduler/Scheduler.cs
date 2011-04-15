@@ -14,12 +14,16 @@ namespace Plugin
  
     public class Scheduler		
     {
+		SessionHandler _sh;
+		
 		Timer _mainTimer;
 		Collection<SchedulerTask> _tasks;
 		DateTime _initDateTime;
 		
-		public Scheduler()
+		public Scheduler(SessionHandler sh)
 		{
+			this._sh = sh;
+			
 			this._initDateTime = DateTime.Now;
 			_tasks = new Collection<SchedulerTask>();
 			

@@ -53,7 +53,7 @@ namespace Core.Kernel
 		Message emulate;
 		CmdhState _signed;
 		int _level;
-		
+
 		bool _allowMyJid = false;
 		int? userAccessLevel;
 
@@ -77,7 +77,7 @@ namespace Core.Kernel
 			thr.Start ();
 			
 		}
-		
+
 		public CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level, bool allowMyJid, int? userAccessLevel)
 		{
 			msg.From = new Jid (msg.From.Bare.ToLower () + (msg.From.Resource != "" ? "/" + msg.From.Resource : ""));
@@ -87,9 +87,8 @@ namespace Core.Kernel
 			if (msg.Body == null || msg.Body == "")
 				return;
 			
-			if (!allowMyJid){
-				if (s_jid.Bare == Sh.S.C.MyJID.Bare)
-				{
+			if (!allowMyJid) {
+				if (s_jid.Bare == Sh.S.C.MyJID.Bare) {
 					//@out.write ("Handler EXIT");
 					return;
 				}
@@ -157,16 +156,14 @@ namespace Core.Kernel
 			// Get MUC User object
 			m_user = null;
 			if (m_muc != null) {
-				if (s_jid.Resource == null)
-				{
+				if (s_jid.Resource == null) {
 					//@out.write ("Handler EXIT (if (s_jid.Resource == null))");
 					return;
 				}
 				// MUC mode woth a null MUC user. Stop process
 				if (m_muc.GetUser (s_jid.Resource) != null)
 					m_user = m_muc.GetUser (s_jid.Resource);
-				else
-				{
+				else {
 					//@out.write ("Handler EXIT m_muc.GetUser (s_jid.Resource) != null");
 					return;
 				}
@@ -243,13 +240,16 @@ namespace Core.Kernel
 					switch (m_muc.OptionsHandler.GetOption ("mode")) {
 					case "private":
 						
+						
 						{
 							if (m_msg.Type == MessageType.groupchat)
 								return;
 							break;
 						}
 
+					
 					case "groupchat":
+						
 						
 						{
 							if (m_msg.Type != MessageType.groupchat)
@@ -258,6 +258,7 @@ namespace Core.Kernel
 						}
 
 					default:
+						
 						break;
 					}
 					
@@ -272,8 +273,7 @@ namespace Core.Kernel
 					if (emulate == null) {
 						@out.exe ("emulate_non_existing");
 						if (m_user == m_muc.MyNick)
-							if (!this._allowMyJid)
-							{
+							if (!this._allowMyJid) {
 								return;
 							}
 					} else {
@@ -286,14 +286,15 @@ namespace Core.Kernel
 					@out.exe ("emulate_extistence_determining_finished");
 					
 					//userAccessLevel
-					if (userAccessLevel != null)
-					{
+					if (userAccessLevel != null) {
 						r.Access = userAccessLevel;
 						access = userAccessLevel;
 						m_user.Access = userAccessLevel;
 					}
 					
 					// Checking user input text for a censored phrases
+					HandleCensor _hc = new HandleCensor (m_user, Sh, r, m_muc, s_jid, m_msg);
+										/*
 					string found_censored = Utils.FormatEnvironmentVariables (Sh.S.GetMUC (s_jid).IsCensored (m_msg.Body, m_muc.OptionsHandler.GetOption ("global_censor") == "+"), r);
 					@out.exe ("censor_next_stage");
 					
@@ -400,9 +401,11 @@ namespace Core.Kernel
 						@out.exe ("censored_not_found");
 					@out.exe ("censored_check_finished");
 					
+					*/
+
 					// Checking for a message length limit
 //NickLimit handlers
-					int _messageTextLimit = 500;
+int _messageTextLimit = 500;
 					try {
 						_messageTextLimit = Convert.ToInt16 (m_muc.OptionsHandler.GetOption ("length_limit"));
 					} catch (Exception err) {
@@ -412,6 +415,7 @@ namespace Core.Kernel
 						string censored = "Your message is too long and large than " + _messageTextLimit.ToString () + " characters.";
 						switch (m_muc.OptionsHandler.GetOption ("length_limit_overflow_result")) {
 						case "kick":
+							
 							
 							{
 								@out.exe ("censor_next_kick");
@@ -432,7 +436,9 @@ namespace Core.Kernel
 							}
 
 						
+						
 						case "devoice":
+							
 							
 							{
 								@out.exe ("censor_next_devoice");
@@ -451,7 +457,9 @@ namespace Core.Kernel
 								break;
 							}
 
+						
 						case "ban":
+							
 							
 							{
 								@out.exe ("censor_next_ban");
@@ -471,7 +479,9 @@ namespace Core.Kernel
 							}
 
 						
+						
 						case "warn":
+							
 							
 							{
 								@out.exe ("censor_next_warn");
@@ -485,6 +495,7 @@ namespace Core.Kernel
 								
 							}
 
+							
 							break;
 						default:
 							break;
@@ -615,6 +626,7 @@ namespace Core.Kernel
 				switch (cmd.Volume) {
 				case "help":
 					
+					
 					{
 						string[] args = cmd.Args (1);
 						
@@ -629,6 +641,7 @@ namespace Core.Kernel
 						break;
 					}
 
+					
 				}
 				if (m_retort != null)
 					r.Reply (m_retort);
@@ -636,5 +649,154 @@ namespace Core.Kernel
 			}
 		}
 		
+	}
+
+	public class HandleCensor
+	{
+		MUser m_user;
+		SessionHandler Sh;
+		Response r;
+		MUC m_muc;
+		Jid s_jid;
+		Message m_msg;
+
+		public HandleCensor (MUser pm_user, SessionHandler pSh, Response pr, MUC pm_muc, Jid ps_jid, Message pm_msg)
+		{
+			this.m_user = pm_user;
+			this.Sh = pSh;
+			this.r = pr;
+			this.m_muc = pm_muc;
+			this.s_jid = ps_jid;
+			this.m_msg = pm_msg;
+			
+			Thread _th = new Thread(this._handle);
+			_th.Start();
+		}
+
+		public void _handle ()
+		{
+			try{
+				this.Handle();
+			}
+			catch {}
+		}
+
+		public void Handle ()
+		{
+			string found_censored = Utils.FormatEnvironmentVariables (Sh.S.GetMUC (s_jid).IsCensored (m_msg.Body, m_muc.OptionsHandler.GetOption ("global_censor") == "+"), r);
+			@out.exe ("censor_next_stage");
+			
+			bool _warningExecuted = false;
+			
+			if (found_censored != null && Convert.ToInt32 (m_muc.OptionsHandler.GetOption ("user_warnings_count")) > 0) {
+				if (m_user.WarningsCount < Convert.ToInt32 (m_muc.OptionsHandler.GetOption ("user_warnings_count"))) {
+					m_user.WarningsCount++;
+					_warningExecuted = true;
+					
+					@out.exe ("censor_next_warn");
+					MessageType original_type = r.Msg.Type;
+					r.Msg.Type = MessageType.groupchat;
+					r.Reply (r.f ("censor_warning"));
+					r.Msg.Type = original_type;
+					@out.exe ("censor_next_sleeping");
+					Sh.S.Sleep ();
+					@out.exe ("censor_next_slept");
+				}
+			}
+			
+			if (found_censored != null && !_warningExecuted) {
+				switch (m_muc.OptionsHandler.GetOption ("censor_result")) {
+				case "kick":
+					
+					
+					{
+						@out.exe ("censor_next_kick");
+						if (m_muc.KickableForCensored (m_user)) {
+							m_muc.Kick (null, m_user, found_censored);
+							return;
+						} else {
+							MessageType original_type = r.Msg.Type;
+							r.Msg.Type = MessageType.groupchat;
+							r.Reply (found_censored);
+							r.Msg.Type = original_type;
+							@out.exe ("censor_next_sleeping");
+							Sh.S.Sleep ();
+							
+							@out.exe ("censor_next_slept");
+						}
+						break;
+					}
+
+				
+				
+				case "devoice":
+					
+					
+					{
+						@out.exe ("censor_next_devoice");
+						if (m_muc.KickableForCensored (m_user)) {
+							m_muc.Devoice (null, m_user, found_censored);
+							return;
+						} else {
+							MessageType original_type = r.Msg.Type;
+							r.Msg.Type = MessageType.groupchat;
+							r.Reply (found_censored);
+							r.Msg.Type = original_type;
+							@out.exe ("censor_next_sleeping");
+							Sh.S.Sleep ();
+							@out.exe ("censor_next_slept");
+						}
+						break;
+					}
+
+				
+				case "ban":
+					
+					
+					{
+						@out.exe ("censor_next_ban");
+						if (m_muc.KickableForCensored (m_user)) {
+							m_muc.Ban (null, m_user, found_censored);
+							return;
+						} else {
+							MessageType original_type = r.Msg.Type;
+							r.Msg.Type = MessageType.groupchat;
+							r.Reply (found_censored);
+							r.Msg.Type = original_type;
+							@out.exe ("censor_next_sleeping");
+							Sh.S.Sleep ();
+							@out.exe ("censor_next_slept");
+						}
+						break;
+					}
+
+				
+				
+				case "warn":
+					
+					
+					{
+						@out.exe ("censor_next_warn");
+						MessageType original_type = r.Msg.Type;
+						r.Msg.Type = MessageType.groupchat;
+						r.Reply (found_censored);
+						r.Msg.Type = original_type;
+						@out.exe ("censor_next_sleeping");
+						Sh.S.Sleep ();
+						@out.exe ("censor_next_slept");
+						
+					}
+
+					
+					break;
+				default:
+					break;
+					
+				}
+			} else
+				@out.exe ("censored_not_found");
+			@out.exe ("censored_check_finished");
+			
+		}
 	}
 }
