@@ -133,7 +133,7 @@ namespace Plugin
 			
 			this.Session = sh;
 			
-			Scheduler _sch = new Scheduler();
+			Scheduler _sch = new Scheduler(sh);
 			
 			@out.write("===> Scheduler initialization END");
         }

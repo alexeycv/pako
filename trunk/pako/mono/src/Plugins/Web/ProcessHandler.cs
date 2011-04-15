@@ -1371,9 +1371,9 @@ namespace www
                             String _resultStr = "";
 
                             String header = "<h1>Случайный анекдот</h1>";
-                            _data = _data.Substring(_data.IndexOf(header) + header.Length);
+                            _data = _data.Substring(_data.IndexOf(header)/* + header.Length*/);
                             
-                            String html_data = Utils.GetValue(_data, "<p class=\"main\">(.*)</p>");
+                            String html_data = Utils.GetValue(_data, "<p>(.*)</p>"); // class=\"main\"
                             String result = html_data.Replace("<br />", "\n");
 
                             rs = result;

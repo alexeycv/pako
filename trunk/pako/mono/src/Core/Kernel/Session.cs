@@ -373,14 +373,17 @@ namespace Core.Kernel
                        S.MUCs.Add(am.Jid, m);
                    }
                }
-               lock (this)
-               {
+               //lock (this)
+               //{
+					Int32 _time = 1;
                    foreach (MUC m in S.MUCs.Values)
                    {
-                       m.Join();
-                       Thread.Sleep(5);
+                       //m.Join();
+						TimedJoiner _joiner = new TimedJoiner(m, _time);
+                       //Thread.Sleep(5000);
+						_time = _time + 1;
                    }
-               }
+               //}
            }
            @out.write("<" + DateTime.Now.Hour + " : " + DateTime.Now.Minute + " : " + DateTime.Now.Second + "> Ready for requests\n");
 

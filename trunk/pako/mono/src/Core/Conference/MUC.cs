@@ -1492,10 +1492,17 @@ namespace Core.Conference
             }
         }
 
+		public void Join()
+		{
+			Thread _th = new Thread (new ThreadStart (_join));
+			_th.Start();
+		}
+		
+		
         /// <summary>
         /// Join the current MUC (send presence)
         /// </summary>
-        public void Join()
+        public void _join()
         {
             Presence pres = new Presence();
             pres.To = new Jid(m_jid + "/" + m_mynick);
