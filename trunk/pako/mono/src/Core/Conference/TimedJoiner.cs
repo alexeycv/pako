@@ -57,7 +57,7 @@ namespace Core.Conference
 			TimerCallback _tcb = this.Joiner;
 			
 			this._timer = new Timer(_tcb);
-			this._timer.Change(_time*5000, 600000);
+			this._timer.Change(_time*1000, 600000);
 		}
 		
 		internal void Joiner(object stateInfo)
