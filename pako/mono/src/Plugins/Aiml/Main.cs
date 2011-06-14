@@ -109,21 +109,6 @@ namespace Plugin
             }
         }
 
-        #region CommandHandler variables
-
-        Message c_m_msg;
-        Jid c_s_jid;
-        string c_s_nick;
-        MUser c_m_user;
-        string c_original;
-        Jid c_m_jid;
-        MUC c_m_muc;
-        SessionHandler c_Sh;
-//        Message emulate;
-        CmdhState c_signed;
-        int c_level;
-
-        #endregion;
 
         #region AIML Bot specific variables
         object[] sobjs = new object[5];

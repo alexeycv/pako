@@ -482,6 +482,26 @@ namespace Core.Xml
 				}
 			}
 		}
+		
+		public int MucJoinTimeout {
+			get {
+				lock (Document) {
+					try{
+						return Document.RootElement.SelectSingleElement ("bot").SelectSingleElement ("MucJoinTimeout").GetAttributeInt ("value");
+					} catch (Exception exx)
+					{
+						return 5;
+					}
+				}
+			}
+
+			set {
+				lock (Document) {
+					Document.RootElement.SelectSingleElement ("bot").SelectSingleElement ("MucJoinTimeout").SetAttribute ("value", value);
+					Save ();
+				}
+			}
+		}
 
 
 		/// <summary>

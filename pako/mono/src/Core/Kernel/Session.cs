@@ -375,7 +375,7 @@ namespace Core.Kernel
                }
                //lock (this)
                //{
-					Int32 _time = 1;
+					Int32 _time = S.Config.MucJoinTimeout;
                    foreach (MUC m in S.MUCs.Values)
                    {
                        //m.Join();
