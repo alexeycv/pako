@@ -97,7 +97,7 @@ namespace Plugin
         { 
             get
             {
-                return false;
+                return true;
             }
         }
         
@@ -210,25 +210,12 @@ namespace Plugin
         }
 
         // Handlers
-        public void CommandHandler(agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
-        {
-            // === Initializing ===
-            msg.From = new Jid(msg.From.Bare.ToLower() + (msg.From.Resource != "" ? "/" + msg.From.Resource : ""));
-            c_m_msg = msg;
-            c_s_jid = msg.From;
-            c_Sh = s;
-            if (msg.Body == null || msg.Body == "")
-                return;
-            if (c_s_jid.Bare == c_Sh.S.C.MyJID.Bare)
-                return;
-           // emulate = emulation;
-            c_signed = signed;
-            c_level = level;
-            // === End Init ===
-
-            Thread thr = new Thread(new ThreadStart(CommandHandleThread));
-            thr.Start();
-        }
+        public void CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
+		{
+			MessageHandler _handler = new MessageHandler(msg, s, emulation, signed, level);
+			Thread thr = new Thread (new ThreadStart (_handler.HandleMessage));
+			thr.Start ();
+		}
 
         public void PresenceHandler(Presence m_pres, SessionHandler sh)
         {
@@ -238,71 +225,6 @@ namespace Plugin
         {
         }
 
-        // CommandHandler Thread Method
-        public void CommandHandleThread()
-        {
-            // Get MUC and mucuser
-            c_m_muc = c_Sh.S.GetMUC(c_s_jid);
-            c_m_user = null;
-            if (c_m_muc != null)
-            {
-                if (c_s_jid.Resource == null)
-                    return;
-                c_m_user = c_m_muc.GetUser(c_s_jid.Resource);
-            }
-
-            // Parse message
-            if (c_m_muc != null && c_m_msg.Body.IndexOf(c_m_muc.MyNick) >=0  && AIML_Bot != null)
-            {
-                @out.write("===> AIML GO.");
-                AIMLbot.Request _request = new AIMLbot.Request(c_m_msg.Body, _aimlUser, AIML_Bot);
-                AIMLbot.Result _reply = AIML_Bot.Chat(_request);
-
-                msgType m_type = Utils.GetTypeOfMsg(c_m_msg, c_m_user);
-                bool is_muser = m_type == msgType.MUC;
-                string m_body = c_m_msg.Body;
-                string vl = null;
-                //if (c_m_muc != null)
-                //    vl = c_m_muc.VipLang.GetLang(c_m_jid);
-                //if (vl == null)
-                //    vl = c_Sh.S.VipLang.GetLang(c_m_jid);
-
-                Response r = new Response(c_Sh.S.Rg[
-                              vl != null ?
-                              vl :
-                              is_muser ?
-                              c_m_user.Language :
-                              c_Sh.S.Config.Language
-                         ]);
-
-                int? access = c_Sh.S.GetAccess(c_m_msg, c_m_user, c_m_muc);
-
-                if (access != null)
-                    r.Access = access;
-                else
-                    r.Access = 0;
-
-                r.Msg = c_m_msg;
-                r.MSGLimit = c_Sh.S.Config.MucMSGLimit;
-
-                r.MUC = c_m_muc;
-                r.Level = c_level;
-                r.MUser = c_m_user;
-                //r.Delimiter = d;
-                r.Sh = c_Sh;
-
-                MessageType original_type = r.Msg.Type;
-                //r.Msg.Type = MessageType.groupchat;
-                r.Reply(_reply.Output);
-                r.Msg.Type = original_type;
-
-                //agsXMPP.protocol.client.Message msg = c_m_msg;
-                //msg.From = c_m_msg.To;
-                //msg.To = c_m_msg.From;
-                //msg.Body = _reply.Output;
-                //c_Sh.S.C.Send(msg);
-            }
-        }
     }
 
 
