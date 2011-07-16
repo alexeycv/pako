@@ -26,6 +26,8 @@ using System.IO;
 using Core.Kernel;
 using Core.Other;
 using agsXMPP.Xml.Dom;
+using System.Xml;
+using System.IO;
 
 
 namespace www
@@ -41,6 +43,37 @@ namespace www
 
         public string GetList()
         {
+			HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.google.com/finance/converter"));
+            _request.Method = "GET";
+
+            HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+            Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+            StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
+
+            String _data = "";
+            _data = _reader.ReadToEnd().Replace("name=from", "name=\"from\"");
+
+            String _resultStr = "";
+
+            Int32 _selectStart = _data.IndexOf("<select");
+            Int32 _selectEnd = _data.IndexOf("</select>");
+
+            _resultStr = _data.Substring(_selectStart, _selectEnd - _selectStart + 9);
+
+            XmlDocument _xml = new XmlDocument();
+            _xml.LoadXml(_resultStr);
+
+            _resultStr = "";
+            XmlNodeList _xmlNodes = _xml.SelectNodes("/select/option");
+            foreach (XmlNode _node in _xmlNodes)
+            {
+                _resultStr += _node.InnerText + "\n";
+            }
+			
+			return _resultStr;
+			
+			// The old code
+			/*
             HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.xe.com/ucc/full.php"));
             wr.Method = "GET";
             wr.ContentType = "application/x-www-form-urlencoded";
@@ -54,7 +87,7 @@ namespace www
                 data += el.Value + "\n";
             }
             return data;
-            
+            */
 
 
         }
@@ -85,6 +118,26 @@ namespace www
         }
         public string Handle(string from, string to, double amount)
         {
+			HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.google.com/finance/converter?a="+(amount*1.0).ToString().Replace(",",".")+"&from="+from.ToUpper()+"&to="+to.ToUpper()));
+            _request.Method = "GET";
+
+            HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+            Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+            StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
+
+            String _data = "";
+            _data = _reader.ReadToEnd();
+            String _resultStr = "";
+
+            //_resultStr = _data.Substring(_data.IndexOf("<span id=\"result_box\""));
+            Regex _reg = new Regex("<div id=currency_converter_result>(.*)");
+            MatchCollection _mc = _reg.Matches(_data);
+            _resultStr = _mc[0].ToString().Replace("<div id=currency_converter_result>", "").Replace("<span class=bld>", "").Replace("</span>", "");
+			
+			return _resultStr;
+			
+			// This is an old code
+			/*
             HttpWebRequest wr = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri("http://www.xe.com/ucc/convert.cgi?Amount="+(amount*1.0).ToString().Replace(",",".")+"&From="+from.ToUpper()+"&To="+to.ToUpper()));
             wr.Method = "GET";
             wr.ContentType = "application/x-www-form-urlencoded";
@@ -93,6 +146,7 @@ namespace www
 
             string temp = sr.ReadToEnd();
             string data = "";
+			*/
             // 23.05.2010 by Alexey.cv
             // OLD CODEE
             // Commented temporary
@@ -103,6 +157,7 @@ namespace www
 
             // 23.05.2010 by Alexey.cv
             // xe.com result data parser
+			/*
             Regex _reg = new Regex("<td align=\"right\" class=\"rate\" >(.*)<!--");
 
             MatchCollection _mc = _reg.Matches(temp);
@@ -115,6 +170,7 @@ namespace www
 
             data += " = " + _mc[0].ToString().Replace("<td align=\"left\" class=\"rate\" >", "").Replace("<!--", "");
             return data;
+            */
         }
 
 
