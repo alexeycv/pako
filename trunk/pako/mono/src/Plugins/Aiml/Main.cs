@@ -34,130 +34,97 @@ using AIMLbot;
 
 namespace Plugin
 {
- 
-    public class Main : IPlugin
-    {
-        SessionHandler _session = null;
 
-        public string File
-        {
-            get
-            {
-                return "aiml.dll";
-            }
-        }
+	public class Main : IPlugin
+	{
+		SessionHandler _session = null;
+
+		public string File {
+			get { return "aiml.dll"; }
+		}
 
 
-        public bool MucOnly
-        {
-            get
-            {
-                return false;
-            }
-        }
+		public bool MucOnly {
+			get { return false; }
+		}
 
 
-        public string Name
-        {
-            get
-            {
-                return "AIML";
-            }
-        }
+		public string Name {
+			get { return "AIML"; }
+		}
 
-        public string Comment
-        {
-            get
-            {
-                return "AIML Chatbot" ;
-            }
-        }
+		public string Comment {
+			get { return "AIML Chatbot"; }
+		}
 
-        public SessionHandler Session
-        {
-            get
-            {
-                return _session;
-            }
-            set
-            {
-                _session = value;
-            }
-        } 
+		public SessionHandler Session {
+			get { return _session; }
+			set { _session = value; }
+		}
 
-        public bool SubscribePresence 
-        { 
-            get
-            {
-                return false;
-            }
-        }
+		public bool SubscribePresence {
+			get { return false; }
+		}
 
-        public bool SubscribeMessages 
-        { 
-            get
-            {
-                return true;
-            }
-        }
-        
-        public bool SubscribeIq 
-        { 
-            get
-            {
-                return false;
-            }
-        }
+		public bool SubscribeMessages {
+			get { return true; }
+		}
+
+		public bool SubscribeIq {
+			get { return false; }
+		}
 
 
-        #region AIML Bot specific variables
-        object[] sobjs = new object[5];
-        AIMLbot.Bot _aimlbot;
-        AIMLbot.User _aimlUser;
+		#region AIML Bot specific variables
+		object[] sobjs = new object[5];
+		AIMLbot.Bot _aimlbot;
+		AIMLbot.User _aimlUser;
 
-        // Propertiees
-        public AIMLbot.Bot AIML_Bot
-        {
-            get {lock (sobjs[1]) {return _aimlbot;} }
-            set {lock (sobjs[1]) {_aimlbot = value;} }
-        }
-        #endregion
+		// Propertiees
+		public AIMLbot.Bot AIML_Bot {
+			get {
+				lock (sobjs[1]) {
+					return _aimlbot;
+				}
+			}
+			set {
+				lock (sobjs[1]) {
+					_aimlbot = value;
+				}
+			}
+		}
+		#endregion
 
-        /// <summary>
-        /// Handle a command insede of the plug-in
-        /// </summary>
-        /// <param name="d"></param>
-        public void PerformAction(IPluginData d)
-        {
+		/// <summary>
+		/// Handle a command insede of the plug-in
+		/// </summary>
+		/// <param name="d"></param>
+		public void PerformAction (IPluginData d)
+		{
+			
+			if (d.r.AccessType == AccessType.None) {
+				if (d.r.Access >= 100) {
+					ConfigHandler ph = new ConfigHandler (d.r);
+				} else
+					d.r.Reply (d.r.f ("access_not_enough", "100"));
+			} else {
+				ConfigHandler ph = new ConfigHandler (d.r);
+			}
+			
+		}
 
-        	if (d.r.AccessType == AccessType.None)
-            { 
-        		if (d.r.Access >= 100)
-        		{
-        			ConfigHandler ph = new ConfigHandler(d.r);
-        		}
-                   else
-                   d.r.Reply(d.r.f("access_not_enough","100"));
-        	}else
-        	{
-        		ConfigHandler ph = new ConfigHandler(d.r);
-        	}
+		// IPlugin implementation
 
-        }
-
-        // IPlugin implementation
-
-        // Plugin initialization and shut down
-        public void Start(SessionHandler sh)
-        {
-            @out.write("===> AIML initialization start.");
-
-            for (int i = 0; i < 5; i++)
-           {
-               sobjs[i] = new object();
-           }
-
-/*
+		// Plugin initialization and shut down
+		public void Start (SessionHandler sh)
+		{
+			@out.write ("===> AIML initialization start.");
+			
+			for (int i = 0; i < 5; i++) {
+				sobjs[i] = new object ();
+			}
+			
+						/*
             _aimlbot = new AIMLbot.Bot();
             _aimlUser = new AIMLbot.User("Default", _aimlbot);
             Assembly assem = Assembly.GetExecutingAssembly();
@@ -187,31 +154,31 @@ namespace Plugin
             _aimlbot.isAcceptingUserInput = true;
 */
 
-            @out.write("===> AIML initialization end.");
-        }
+@out.write ("===> AIML initialization end.");
+		}
 
-        public void Stop()
-        {
-        }
-
-        // Handlers
-        public void CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
+		public void Stop ()
 		{
-			MessageHandler _handler = new MessageHandler(msg, s, emulation, signed, level);
+		}
+
+		// Handlers
+		public void CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
+		{
+			MessageHandler _handler = new MessageHandler (msg, s, emulation, signed, level);
 			Thread thr = new Thread (new ThreadStart (_handler.HandleMessage));
 			thr.Start ();
 		}
 
-        public void PresenceHandler(Presence m_pres, SessionHandler sh)
-        {
-        }
+		public void PresenceHandler (Presence m_pres, SessionHandler sh)
+		{
+		}
 
-        public void IqHandler(IQ iq, XmppClientConnection Con)
-        {
-        }
-
-    }
-
-
-
+		public void IqHandler (IQ iq, XmppClientConnection Con)
+		{
+		}
+		
+	}
+	
+	
+	
 }
