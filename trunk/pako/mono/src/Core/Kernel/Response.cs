@@ -418,7 +418,16 @@ namespace Core.Kernel
                     @out.exe("message_groupchat_ok");
                     r_msg.To = new Jid(m_jid.Bare);
                     Body = Body.Length > limit ? Body.Substring(0, limit) + "[...]" : Body;
-                    r_msg.Body = m_jid.Resource + ": " + Body;
+					
+					// If body is not begin from /me
+					if (Body.Substring(0,3) != "/me")
+					{
+                    	r_msg.Body = m_jid.Resource + ": " + Body;
+					}
+					else{
+						r_msg.Body = Body;
+					}
+					
                     r_msg.Type = m_type;
                 }
             }
