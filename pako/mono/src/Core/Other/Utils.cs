@@ -562,7 +562,11 @@ namespace Core.Other
 			return name;
 			
 		}
-
+		
+		public static string GetPath ()
+		{
+			return CD;			
+		}
 
 
 		public static string GetPath (string name, MUC muc)

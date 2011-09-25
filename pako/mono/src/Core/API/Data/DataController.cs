@@ -25,6 +25,7 @@ using System.Threading;
 using System.IO;
 using System.Data;
 using Core.Other;
+using Core.Kernel;
 
 namespace Core.API.Data
 {
@@ -50,8 +51,8 @@ namespace Core.API.Data
 		
 		public bool JustCreated
         {
-            get { lock (_lockers[1]) { return _dbJustCreated; } }
-            set { lock (_lockers[1]) { _dbJustCreated = value; } }
+            get { lock (_lockers[2]) { return _dbJustCreated; } }
+            set { lock (_lockers[2]) { _dbJustCreated = value; } }
         }
 		
 		#endregion 
@@ -60,15 +61,23 @@ namespace Core.API.Data
 		
 		public DataController(String dbFile, String version, bool canCreate)
 		{
+			// Iniy lockers
+			for (int i = 0; i < _lockers.Length; i++)
+				_lockers[i] = new object();
+					
+			@out.write ("Init DC");
             _dbName = dbFile;
 			_dbJustCreated = false;
+			_version = version;
 			this._canCreate = canCreate;
 			
 			try{
+				@out.write ("DC: Call Load()");
 				this.Load();
 			}
 			catch (Exception ex)
 			{
+				@out.write ("DC: Throw exception. ");
 				throw ex;
 			}
 		}
@@ -79,22 +88,32 @@ namespace Core.API.Data
 		
 		public void Load()
 		{
+			if (_dbName != null)
+				@out.write ("DC: Load(): Start. Dbname: " + _dbName);
+			else
+				@out.write ("DC: Load(): Start. Dbname: NULL." );
 			JustCreated = !File.Exists(_dbName);
 			
 			if (JustCreated && !this._canCreate)
 			{
+				@out.write ("DC: Load(): Database does not exists. Creation is not allowed");
 				throw new Exception("Database not exists\n" + this._dbName);
-				return;
+				//return;
 			}
 			
 			try{
+				@out.write ("DC: Load(): Init database");
             	SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
+				@out.write ("DC: Load(): Open database");
             	SQLiteConn.Open();
 			}
 			catch (Exception exx)
 			{
+				@out.write ("DC: Load(): Exception: Error while loadiing database.");
 				throw new Exception("Error while loading database " + this._dbName + " Message: " + exx.Message);
 			}
+			
+			@out.write ("DC: Load(): End.");
 		}
 		
 		public void Close()
@@ -116,13 +135,13 @@ namespace Core.API.Data
 		{
 			try
 			{
-				SqliteCommand cmd = new SqliteCommand(@"" + command, SQLiteConn);
+				SqliteCommand cmd = new SqliteCommand(command, SQLiteConn);
 
             	return cmd.ExecuteNonQuery();
 			}
 			catch (Exception exx)
 			{
-				throw new Exception("Error while executing querry in " + this._dbName + " Message: " + exx.Message);
+				throw new Exception("Error while executing querry in " + this._dbName + " Message: " + exx.Message + "\n Command:\n\n" + command);
 			}
 		}
 		
@@ -202,7 +221,7 @@ namespace Core.API.Data
 		{
 			try
 			{
-				SqliteDataAdapter _da = new SqliteDataAdapter(@""+command, SQLiteConn);
+				SqliteDataAdapter _da = new SqliteDataAdapter(command, SQLiteConn);
 				SqliteCommandBuilder _cb = new SqliteCommandBuilder();
 				_cb.DataAdapter = _da;
 				

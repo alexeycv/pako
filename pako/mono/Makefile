@@ -22,7 +22,7 @@ plugins:
 	gmcs src/Plugins/Mucfilter/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Mucfilter.dll
 	gmcs src/Plugins/Aiml/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,lib/AIMLbot.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Aiml.dll
 	gmcs src/Plugins/Scheduler/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Scheduler.dll
-	gmcs src/Plugins/Fun/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Fun.dll
+	gmcs src/Plugins/Fun/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,System.Data,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Fun.dll
 	echo Compiling plug-ins... Done
 
 install:
