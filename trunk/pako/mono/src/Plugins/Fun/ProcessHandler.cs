@@ -35,6 +35,8 @@ using agsXMPP.protocol.x.muc.iq.admin;
 using agsXMPP.protocol.x.muc.iq.owner;
 using System.Diagnostics;
 using Mono.Data.SqliteClient;
+using System.Data;
+using Core.API.Data;
 
 namespace Plugin
 {
@@ -91,12 +93,125 @@ namespace Plugin
 			case "list":
 				
 				{
-					rs = m_r.f ("volume_list", n) + "\nlist, poke";
+					rs = m_r.f ("volume_list", n) + "\nlist, poke, poke_add, bottle";
 					break;
 				}
 
 			
 			case "poke":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/Pokes.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  poke (id varchar, muc varchar, poke_data varchar);");
+						}
+					
+						if (ws.Length > 2) {
+							DataTable _dt = _dc.ExecuteDALoad("SELECT * FROM poke WHERE muc='*'");
+						
+							if (_dt != null)
+							{
+								if (_dt.Rows.Count > 0)
+								{
+									Random r = new Random();
+									int _index = r.Next(0, _dt.Rows.Count);
+								
+									string _pokeString = "/me " + _dt.Rows[_index]["poke_data"];
+									rs = _pokeString.Replace ("%NICK%", ws[2]);
+								}
+								else
+								{
+									rs = "No pokes avaliable.";
+								}
+							}
+							else
+							{
+								rs = "Error";
+							}
+						
+							//rs = "";
+						} else {
+							rs = "Ты чаго это?";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}
+					
+					break;
+				}
+				
+			case "poke_add":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/Pokes.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  poke (id varchar, muc varchar, poke_data varchar);");
+						}
+					
+						if (ws.Length > 2) {
+							string _data = ws[2];
+							
+							if (!_data.Contains("%NICK%"))
+							{
+								rs = "No %NICK% was defined. Saving aborted.";
+							}
+							else
+							{
+								rs = "Ok.";
+							
+								Guid _id = Guid.NewGuid();
+							
+								//DataTable _dt = new DataTable("poke");
+								//_dt.Columns.Add("id", typeof(string));
+								//_dt.Columns.Add("muc", typeof(string));
+								//_dt.Columns.Add("poke_data", typeof(string));
+							
+								//DataRow _dr = _dt.NewRow();
+								//_dr["id"] = _id.ToString();
+								//_dr["muc"] = "*";
+								//_dr["poke_data"] = _data;
+								
+								//_dt.Rows.Add(_dr);
+							
+								//_dc.ExecuteDASave("select * from poke where id='"+_id.ToString()+"'", _dr);
+								_dc.ExecuteNonQuery("INSERT INTO poke VALUES ('"+_id.ToString()+"', '*', '"+_data+"')");
+							}
+							
+						} else {
+							rs = "No data was saved.";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}                 
+					
+					break;
+				}
+				
+			case "bott;e":
 				
 				{
 					if (ws.Length > 2) {
