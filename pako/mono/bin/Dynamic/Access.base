@@ -91,4 +91,5 @@
    <command name="muc banlist" access="60" />
    <command name="muc memberlist" access="60" />
    <command name="muc ownerlist" access="60" />
+   <command name="fun poke_add" access="60" />
 </Access>
