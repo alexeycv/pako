@@ -93,11 +93,13 @@ namespace Plugin
 			case "list":
 				
 				{
-					rs = m_r.f ("volume_list", n) + "\nlist, poke, poke_add, bottle";
+					rs = m_r.f ("volume_list", n) + "\nlist, poke, poke_add, poke_list, poke_del, bottle, bottle_add, bottle_list, bottle_del";
 					break;
 				}
 
-			
+			///--------------------------------------------------------------------------------------------------------------------------------
+			/// Poke
+			///--------------------------------------------------------------------------------------------------------------------------------
 			case "poke":
 				
 				{
@@ -181,19 +183,6 @@ namespace Plugin
 							
 								Guid _id = Guid.NewGuid();
 							
-								//DataTable _dt = new DataTable("poke");
-								//_dt.Columns.Add("id", typeof(string));
-								//_dt.Columns.Add("muc", typeof(string));
-								//_dt.Columns.Add("poke_data", typeof(string));
-							
-								//DataRow _dr = _dt.NewRow();
-								//_dr["id"] = _id.ToString();
-								//_dr["muc"] = "*";
-								//_dr["poke_data"] = _data;
-								
-								//_dt.Rows.Add(_dr);
-							
-								//_dc.ExecuteDASave("select * from poke where id='"+_id.ToString()+"'", _dr);
 								_dc.ExecuteNonQuery("INSERT INTO poke VALUES ('"+_id.ToString()+"', '*', '"+_data+"')");
 							}
 							
@@ -211,16 +200,390 @@ namespace Plugin
 					break;
 				}
 				
-			case "bott;e":
+			case "poke_list":
 				
 				{
-					if (ws.Length > 2) {
-						string _pokeAtring = "/me" + " тыкнул %NICK% палочкой";
-						rs = _pokeAtring.Replace ("%NICK%", ws[2]);
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/Pokes.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  poke (id varchar, muc varchar, poke_data varchar);");
+						}
+					
+						if (ws.Length > 1) {
+							DataTable _dt = _dc.ExecuteDALoad("SELECT * FROM poke WHERE muc='*'");
 						
-						//rs = "";
-					} else {
-						rs = "Ты чаго это?";
+							if (_dt != null)
+							{
+								if (_dt.Rows.Count > 0)
+								{								
+									string _pokeString = "";
+								
+									for (int i = 0; i < _dt.Rows.Count; i++ )
+									{
+										_pokeString += "\n" + (i+1).ToString() + ") "+_dt.Rows[i]["poke_data"];
+									}
+								
+									rs = _pokeString;
+								}
+								else
+								{
+									rs = "No pokes avaliable.";
+								}
+							}
+							else
+							{
+								rs = "Error";
+							}
+						
+							//rs = "";
+						} else {
+							rs = "Ты чаго это?";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}
+					
+					break;
+				}
+				
+			case "poke_del":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/Pokes.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  poke (id varchar, muc varchar, poke_data varchar);");
+						}
+					
+						if (ws.Length > 2) {
+							string _data = ws[2];
+							int _index = Convert.ToInt32(_data) - 1;
+							DataTable _dt = _dc.ExecuteDALoad("SELECT * FROM poke WHERE muc='*'");
+						
+							if (_dt != null && _index >= 0)
+							{
+								if (_dt.Rows.Count > 0)
+								{								
+									string _pokeId = "";
+								
+									if (_dt.Rows[_index]["id"] != DBNull.Value)
+										_pokeId = (string)_dt.Rows[_index]["id"];
+								
+									if (_pokeId != "")
+									{
+										rs = "Ok";
+										_dc.ExecuteNonQuery("DELETE FROM poke WHERE id='"+_pokeId+"';");
+									}
+									else
+									{
+										rs = "Pokee not found";
+									}
+								}
+								else
+								{
+									rs = "No pokes avaliable.";
+								}
+							}
+							else
+							{
+								rs = "Error";
+							}
+						
+							//rs = "";
+						} else {
+							rs = "Ты чаго это?";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}
+					
+					break;
+				}
+			
+			///--------------------------------------------------------------------------------------------------------------------------------
+			/// Bottle
+			///--------------------------------------------------------------------------------------------------------------------------------
+				
+			case "bottle":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/bottles.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  bottle (id varchar, muc varchar, bottle_data varchar);");
+						}
+					
+						if (ws.Length > 1) {
+							DataTable _dt = _dc.ExecuteDALoad("SELECT * FROM bottle WHERE muc='*'");
+						
+							if (_dt != null)
+							{
+								if (_dt.Rows.Count > 0)
+								{
+									Random r = new Random();
+									int _index = r.Next(0, _dt.Rows.Count);
+								
+									string _pokeString = "/me " + _dt.Rows[_index]["bottle_data"];
+								
+									if (ws.Length > 2)
+										rs = _pokeString.Replace ("%NICK1%", ws[2]);
+									else
+										rs = _pokeString;
+									// TODO: Replace %NICK1% and %NICK2% with a random nick
+									MUC _muc = m_r.MUC;
+									int _index2 = 0;
+									
+									r = new Random();
+									int _nickIndex1 = r.Next(0, _muc.Users.Keys.Count);
+									string _nick1 = "";
+								
+									foreach (string nick in m_r.MUC.Users.Keys) {
+										if (nick != _muc.MyNick)
+											_nick1 = nick;
+									
+										if (_index2 == _nickIndex1)
+										{
+											break;
+										}
+										_index2++;
+									}
+								
+									_index2 = 0;
+									
+									r = new Random();
+									int _nickIndex2 = r.Next(0, _muc.Users.Keys.Count);
+									string _nick2 = "";
+								
+									foreach (string nick in m_r.MUC.Users.Keys) {
+										if (nick != _muc.MyNick && nick != _nick1)
+											_nick2 = nick;
+									
+										if (_index2 == _nickIndex2)
+										{
+											break;
+										}
+										_index2++;
+									}
+								
+									rs = rs.Replace("%NICK1%", _nick1).Replace("%NICK2%", _nick2);
+								}
+								else
+								{
+									rs = "No bottles avaliable.";
+								}
+							}
+							else
+							{
+								rs = "Error";
+							}
+						
+							//rs = "";
+						} else {
+							rs = "Ты чаго это?";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}
+					
+					break;
+				}
+				
+			case "bottle_add":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/bottles.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  bottle (id varchar, muc varchar, bottle_data varchar);");
+						}
+					
+						if (ws.Length > 2) {
+							string _data = ws[2];
+							
+							if (!_data.Contains("%NICK1%") || !_data.Contains("%NICK2%"))
+							{
+								rs = "The %NICK1% and %NICK2% must be defined.";
+							}
+							else
+							{
+								rs = "Ok.";
+							
+								Guid _id = Guid.NewGuid();
+							
+								_dc.ExecuteNonQuery("INSERT INTO bottle VALUES ('"+_id.ToString()+"', '*', '"+_data+"')");
+							}
+							
+						} else {
+							rs = "No data was saved.";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}                 
+					
+					break;
+				}
+				
+			case "bottle_list":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/bottles.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  bottle (id varchar, muc varchar, bottle_data varchar);");
+						}
+					
+						if (ws.Length > 1) {
+							DataTable _dt = _dc.ExecuteDALoad("SELECT * FROM bottle WHERE muc='*'");
+						
+							if (_dt != null)
+							{
+								if (_dt.Rows.Count > 0)
+								{								
+									string _pokeString = "";
+								
+									for (int i = 0; i < _dt.Rows.Count; i++ )
+									{
+										_pokeString += "\n" + (i+1).ToString() + ") "+_dt.Rows[i]["bottle_data"];
+									}
+								
+									rs = _pokeString;
+								}
+								else
+								{
+									rs = "No pokes avaliable.";
+								}
+							}
+							else
+							{
+								rs = "Error";
+							}
+						
+							//rs = "";
+						} else {
+							rs = "Ты чаго это?";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
+					}
+					
+					break;
+				}
+				
+			case "bottle_del":
+				
+				{
+					rs = "Error.";
+					// Data layer
+					int sqlv = int.Parse (Sh.S.Config.GetTag ("sqlite"));					
+				
+					DataController _dc;
+					try
+					{
+						_dc = new DataController(Utils.GetPath()+"/Dynamic/bottles.db", sqlv.ToString(), true);
+						if (_dc.JustCreated)
+						{
+							_dc.ExecuteNonQuery("CREATE TABLE  bottle (id varchar, muc varchar, bottle_data varchar);");
+						}
+					
+						if (ws.Length > 2) {
+							string _data = ws[2];
+							int _index = Convert.ToInt32(_data) - 1;
+							DataTable _dt = _dc.ExecuteDALoad("SELECT * FROM bottle WHERE muc='*'");
+						
+							if (_dt != null && _index >= 0)
+							{
+								if (_dt.Rows.Count > 0)
+								{								
+									string _pokeId = "";
+								
+									if (_dt.Rows[_index]["id"] != DBNull.Value)
+										_pokeId = (string)_dt.Rows[_index]["id"];
+								
+									if (_pokeId != "")
+									{
+										rs = "Ok";
+										_dc.ExecuteNonQuery("DELETE FROM bottle WHERE id='"+_pokeId+"';");
+									}
+									else
+									{
+										rs = "Pokee not found";
+									}
+								}
+								else
+								{
+									rs = "No pokes avaliable.";
+								}
+							}
+							else
+							{
+								rs = "Error";
+							}
+						
+							//rs = "";
+						} else {
+							rs = "Ты чаго это?";
+						}
+					
+						_dc.Close();
+					}
+					catch (Exception exx)
+					{
+						@out.write ("Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
 					}
 					
 					break;

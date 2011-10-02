@@ -92,4 +92,7 @@
    <command name="muc memberlist" access="60" />
    <command name="muc ownerlist" access="60" />
    <command name="fun poke_add" access="60" />
+   <command name="fun poke_del" access="60" />
+   <command name="fun bottle_add" access="60" />
+   <command name="fun bottle_del" access="60" />
 </Access>
