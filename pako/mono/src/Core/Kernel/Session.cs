@@ -89,6 +89,8 @@ namespace Core.Kernel
 		Hashtable _justJoined_Mucs;
 		// Just joined MUCs. For misc.join handler.
 		List<object> _messageTransformers = null;
+		
+		Hashtable _customObjects;
 
 		object[] sobjs = new object[70];
 
@@ -120,6 +122,8 @@ namespace Core.Kernel
 			for (int i = 0; i < 70; i++) {
 				sobjs[i] = new object ();
 			}
+			
+			_customObjects = new Hashtable();
 			
 			_messageTransformers = new List<object> ();
 			
@@ -942,6 +946,11 @@ namespace Core.Kernel
 			}
 		}
 		
+		public Hashtable CustomObjects
+        {
+            get { lock (sobjs[67]) { return _customObjects; } }
+            set { lock (sobjs[67]) { _customObjects = value; } }
+        }
 		
 		
 		

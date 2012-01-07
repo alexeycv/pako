@@ -76,7 +76,6 @@ namespace Plugin
 			Handle ();
 			
 			
-			
 		}
 
 		/// <summary>
@@ -90,87 +89,91 @@ namespace Plugin
 			switch (cmd) {
 			case "list":
 				
+				
 				{
-					rs = m_r.f ("volume_list", n) + "\nlist, tsaks, add, del, show, set_type, set_command, set_time, set_period";
+					rs = m_r.f ("volume_list", n) + "\nlist, tsaks, add, del, show";
 					break;
 				}
 
-			
-			case "test1":
+			case "add":
 				
 				{
-					rs = "Passed";
-					
-					break;
-				}
-
-			case "test":
-				
-				{
+					/*
+					 * Add parameters
+					 * name=taskname
+					 * time=12:00
+					 * date=01.01.2012|null
+					 * period=day|month|year|hour
+					 */
 					if (ws.Length > 2) {
 						string cmds_source = ws[2].Trim ();
 						string[] cmds = cmds_source.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
-					
-					#region Response
-					/*
-					Jid m_jid = _mucUser != null ? _mucUser.Jid : _fromJid;
-			
-					string vl = null;
-					if (_muc != null)
-						vl = _muc.VipLang.GetLang (m_jid);
-				
-					if (vl == null)
-						vl = Session.S.VipLang.GetLang (m_jid);
-			
-					Response r = new Response (Session.S.Rg[vl != null ? vl : _mucUser != null ? _mucUser.Language : Session.S.Config.Language]);
-			
-					// Get user access
-					int? access = 0;
-					access = Session.S.GetAccess (msg, _mucUser, _muc);
-			
-					if (access != null)
-						r.Access = access;
-					else
-						r.Access = 0;
-			
-					r.Msg = msg;
-					r.MSGLimit = Session.S.Config.MucMSGLimit;
-					r.MUC = _muc;
-					r.Level = level;
-					r.MUser = _mucUser;
-					r.Delimiter = Session.S.Config.Delimiter;
-			;
-					r.Sh = Session;
-			
-					//@out.write ("Response OK");					
-					*/
-					#endregion
-					
-						
-						//m_r.Connection.Send (msg);
-					
 						if (cmds.Length > Sh.S.Config.RecursionLevel) {
 							m_r.Reply (m_r.f ("commands_recursion", Sh.S.Config.RecursionLevel.ToString ()));
 							break;
 						}
-						foreach (string _cmd in cmds) {
-							//Message msg = new Message ();
-							//object obj = m_r.Msg;
-							//msg = (Message)obj;
+
+						string _newCmdLine = "";
+					
+						foreach (string _cmd1 in cmds) 
+						{
+							if (_cmd1.Trim(' ', '\n').Contains("name="))
+							{
+								continue;
+							}
+						
+							if (_cmd1.Trim(' ', '\n').Contains("time="))
+							{
+								continue;
+							}
+						
+							if (_cmd1.Trim(' ', '\n').Contains("date="))
+							{
+								continue;
+							}
+						
+							if (_cmd1.Trim(' ', '\n').Contains("period="))
+							{
+								continue;
+							}
+						
+							if (!String.IsNullOrEmpty(_newCmdLine))
+								_newCmdLine += " && " + _cmd1.Trim(' ', '\n');
+							else
+								_newCmdLine += _cmd1.Trim(' ', '\n');
+						}
+					
+						string[] cmds2 = _newCmdLine.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+					
+						if (m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"] != null)
+						{
+							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).Reload();
+						}
+						else
+							rs = "Sheduler is not initialized correctly.";
+					
+						rs = "Task added correctly.";
+					
+						/*
+						foreach (string _cmd in cmds2) {
 							Message msg = new Message ();
-							msg.To = new Jid("pako-dev@conference.jabber.ru");
-							msg.From = new Jid(m_r.MUC.Jid.Bare + "/" + m_r.MUC.MyNick);//m_r.Msg.From;//Sh.S.C.MyJID;
-							msg.Type = MessageType.groupchat;
+							object obj = m_r.Msg;
+							msg = (Message)obj;
 							msg.Body = _cmd.Trim (' ', '\n');
 						
-							//if (m_r.MUC.UserExists(arg))
-							//	Jid = new Jid(m_r.MUC.Jid.Bare + "/" + arg);
-							//else
-							//	Jid = new Jid(arg);
+							// Set jid to reply
+							Jid _jid = null;
+							if (m_r.MUC != null)
+								_jid = m_r.MUC.GetUser(msg.From.Resource).Jid;
+							else
+								_jid = msg.From;
 						
-							//CommandHandler cmd_handler = new CommandHandler (msg, Sh, m_r.Emulation, CmdhState.PREFIX_NOT_POSSIBLE, m_r.Level, true, 10);
+							CommandHandler cmd_handler = new CommandHandler (msg, Sh, m_r.Emulation, CmdhState.PREFIX_NOT_POSSIBLE, m_r.Level);
 							Sh.S.Sleep ();
+							//@out.write ("Scheduler debug : msg.From : " + msg.From.Resource + " - " + _jid.ToString() +"");
 						}
+						*/
+						
 					} else
 						syntax_error = true;
 					
@@ -180,11 +183,14 @@ namespace Plugin
 			default:
 				
 				
+				
+				
 				{
 					rs = m_r.f ("volume_cmd_not_found", n, ws[1], d + n.ToLower () + " list");
 					break;
 				}
 
+				
 				
 			}
 			
