@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Pako Jabber-bot.                                                *
- * Copyright. All rights reserved © 2007-2010 by Pako bot developers team        *
+ * Pako Jabber-bot.                                                              *
+ * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
+ * Copyright. All rights reserved © 2009-2012 by Alexey Bryohov                  *
  * Contact information is here: http://code.google.com/p/pako                    *
  *                                                                               *
  * Pako is under GNU GPL v3 license:                                             *
