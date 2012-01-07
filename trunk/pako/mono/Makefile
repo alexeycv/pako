@@ -25,6 +25,11 @@ plugins:
 	gmcs src/Plugins/Fun/*.cs -r:bin/Core.dll,lib/agsXMPP.dll,System.Data,Mono.Data.SqliteClient -t:library -out:bin/Plugins/Fun.dll
 	echo Compiling plug-ins... Done
 
+	echo Optimizations... 
+	mono -O=all --aot bin/Pako.exe
+	mono -O=all --aot bin/Core.dll
+	echo Optimizations... Done
+
 install:
 	echo Installing Pako...
 	cp lib/agsXMPP.dll bin/agsXMPP.dll
