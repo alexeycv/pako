@@ -57,7 +57,7 @@ namespace Plugin
 				int sqlv = int.Parse (sh.S.Config.GetTag ("sqlite"));
 				_database = new DataController (Utils.GetPath () + "/Dynamic/Scheduler.db", sqlv.ToString (), true);
 				if (_database.JustCreated) {
-					_database.ExecuteNonQuery ("CREATE TABLE  tasks (jid text, name text, muc text, add_date text, sch_date text, sch_time text, sch_period text, iscompleted integer, execute_datetime text, sch_commands text);");
+					_database.ExecuteNonQuery ("CREATE TABLE  tasks (jid text, name text, muc text, add_date text, sch_date text, sch_time text, sch_period text, iscompleted varchar[6], execute_datetime text, sch_commands text);");
 				}
 			} catch (Exception exx) {
 				@out.write ("Scheduler: Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
@@ -80,21 +80,35 @@ namespace Plugin
 		public Collection<SchedulerTask> LoadTasksOnTheDay (DateTime currentDT)
 		{
 			Collection<SchedulerTask> retValue = new Collection<SchedulerTask> ();
-			
+
 			DataTable _dt = _database.ExecuteDALoad("SELECT * FROM tasks WHERE sch_date = '"+currentDT.ToString("yyyy.MM.dd")+"'");
-			if (_dt.Rows.Count > 0)
+
+			if (_dt != null && _dt.Rows.Count > 0)
 			{
 				for (int i=0; i< _dt.Rows.Count; i++)
 				{
 					SchedulerTask _task = new SchedulerTask();
+
 					_task.JID = new Jid((String)_dt.Rows[i]["jid"]);
 					_task.Name = (String)_dt.Rows[i]["name"];
-					_task.Muc = new Jid((String)_dt.Rows[i]["muc"]);
-					_task.AddDate = Convert.ToDateTime((String)_dt.Rows[i]["add_date"]);					
-					_task.ScheduleDate = Convert.ToDateTime((String)_dt.Rows[i]["sch_date"]);
-					_task.ScheduleTime = TimeSpan.Parse((String)_dt.Rows[i]["sch_time"]);
-					_task.SchedulePeriod = (SchedulerTaskPeriod)Enum.Parse(typeof(SchedulerTaskPeriod), (String)_dt.Rows[i]["name"]);
-					_task.IsComplete = (int)_dt.Rows[i]["iscompleted"] == 1 ? true : false;
+					
+					if ((String)_dt.Rows[i]["muc"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["muc"]))
+						_task.Muc = new Jid((String)_dt.Rows[i]["muc"]);
+
+					_task.AddDate = Convert.ToDateTime((String)_dt.Rows[i]["add_date"]);
+
+					if ((String)_dt.Rows[i]["sch_date"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["sch_date"]))						
+						_task.ScheduleDate = Convert.ToDateTime((String)_dt.Rows[i]["sch_date"]);
+
+					if ((String)_dt.Rows[i]["sch_time"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["sch_time"]))	
+						_task.ScheduleTime = TimeSpan.Parse((String)_dt.Rows[i]["sch_time"]);
+
+					if ((String)_dt.Rows[i]["sch_period"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["sch_period"]))	
+						_task.SchedulePeriod = (SchedulerTaskPeriod)Enum.Parse(typeof(SchedulerTaskPeriod), (String)_dt.Rows[i]["sch_period"]);
+
+					//@out.write ("Scheduler:" + _dt.Rows[i]["iscompleted"].GetType().Name);
+					_task.IsComplete = bool.Parse((String)_dt.Rows[i]["iscompleted"]);
+
 					_task.ScheduleCommands = (String)_dt.Rows[i]["sch_commands"];
 					
 					_task.ExecuteDateTime = Convert.ToDateTime((String)_dt.Rows[i]["execute_datetime"]);
@@ -109,15 +123,21 @@ namespace Plugin
 		public void Reload ()
 		{
 			@out.write ("Scheduler. debug : Scheduller.Reload() entry point.");
+			
+			try
+			{
+				this._tasks = this.LoadTasksOnTheDay(DateTime.Now);
+			}
+			catch (Exception _ex)
+			{
+				@out.write ("Scheduler. debug : Scheduller.Reload() exception : \n" + _ex.ToString());
+			}
 		}
 
 		public void AddTask (string jid, string name, string muc, string sch_date, string sch_time, string sch_period, string sch_commands)
 		{
 			if (this._database != null)
-			{
-				if (String.IsNullOrEmpty(sch_period))
-					sch_period = "NotSet";
-				
+			{				
 				StringBuilder _sb = new StringBuilder();
 				_sb.Append("INSERT INTO tasks VALUES (");
 				_sb.Append("'"+jid+"', ");
@@ -126,11 +146,18 @@ namespace Plugin
 				_sb.Append("'"+DateTime.Now.ToString("yyyy.MM.dd")+"',");
 				_sb.Append("'"+sch_date+"', ");
 				_sb.Append("'"+sch_time+"', ");
-				_sb.Append("'"+sch_period+"', ");
-				_sb.Append("0, ");
+				
+				if (String.IsNullOrEmpty(sch_period) || sch_period == "null")
+					_sb.Append("'NotSet', ");
+				else
+					_sb.Append("'"+sch_period+"', ");
+				
+				_sb.Append("'false', ");
 				_sb.Append("'"+DateTime.Now.ToString("yyyy.MM.dd")+"', ");
 				_sb.Append("'"+sch_commands+"'");
 				_sb.Append(" );");
+				
+				//@out.write ("Scheduler: SQL "+ _sb.ToString()); 
 				
 				_database.ExecuteNonQuery (_sb.ToString());
 			}

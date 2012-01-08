@@ -168,14 +168,17 @@ namespace Plugin
 							}
 							else
 								_userJid = m_r.Msg.From;
-						
+						@out.write ("Execute add");
 							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).AddTask(_userJid.ToString(), _name, _mucFrom, _date, _time, _period, _newCmdLine);
 							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).Reload();
+						@out.write ("Execute add - end.");
+							
+							rs = "Task added correctly.";
 						}
 						else
 							rs = "Sheduler is not initialized correctly.";
 					
-						rs = "Task added correctly.";					
+						//rs = "Task added correctly.";					
 					
 						/*
 						foreach (string _cmd in cmds2) {
