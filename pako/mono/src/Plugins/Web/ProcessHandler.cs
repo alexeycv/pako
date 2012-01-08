@@ -598,10 +598,8 @@ namespace www
 			case "gt":
 				
 				{
-					if (false)
-				{
 					ws = Utils.SplitEx (m_msg.Body, 3);
-					
+
 					if (ws.Length > 2) {
 						if (ws[2] == "show") {
 							
@@ -629,17 +627,48 @@ namespace www
 						}
 						a = lns[0].Trim ();
 						b = lns[1].Trim ();
-						TranslateUtil tr = new TranslateUtil ();
+						//TranslateUtil tr = new TranslateUtil ();
 						if (a == "" || b == "") {
 							syntax_error = true;
 							break;
 						}
-						tr.Execute (ws[3], a, b, m_r);
-						return;
+						//tr.Execute (ws[3], a, b, m_r);
+						// Initialize the translator
+                		
+						try
+						{
+							string _pair = a+"|"+b;
+						
+							HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault(new System.Uri(String.Format("http://www.google.com/translate_t?hl=en&ie=UTF8&text={0}&langpair={1}", ws[3], _pair)));
+            				_request.Method = "GET";
+	
+            				HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+            				Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+						
+            				StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
+
+				            String _data = "";
+            				_data = _reader.ReadToEnd();
+
+            				string result = _data;
+
+            				result = result.Substring(result.IndexOf("<span title=\"") + "<span title=\"".Length);
+            				result = result.Substring(result.IndexOf(">") + 1);
+            				result = result.Substring(0, result.IndexOf("</span>"));
+
+            				rs = result.Trim();
+						}
+						catch 
+						{
+							rs = "Google Translator error.";
+						}
+						
+						//return;
 					} else
 						syntax_error = true;
-				}
-				rs = "Sorry, but Google translator is unavailable, because the service is closed by Google.";
+				
+				//rs = "Sorry, but Google translator is unavailable, because the service is closed by Google.";
+					
 					
 					break;
 				}
