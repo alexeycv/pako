@@ -268,8 +268,25 @@ namespace Plugin
 								_newCmdLine += _cmd1.Trim(' ', '\n');
 						}
 					
-						//string[] cmds2 = _newCmdLine.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+						// We need to see that's user have access to the commands
+						string[] cmds2 = _newCmdLine.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+						
+						int _access = 0;
+						
+						foreach (string _cmd in cmds2) 
+						{
+							Cmd cm = Cmd.CreateInstance (_cmd, m_r, true);
+							
+							if (_access < cm.CompleteAccess)
+								_access = (int)cm.CompleteAccess;
+						}
 					
+						if (_access > m_r.Access)
+						{
+							rs = "Access not enought.";
+							break;
+						}
+							
 						if (m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"] != null)
 						{
 							Jid _userJid = null;
