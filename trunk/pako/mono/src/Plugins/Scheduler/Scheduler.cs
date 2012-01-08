@@ -81,6 +81,14 @@ namespace Plugin
 		{
 			Collection<SchedulerTask> retValue = new Collection<SchedulerTask> ();
 			
+			DataTable _dt = _database.ExecuteDALoad("SELECT * FROM tasks WHERE sch_date = '"+currentDT.ToString("yyyy.MM.dd")+"'");
+			if (_dt.Rows.Count > 0)
+			{
+				for (int i=0; i< _dt.Rows.Count; i++)
+				{
+				}
+			}
+			
 			return retValue;
 		}
 
