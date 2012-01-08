@@ -1,6 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Pako Jabber-bot. Bbodio's Lab.                                                *
+ * Pako Jabber-bot.                                                              *
  * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
+ * Copyright. All rights reserved © 2009-2012 by Alexey Bryohov                  *
  * Contact information is here: http://code.google.com/p/pako                    *
  *                                                                               *
  * Pako is under GNU GPL v3 license:                                             *
@@ -105,6 +106,7 @@ namespace Plugin
 					 * date=01.01.2012|null
 					 * period=day|month|year|hour
 					 */
+				try{
 					if (ws.Length > 2) {
 						string cmds_source = ws[2].Trim ();
 						string[] cmds = cmds_source.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
@@ -115,25 +117,34 @@ namespace Plugin
 
 						string _newCmdLine = "";
 					
+						string _name = "null";
+						string _time = "null";
+						string _date = "null";
+						string _period = "null";
+					
 						foreach (string _cmd1 in cmds) 
 						{
 							if (_cmd1.Trim(' ', '\n').Contains("name="))
 							{
+								_name = _cmd1.Trim().Split (new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1];
 								continue;
 							}
 						
 							if (_cmd1.Trim(' ', '\n').Contains("time="))
 							{
+								_time = _cmd1.Trim().Split (new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1];
 								continue;
 							}
 						
 							if (_cmd1.Trim(' ', '\n').Contains("date="))
 							{
+								_date = _cmd1.Trim().Split (new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1];
 								continue;
 							}
 						
 							if (_cmd1.Trim(' ', '\n').Contains("period="))
 							{
+								_period = _cmd1.Trim().Split (new string[] { "=" }, StringSplitOptions.RemoveEmptyEntries)[1];
 								continue;
 							}
 						
@@ -143,16 +154,28 @@ namespace Plugin
 								_newCmdLine += _cmd1.Trim(' ', '\n');
 						}
 					
-						string[] cmds2 = _newCmdLine.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+						//string[] cmds2 = _newCmdLine.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
 					
 						if (m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"] != null)
 						{
+							Jid _userJid = null;
+							string _mucFrom = "null";
+						
+							if (m_r.MUC != null)
+							{
+								_userJid = m_r.MUC.GetUser(m_r.Msg.From.Resource).Jid;
+								_mucFrom = m_r.MUC.Jid.ToString();
+							}
+							else
+								_userJid = m_r.Msg.From;
+						
+							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).AddTask(_userJid.ToString(), _name, _mucFrom, _date, _time, _period, _newCmdLine);
 							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).Reload();
 						}
 						else
 							rs = "Sheduler is not initialized correctly.";
 					
-						rs = "Task added correctly.";
+						rs = "Task added correctly.";					
 					
 						/*
 						foreach (string _cmd in cmds2) {
@@ -176,6 +199,12 @@ namespace Plugin
 						
 					} else
 						syntax_error = true;
+					
+					}
+						catch (Exception exxx)
+					{
+						rs = "Error: \n\n" + exxx.ToString();
+					}
 					
 					break;
 				}
