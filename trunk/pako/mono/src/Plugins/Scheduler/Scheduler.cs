@@ -46,6 +46,16 @@ namespace Plugin
 		DateTime _initDateTime;
 		
 		DataController _database;
+		
+		#region Properties
+		
+		public Collection<SchedulerTask> Tasks
+		{
+			get {return this._tasks;}
+			set {this._tasks = value;}
+		}
+		
+		#endregion
 
 		public Scheduler (SessionHandler sh)
 		{
@@ -99,9 +109,13 @@ namespace Plugin
 
 					if ((String)_dt.Rows[i]["sch_date"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["sch_date"]))						
 						_task.ScheduleDate = Convert.ToDateTime((String)_dt.Rows[i]["sch_date"]);
+					else
+						_task.ScheduleDate = DateTime.MinValue;
 
 					if ((String)_dt.Rows[i]["sch_time"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["sch_time"]))	
 						_task.ScheduleTime = TimeSpan.Parse((String)_dt.Rows[i]["sch_time"]);
+					else
+						_task.ScheduleTime = TimeSpan.MinValue;
 
 					if ((String)_dt.Rows[i]["sch_period"] != "null" && !String.IsNullOrEmpty((String)_dt.Rows[i]["sch_period"]))	
 						_task.SchedulePeriod = (SchedulerTaskPeriod)Enum.Parse(typeof(SchedulerTaskPeriod), (String)_dt.Rows[i]["sch_period"]);

@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Text;
 using agsXMPP;
 using agsXMPP.protocol.client;
@@ -96,6 +97,80 @@ namespace Plugin
 					break;
 				}
 
+			case "show":
+			{
+				string[] _criteria = null;
+				
+				if (ws.Length > 2)
+					_criteria = ws[2].Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+					
+				if (m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"] != null)
+				{
+					Collection<SchedulerTask> _tasks = null;
+					if (_criteria != null && _criteria.Length > 0)
+					{
+						//((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).AddTask(_userJid.ToString(), _name, _mucFrom, _date, _time, _period, _newCmdLine);
+					}
+					else
+					{
+						_tasks = ((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).Tasks;
+					}
+					
+					Jid _userJid = null;
+						
+					if (m_r.MUC != null)
+					{
+						_userJid = m_r.MUC.GetUser(m_r.Msg.From.Resource).Jid;
+					}
+					else
+						_userJid = m_r.Msg.From;
+
+					rs = "";
+					
+					if (_tasks != null && _userJid != null)
+					{
+						foreach (SchedulerTask _task in _tasks)
+						{
+							if (_task.JID.Bare.ToString() == _userJid.Bare.ToString())
+							{
+								rs += "\n";
+								rs += _task.Name + "\t\t";
+								
+								if (_task.ScheduleDate != DateTime.MinValue)
+									rs += _task.ScheduleDate.ToString("yyyy.MM.dd") + "\t\t";
+								else
+									rs += "Not set\t\t";
+								
+								if (_task.ScheduleTime != TimeSpan.MinValue)
+									rs += _task.ScheduleTime + "\t\t";
+								else
+									rs += "Not set\t\t";
+								
+								rs += _task.SchedulePeriod.ToString() + "\t";
+								
+								rs += _task.IsComplete.ToString() + "\t";
+								
+								rs += _task.ScheduleCommands;
+							}
+						}
+					}
+					
+					if (rs != "")
+					{
+						rs = "Scheduled tasks: \nName\t\tDate\t\tTime\t\tPeriod\tComplete\t\tCommand" + rs;
+					}
+					else
+					{
+						rs = "No task on this day";
+					}
+					
+				}
+				else
+					rs = "Sheduler is not initialized correctly.";
+				
+				break;
+			}
+				
 			case "add":
 				
 				{
@@ -168,10 +243,10 @@ namespace Plugin
 							}
 							else
 								_userJid = m_r.Msg.From;
-						@out.write ("Execute add");
+
 							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).AddTask(_userJid.ToString(), _name, _mucFrom, _date, _time, _period, _newCmdLine);
 							((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).Reload();
-						@out.write ("Execute add - end.");
+
 							
 							rs = "Task added correctly.";
 						}
