@@ -124,6 +124,8 @@ namespace Core.Kernel
 				sobjs[i] = new object ();
 			}
 			
+			SessionHandler _sh_reserved = sh;
+			
 			_customObjects = new Hashtable();
 			
 			_messageTransformers = new List<object> ();
@@ -210,7 +212,6 @@ namespace Core.Kernel
 			
 			
 			os_version = Utils.Bot["os"].Replace ("\n\r", "").Replace ("\n", "").Replace ("\r", "");
-			
 			
 			
 			m_con.OnClose += delegate(object o) { OnDisconnect (); };

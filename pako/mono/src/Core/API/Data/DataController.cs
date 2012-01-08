@@ -73,7 +73,7 @@ namespace Core.API.Data
 			this._canCreate = canCreate;
 			
 			try{
-				@out.write ("DC: Call Load()");
+				//@out.write ("DC: Call Load()");
 				this.Load();
 			}
 			catch (Exception ex)
@@ -103,9 +103,9 @@ namespace Core.API.Data
 			}
 			
 			try{
-				@out.write ("DC: Load(): Init database");
+				//@out.write ("DC: Load(): Init database");
             	SQLiteConn = new SqliteConnection("URI=file:" + _dbName.Replace("\\", "/") + ",version=" + _version);
-				@out.write ("DC: Load(): Open database");
+				//@out.write ("DC: Load(): Open database");
             	SQLiteConn.Open();
 			}
 			catch (Exception exx)
@@ -114,7 +114,7 @@ namespace Core.API.Data
 				throw new Exception("Error while loading database " + this._dbName + " Message: " + exx.Message);
 			}
 			
-			@out.write ("DC: Load(): End.");
+			//@out.write ("DC: Load(): End.");
 		}
 		
 		public void Close()

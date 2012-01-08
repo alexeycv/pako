@@ -90,12 +90,51 @@ namespace Plugin
 			string rs = null;
 			switch (cmd) {
 			case "list":
+			{
+				rs = m_r.f ("volume_list", n) + "\nlist, tsaks, add, del, show";
+				break;
+			}
 				
-				
+			case "exec":
+			{
+				if (m_r.Access < 100)
 				{
-					rs = m_r.f ("volume_list", n) + "\nlist, tsaks, add, del, show";
+					rs = "Access denined.";
 					break;
 				}
+				
+				if (m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"] != null)
+				{
+					Jid _userJid = null;
+				
+					if (m_r.MUC != null)
+					{
+						_userJid = m_r.MUC.GetUser(m_r.Msg.From.Resource).Jid;
+					}
+					else
+						_userJid = m_r.Msg.From;
+				
+					Collection<SchedulerTask> _tasks = ((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).Tasks;
+					
+					if (_tasks != null)
+					{
+						foreach (SchedulerTask _task in _tasks)
+						{
+							if (_task.JID.Bare.ToString() == _userJid.Bare.ToString())
+							{
+								_task.Execute();
+								rs = "Task execution started.";
+								break;
+							}
+						};
+					}
+
+					//rs = "Task execution started.";
+				}
+				else
+					rs = "Sheduler is not initialized correctly.";
+				break;
+			}
 
 			case "show":
 			{

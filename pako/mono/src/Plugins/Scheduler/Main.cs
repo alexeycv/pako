@@ -137,6 +137,10 @@ namespace Plugin
 				this.Session = sh;
 			
 				Scheduler _sch = new Scheduler(sh);
+				
+				if (sh == null)
+					@out.write("===> Session is NULL!");
+				
 				if (sh.S.CustomObjects["Scheduller_Scheduller_main"] == null)
 					sh.S.CustomObjects.Add("Scheduller_Scheduller_main", _sch);
 				else

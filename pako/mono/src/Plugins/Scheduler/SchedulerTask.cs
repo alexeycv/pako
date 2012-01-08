@@ -55,6 +55,9 @@ namespace Plugin
 		public String ScheduleCommands { get; set; }
 
 		public DateTime ExecuteDateTime { get; set; }
+		
+		
+		public SessionHandler Sh {get; set;}
 
 		#endregion
 
@@ -64,25 +67,48 @@ namespace Plugin
 		{
 			string[] _cmds = ScheduleCommands.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
 			
-			/*
+			@out.write ("SchedulerTask. debug : SchedullerTask.Execute(). Commands : " + ScheduleCommands);
+			
+			try
+			{
 			foreach (string _cmd in _cmds) {
-				Message msg = new Message ();
+				agsXMPP.protocol.client.Message msg = new agsXMPP.protocol.client.Message ();
 				msg.From = this.JID;
+					
+					if (this.Sh == null)						
+						@out.write ("sh null");
+					
+					if (this.Sh.S == null)
+						@out.write ("sh.S null");
+					
+					if (this.Sh.S.Config == null)
+						@out.write ("sh.S.Config null");
+					
+					if (this.Sh.S.Config.Jid == null)
+						@out.write ("sh.S.Config.Jid null");
+					
+				msg.To = this.Sh.S.Config.Jid;
+				msg.Type = MessageType.chat;
 				msg.Body = _cmd.Trim (' ', '\n');
 				
 				// Set jid to reply
-				Jid _jid = null;
-				if (m_r.MUC != null)
-					_jid = m_r.MUC.GetUser (msg.From.Resource).Jid;
-				else
-					_jid = msg.From;
+				//Jid _jid = null;
+				//if (m_r.MUC != null)
+				//	_jid = m_r.MUC.GetUser (msg.From.Resource).Jid;
+				//else
+				//	_jid = msg.From;
 				
-				CommandHandler cmd_handler = new CommandHandler (msg, Sh, false, CmdhState.PREFIX_NOT_POSSIBLE, 0);
+				//@out.write ("Launching: " + _cmd);
+				CommandHandler cmd_handler = new CommandHandler (msg, Sh, null, CmdhState.PREFIX_NOT_POSSIBLE, 1);
 				Sh.S.Sleep ();
 				//@out.write ("Scheduler debug : msg.From : " + msg.From.Resource + " - " + _jid.ToString() +"");
 				
 			}
-			*/
+			}
+			catch (Exception _ex)
+			{
+				@out.write ("SchedulerTask.Execute() exception: \n" + _ex.ToString());
+			}
 		}
 		
 		#endregion

@@ -62,7 +62,7 @@ namespace Core.Kernel
 
 
 		public CommandHandler (agsXMPP.protocol.client.Message msg, SessionHandler s, Message emulation, CmdhState signed, int level)
-		{
+		{			
 			msg.From = new Jid (msg.From.Bare.ToLower () + (msg.From.Resource != "" ? "/" + msg.From.Resource : ""));
 			m_msg = msg;
 			s_jid = msg.From;
@@ -75,7 +75,7 @@ namespace Core.Kernel
 			_signed = signed;
 			_level = level;
 			Thread thr = new Thread (new ThreadStart (Handle));
-			thr.Start ();
+			thr.Start ();			
 			
 		}
 
