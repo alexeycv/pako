@@ -115,6 +115,9 @@ namespace Plugin
 		{
 			if (this._database != null)
 			{
+				if (String.IsNullOrEmpty(sch_period))
+					sch_period = "NotSet";
+				
 				StringBuilder _sb = new StringBuilder();
 				_sb.Append("INSERT INTO tasks VALUES (");
 				_sb.Append("'"+jid+"', ");
