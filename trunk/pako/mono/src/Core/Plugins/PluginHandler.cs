@@ -44,6 +44,9 @@ namespace Core.Plugins
         public PHandler(string PluginsFolder, SessionHandler sh)
         {
             _session = sh;
+			
+			if (_session == null)
+				@out.write("PluginHandler> Session is NULL!");
 
             for (int i = 0; i < 11; i++)
             {
@@ -70,7 +73,7 @@ namespace Core.Plugins
                         m_plugs.Add(plugin.Name.ToLower(), plugin);
                         m_count++;        
                         // Execute plugin initialization method
-                        plugin.Start(_session);
+                        plugin.Start(_session);						
 
                     }
                     catch

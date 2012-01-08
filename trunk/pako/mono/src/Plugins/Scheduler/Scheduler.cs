@@ -63,7 +63,7 @@ namespace Plugin
 			
 			// init database
 			try {
-				@out.write ("Scheduler : Init dayabase /Dynamic/Scheduler.db .");
+				//@out.write ("Scheduler : Init database /Dynamic/Scheduler.db .");
 				int sqlv = int.Parse (sh.S.Config.GetTag ("sqlite"));
 				_database = new DataController (Utils.GetPath () + "/Dynamic/Scheduler.db", sqlv.ToString (), true);
 				if (_database.JustCreated) {
@@ -127,6 +127,8 @@ namespace Plugin
 					
 					_task.ExecuteDateTime = Convert.ToDateTime((String)_dt.Rows[i]["execute_datetime"]);
 					
+					_task.Sh = this._sh;
+					
 					retValue.Add(_task);
 				}
 			}
@@ -136,7 +138,7 @@ namespace Plugin
 
 		public void Reload ()
 		{
-			@out.write ("Scheduler. debug : Scheduller.Reload() entry point.");
+			//@out.write ("Scheduler. debug : Scheduller.Reload() entry point.");
 			
 			try
 			{
