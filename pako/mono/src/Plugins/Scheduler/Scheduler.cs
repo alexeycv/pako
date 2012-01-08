@@ -128,6 +128,7 @@ namespace Plugin
 				_sb.Append("'"+sch_time+"', ");
 				_sb.Append("'"+sch_period+"', ");
 				_sb.Append("0, ");
+				_sb.Append("'"+DateTime.Now.ToString("yyyy.MM.dd")+"', ");
 				_sb.Append("'"+sch_commands+"'");
 				_sb.Append(" );");
 				
