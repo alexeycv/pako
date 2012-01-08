@@ -30,62 +30,15 @@ using System.Data;
 
 namespace Plugin
 {
-
-	public class SchedulerTask
-	{
-		public SchedulerTask ()
-		{
-			
-		}
-
-		#region Properties
-
-		public Jid JID { get; set; }
-		public String Name { get; set; }
-		public Jid Muc { get; set; }
-
-		public DateTime AddDate { get; set; }
-
-		public DateTime ScheduleDate { get; set; }
-		public TimeSpan ScheduleTime { get; set; }
-		public SchedulerTaskPeriod SchedulePeriod { get; set; }
-
-		public bool IsComplete { get; set; }
-
-		public String ScheduleCommands { get; set; }
-
-
-
-		#endregion
-
-		#region Methods
-
-		public void Execute ()
-		{
-			string[] _cmds = ScheduleCommands.Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
-			
-			/*
-			foreach (string _cmd in _cmds) {
-				Message msg = new Message ();
-				msg.From = this.JID;
-				msg.Body = _cmd.Trim (' ', '\n');
-				
-				// Set jid to reply
-				Jid _jid = null;
-				if (m_r.MUC != null)
-					_jid = m_r.MUC.GetUser (msg.From.Resource).Jid;
-				else
-					_jid = msg.From;
-				
-				CommandHandler cmd_handler = new CommandHandler (msg, Sh, false, CmdhState.PREFIX_NOT_POSSIBLE, 0);
-				Sh.S.Sleep ();
-				//@out.write ("Scheduler debug : msg.From : " + msg.From.Resource + " - " + _jid.ToString() +"");
-				
-			}
-			*/
-		}
-		
-		#endregion
+ 
+    public enum SchedulerTaskPeriod
+    {		
+		Year,
+		Month,
+		Day,
+		Hour,
+		NotSet
 	}
 }
-
+ 
+ 
