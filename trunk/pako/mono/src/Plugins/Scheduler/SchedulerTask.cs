@@ -54,7 +54,7 @@ namespace Plugin
 
 		public String ScheduleCommands { get; set; }
 
-
+		public DateTime ExecuteDateTime { get; set; }
 
 		#endregion
 

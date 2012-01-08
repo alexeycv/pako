@@ -57,7 +57,7 @@ namespace Plugin
 				int sqlv = int.Parse (sh.S.Config.GetTag ("sqlite"));
 				_database = new DataController (Utils.GetPath () + "/Dynamic/Scheduler.db", sqlv.ToString (), true);
 				if (_database.JustCreated) {
-					_database.ExecuteNonQuery ("CREATE TABLE  tasks (jid text, name text, muc text, add_date text, sch_date text, sch_time text, sch_period text, iscompleted integer ,sch_commands text);");
+					_database.ExecuteNonQuery ("CREATE TABLE  tasks (jid text, name text, muc text, add_date text, sch_date text, sch_time text, sch_period text, iscompleted integer, execute_datetime text, sch_commands text);");
 				}
 			} catch (Exception exx) {
 				@out.write ("Scheduler: Exception: \n" + exx.Message + "\n\n" + exx.Source + "\n\n" + exx.StackTrace + "\n\n Inner:\n\n");
@@ -86,6 +86,20 @@ namespace Plugin
 			{
 				for (int i=0; i< _dt.Rows.Count; i++)
 				{
+					SchedulerTask _task = new SchedulerTask();
+					_task.JID = new Jid((String)_dt.Rows[i]["jid"]);
+					_task.Name = (String)_dt.Rows[i]["name"];
+					_task.Muc = new Jid((String)_dt.Rows[i]["muc"]);
+					_task.AddDate = Convert.ToDateTime((String)_dt.Rows[i]["add_date"]);					
+					_task.ScheduleDate = Convert.ToDateTime((String)_dt.Rows[i]["sch_date"]);
+					_task.ScheduleTime = TimeSpan.Parse((String)_dt.Rows[i]["sch_time"]);
+					_task.SchedulePeriod = (SchedulerTaskPeriod)Enum.Parse(typeof(SchedulerTaskPeriod), (String)_dt.Rows[i]["name"]);
+					_task.IsComplete = (int)_dt.Rows[i]["iscompleted"] == 1 ? true : false;
+					_task.ScheduleCommands = (String)_dt.Rows[i]["sch_commands"];
+					
+					_task.ExecuteDateTime = Convert.ToDateTime((String)_dt.Rows[i]["execute_datetime"]);
+					
+					retValue.Add(_task);
 				}
 			}
 			
