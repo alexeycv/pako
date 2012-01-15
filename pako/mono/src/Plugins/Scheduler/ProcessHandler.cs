@@ -91,7 +91,7 @@ namespace Plugin
 			switch (cmd) {
 			case "list":
 			{
-				rs = m_r.f ("volume_list", n) + "\nlist, tsaks, add, del, show";
+				rs = m_r.f ("volume_list", n) + "\nlist, add, del, show, exec";
 				break;
 			}
 				
@@ -133,6 +133,45 @@ namespace Plugin
 				}
 				else
 					rs = "Sheduler is not initialized correctly.";
+				break;
+			}
+				
+			case "del":
+			{
+				string[] _criteria = null;
+				
+				if (ws.Length > 2)
+					_criteria = ws[2].Split (new string[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+					
+				if (m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"] != null)
+				{
+					Jid _userJid = null;
+						
+					if (m_r.MUC != null)
+					{
+						_userJid = m_r.MUC.GetUser(m_r.Msg.From.Resource).Jid;
+					}
+					else
+						_userJid = m_r.Msg.From;
+					
+					if (_criteria != null && _criteria.Length > 0)
+					{
+						string _criteriaStr = "";
+						
+						if (_criteriaStr == "")
+							rs = "Wrong criteria specified.";
+						//((Scheduler)m_r.Sh.S.CustomObjects["Scheduller_Scheduller_main"]).AddTask(_userJid.ToString(), _name, _mucFrom, _date, _time, _period, _newCmdLine);
+					}
+					else
+					{
+						rs = "You must specify criteria.";
+						break;
+					}
+					
+				}
+				else
+					rs = "Sheduler is not initialized correctly.";
+				
 				break;
 			}
 
