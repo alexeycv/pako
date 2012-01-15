@@ -83,8 +83,8 @@ namespace Plugin
 			TimerCallback _tcb = this.MainTimerHandler;
 			
 			this._mainTimer = new Timer (_tcb);
-			this._mainTimer.Change (1000, 50000);
-			// 50 seconds
+			this._mainTimer.Change (1000, 25000);
+			// 25 seconds
 		}
 
 		public Collection<SchedulerTask> LoadTasksOnTheDay (DateTime currentDT)
@@ -178,9 +178,25 @@ namespace Plugin
 				_database.ExecuteNonQuery (_sb.ToString());
 			}
 		}
+		
+		public void DeleteTasks(string criteriaWherePart)
+		{
+			if (this._database != null)
+			{				
+				StringBuilder _sb = new StringBuilder();
+				_sb.Append("DELETE FROM tasks ");
+				
+				if (criteriaWherePart != "")
+					_sb.Append(" WHERE "+criteriaWherePart+" ");
+
+				_database.ExecuteNonQuery (_sb.ToString());
+			}
+		}
 
 		internal void MainTimerHandler (object stateInfo)
 		{
+			DateTime _timerDt = DateTime.Now;
+			
 			//@out.write ("Scheduler: "+ DateTime.Now.ToString("hh:mm:ss:fff")); 
 			if (this._initDateTime.Day != DateTime.Now.Day) {
 				// reload tasks
@@ -189,6 +205,26 @@ namespace Plugin
 			}
 			
 			foreach (SchedulerTask _st in this._tasks) {
+				
+				// Executing non-periodical tasks
+				if (_st.SchedulePeriod == SchedulerTaskPeriod.NotSet && _st.IsComplete == false)
+				{
+					// If time is not set
+					if (_st.ScheduleTime == TimeSpan.MinValue)
+					{
+						_st.IsComplete = true;
+						_st.Execute();						
+					}
+					else
+					{
+						if (_st.ScheduleTime.Hours == _timerDt.Hour && _st.ScheduleTime.Minutes == _timerDt.Minute)
+						{
+							_st.IsComplete = true;
+							_st.Execute();							
+						}
+					}
+				}
+				
 			}
 		}
 	}
