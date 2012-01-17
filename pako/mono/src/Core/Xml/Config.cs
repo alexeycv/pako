@@ -138,7 +138,10 @@ namespace Core.Xml
 		public string Delimiter {
 			get {
 				lock (Document) {
-					return Document.RootElement.SelectSingleElement ("bot").SelectSingleElement ("prefix").GetAttribute ("value");
+					if (Document.RootElement.SelectSingleElement ("bot").SelectSingleElement ("prefix").GetAttribute ("value") != null)
+						return Document.RootElement.SelectSingleElement ("bot").SelectSingleElement ("prefix").GetAttribute ("value");
+					else
+						return "";
 				}
 			}
 
