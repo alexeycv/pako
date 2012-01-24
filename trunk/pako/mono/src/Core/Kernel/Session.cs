@@ -493,6 +493,7 @@ namespace Core.Kernel
 				return 0;
 			} catch (Exception err) {
 				return 0;
+				//return null;
 			}
 			
 		}

@@ -505,11 +505,24 @@ namespace Plugin
             }
             if (syntax_error)
             {
+				//@out.write("step 0 1: error");				
                 m_r.se(self);
+				//@out.write("step 0 2: error");
             }
             else
                 if (rs != null)
-                    m_r.Reply(rs);
+				{
+					//@out.write("step 0 1: out : rs = " + rs);
+					try
+					{
+                    	m_r.Reply(rs);
+					}
+					catch (Exception exx)
+					{
+						//@out.write("step 0 : error : \n" + exx.ToString());
+					}
+					//@out.write("step 0 2: out : rs = " + rs);
+				}
 
 
         }

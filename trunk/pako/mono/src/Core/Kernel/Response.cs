@@ -421,7 +421,7 @@ namespace Core.Kernel
                     Body = Body.Length > limit ? Body.Substring(0, limit) + "[...]" : Body;
 					
 					// If body is not begin from /me
-					if (Body.Substring(0,3) != "/me")
+					if (Body.Length >3 && Body.Substring(0,3) != "/me")
 					{
                     	r_msg.Body = m_jid.Resource + ": " + Body;
 					}
