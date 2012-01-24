@@ -621,7 +621,7 @@ namespace Core.Other
 
 
 		private static string Version {
-			get { return "12.01.18 (http://pako.googlecode.com developers team)"; }
+			get { return "12.01.24 (http://pako.googlecode.com developers team)"; }
 		}
 		
 		
