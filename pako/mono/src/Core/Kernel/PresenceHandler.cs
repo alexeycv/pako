@@ -180,13 +180,13 @@ namespace Core.Kernel
 					
 					// Checking version and vcard
 					
-					if (_justJoined == true) {
+					if (_justJoined == true && Sh.S.GetMUC (p_jid) != null) {
 						VersionCB _version = new VersionCB (user, Sh.S.GetMUC (p_jid), Sh, lng, Sh.S.C);
 						VCardCB _vcard = new VCardCB (user, Sh.S.GetMUC (p_jid), Sh, lng, Sh.S.C);
 					}
 					
-					
-					Sh.S.GetMUC (p_jid).SetUser (m_user, user);
+					if (Sh.S.GetMUC (p_jid) != null)
+						Sh.S.GetMUC (p_jid).SetUser (m_user, user);
 					@out.exe ("LANGUAGE=" + lng);
 					Response r = new Response (Sh.S.Rg[lng]);
 					r.MUC = m_muc;
@@ -194,7 +194,7 @@ namespace Core.Kernel
 					r.Sh = Sh;
 					
 					
-					if (m_muc != null) {
+					if (m_muc != null && Sh.S.GetMUC (p_jid) != null) {
 						string ak;
 						m_muc = Sh.S.GetMUC (p_jid);
 						
