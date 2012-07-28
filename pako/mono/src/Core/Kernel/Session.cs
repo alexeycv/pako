@@ -973,8 +973,12 @@ namespace Core.Kernel
             get { lock (sobjs[67]) { return _customObjects; } }
             set { lock (sobjs[67]) { _customObjects = value; } }
         }
-		
-		
+				
+		public DiscoManager BotDiscoManager
+        {
+            get { lock (sobjs[68]) { return m_discoManager; } }
+            set { lock (sobjs[68]) { m_discoManager = value; } }
+        }
 		
 		
 	}
