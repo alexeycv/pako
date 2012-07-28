@@ -2,6 +2,7 @@
  * Pako Jabber-bot.                                                              *
  * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
  * Copyright. All rights reserved © 2009-2012 by Alexey Bryohov                  *
+ * Patches: Mattias Aslund                                                       *
  * Contact information is here: http://code.google.com/p/pako                    *
  *                                                                               *
  * Pako is under GNU GPL v3 license:                                             *
@@ -39,6 +40,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Mono.Data.SqliteClient;
 using agsXMPP.protocol.iq.time;
+using agsXMPP.protocol.iq.disco;
 
 namespace Core.Kernel
 {
@@ -50,7 +52,7 @@ namespace Core.Kernel
 		string dir_plugs;
 		string dir_censor;
 		string dir_vrcensor;
-		//version and resoyrce ccensor
+		//version and resource censor
 		string dir_va;
 		string dir_vl;
 		string dir_temp;
@@ -60,6 +62,11 @@ namespace Core.Kernel
 		string dir_html_priv_log;
 		public bool turn_off = false;
 		XmppClientConnection m_con;
+		
+		// added by Mattias Aslund
+		DiscoManager m_discoManager;
+		//
+		
 		ReplyGenerator m_resphnd;
 		Config m_config;
 		Dictionary<Jid, MUC> m_mucs;
@@ -210,6 +217,18 @@ namespace Core.Kernel
 			m_mucs = new Dictionary<Jid, MUC> ();
 			mucs_count = 0;
 			
+			// added by Mattias Aslund
+			
+			//Register a DiscoManager that will automatically respond to any
+			//disco#info requests.
+			//Plugins can add feature support by adding features in their Main.Start()
+            m_con.DiscoInfo.AddIdentity(new DiscoIdentity("pc", "Pako", "client"));
+            m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.DISCO_INFO));
+            //m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.DISCO_ITEMS));
+            m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.MUC));
+            m_discoManager = new DiscoManager(m_con);
+			
+			// end of code added by Mattias Aslund
 			
 			os_version = Utils.Bot["os"].Replace ("\n\r", "").Replace ("\n", "").Replace ("\r", "");
 			
