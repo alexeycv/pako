@@ -1,6 +1,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Pako Jabber-bot. Bbodio's Lab.                                                *
  * Copyright. All rights reserved © 2007-2008 by Klichuk Bogdan (Bbodio's Lab)   *
+ * Copyright. All rights reserved © 2009-2012 by Alexey Bryohov                  *
+ * Contributors: jmaksima														 *
  * Contact information is here: http://code.google.com/p/pako                    *
  *                                                                               *
  * Pako is under GNU GPL v3 license:                                             *
@@ -205,8 +207,8 @@ namespace www
 							XmlNodeList _nodes = _xml.SelectNodes ("xml_api_reply/weather/current_conditions");
 							
 							
-							
-							
+							if ((m_r.MUC != null && m_r.MUC.Language == "en") || m_r.MUC == null)
+						{
 							foreach (XmlNode _node in _nodes) {
 								
 								XmlDocument _childXml = new XmlDocument ();
@@ -215,7 +217,7 @@ namespace www
 								
 								
 								
-								// fill weather insormation:
+								// fill weather information:
 								
 								_resultStr += "Current weather information:\n";
 								
@@ -247,7 +249,7 @@ namespace www
 								
 								
 								
-								// fill weather insormation:
+								// fill weather insfrmation:
 								
 								_resultStr += "Weather information on " + _childXml.SelectSingleNode ("xml/day_of_week").Attributes["data"].Value.Replace ("Mon", "Monday").Replace ("Tue", "Tuesday").Replace ("Wed", "Wednesday").Replace ("Thu", "Thursday").Replace ("Fri", "Friday").Replace ("Sat", "Saturday").Replace ("Sun", "Sunday") + "\n";
 								;
@@ -263,6 +265,39 @@ namespace www
 								_resultStr += " - " + _tempHigh.ToString ("##");
 								
 							}
+						}
+						
+						if (m_r.MUC != null && m_r.MUC.Language == "ru")
+						{
+							// code from jmaksima
+							foreach (XmlNode _node in _nodes)
+                                 {
+                                     XmlDocument _childXml = new XmlDocument();
+                                     _childXml.LoadXml("<xml>" + _node.InnerXml + "</xml>");
+                                    // fill weather information:
+                                    _resultStr += "Сейчас:\n";
+                                    _resultStr += _childXml.SelectSingleNode("xml/condition").Attributes["data"].Value + " ";
+                                   // _resultStr += "Temperature, F : " + _childXml.SelectSingleNode("xml/temp_f").Attributes["data"].Value + "\n";
+                                    _resultStr += "" + _childXml.SelectSingleNode("xml/temp_c").Attributes["data"].Value + " ⁰C\n";
+                                    _resultStr += "" + _childXml.SelectSingleNode("xml/humidity").Attributes["data"].Value + "\n";
+                                    _resultStr += "" + _childXml.SelectSingleNode("xml/wind_condition").Attributes["data"].Value;
+                                }
+                                _nodes = _xml.SelectNodes("xml_api_reply/weather/forecast_conditions");
+                                foreach (XmlNode _node in _nodes)
+                                {
+                                     _resultStr += "\n";
+                                     XmlDocument _childXml = new XmlDocument();
+                                     _childXml.LoadXml("<xml>" + _node.InnerXml + "</xml>");
+                                     // fill weather information:
+                                     _resultStr += "" + _childXml.SelectSingleNode("xml/day_of_week").Attributes["data"].Value.Replace("пн", "Понедельник").Replace("вт", "Вторник").Replace("ср", "Среда").Replace("чт", "Четверг").Replace("пт", "Пятница").Replace("сб", "Суббота").Replace("вс", "Воскресенье") + ": "; ;
+                                     _resultStr += _childXml.SelectSingleNode("xml/condition").Attributes["data"].Value + ". ";
+                                     Double _tempLow = (System.Double.Parse (_childXml.SelectSingleNode ("xml/low").Attributes["data"].Value) - 32) * 5 / 9;								
+								     Double _tempHigh = (System.Double.Parse (_childXml.SelectSingleNode ("xml/high").Attributes["data"].Value) - 32) * 5 / 9;
+                                     _resultStr += ": ночью: " + _tempLow.ToString("##") + " ⁰C";
+                                     _resultStr += ", днём: " + _tempHigh.ToString("##") + " ⁰C";
+                                 }
+						}
+						
 							if (_resultStr != "")
 								rs = _resultStr;
 							else
