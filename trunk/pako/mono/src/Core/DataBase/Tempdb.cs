@@ -89,6 +89,12 @@ namespace Core.DataBase
                           TABLE  autokick (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
                                       ", sqlite_conn);
                 cmd.ExecuteNonQuery();
+				
+				cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE  autoban (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
               
                 cmd = new SqliteCommand(@"
                     CREATE 
@@ -127,6 +133,12 @@ namespace Core.DataBase
                 cmd = new SqliteCommand(@"
                     CREATE 
                           TABLE IF NOT EXISTS autokick (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
+                                      ", sqlite_conn);
+                cmd.ExecuteNonQuery();
+				
+				cmd = new SqliteCommand(@"
+                    CREATE 
+                          TABLE IF NOT EXISTS autoban (determiner varchar, value varchar, updated bigint, period bigint, reason varchar, room varchar);
                                       ", sqlite_conn);
                 cmd.ExecuteNonQuery();
               
@@ -324,6 +336,28 @@ namespace Core.DataBase
 
             }
         }
+		
+		public bool AddAutoBan(string Value, Jid Room, string Type, string Reason, long Period)
+        {
+            lock (sobjs[19])
+            {
+                string type = Type.Replace("'", "''");
+                string value = Value.Replace("'", "''");
+                string reason = Reason.Replace("'", "''");
+                string room = Room.Bare.Replace("'", "''");
+                if (AutoKickExists(Value, Room, Type, Reason))
+                    return false;
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                      INSERT 
+                           INTO autoban (determiner, value, updated, period, reason, room) 
+                           VALUES ('{0}', '{1}', {2}, {3}, '{4}', '{5}');
+                                      ",
+                                            type, value, DateTime.Now.Ticks.ToString(), Period.ToString(), reason, room), sqlite_conn);
+                cmd.ExecuteNonQuery();
+                return true;
+
+            }
+        }
 
         public bool AddAutoVisitor(string Value, Jid Room, string Type, string Reason, long Period)
         {
@@ -369,9 +403,28 @@ namespace Core.DataBase
             }
         }
 
+		public bool AutoBanExists(string Value, Jid Room, string Type, string Reason)
+        {
+            lock (sobjs[17])
+            {
+                string type = Type.Replace("'", "''");
+                string value = Value.Replace("'", "''");
+                string reason = Reason.Replace("'", "''");
+                string room = Room.Bare.Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                      SELECT * 
+                           FROM autoban 
+                           WHERE (determiner = '{0}' and value = '{1}' and reason = '{2}' and room = '{3}')
+                                      ",
+                                            type, value, reason, room), sqlite_conn);
+//                cmd.ExecuteNonQuery();
+                SqliteDataReader sqr = cmd.ExecuteReader();
+                return sqr.Read();
 
-
-        public bool AutoVisitorExists(string Value, Jid Room, string Type, string Reason)
+            }
+        }        
+		
+		public bool AutoVisitorExists(string Value, Jid Room, string Type, string Reason)
         {
             lock (sobjs[16])
             {
@@ -408,6 +461,24 @@ namespace Core.DataBase
 
             }
         }
+		
+		public void ClearAutoBan(Jid Room)
+        {
+            lock (sobjs[15])
+            {
+                string room = Room.Bare.Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                          FROM autoban 
+                                          WHERE (room = '{0}')
+                                      ", room),
+                                          sqlite_conn);
+                cmd.ExecuteNonQuery();
+
+
+            }
+        }
+		
         public void ClearGreet(Jid Room)
         {
             lock (sobjs[14])
@@ -547,6 +618,49 @@ namespace Core.DataBase
 
             }
         }
+		
+		public void CleanAutoBan(Jid Room)
+        {
+            lock (sqlite_conn)
+            {
+                SqliteCommand cmd;
+                SqliteDataReader sqr;
+                string room = Room.Bare.Replace("'", "''");
+                cmd = new SqliteCommand(String.Format(@"
+                        SELECT *   
+                               FROM autoban
+                               WHERE (room = '{0}')
+                                      ",
+                                         room), sqlite_conn);
+//                cmd.ExecuteNonQuery();
+                sqr = cmd.ExecuteReader();
+
+                while (sqr.Read())
+                {
+                    long period = sqr.GetInt64(3);
+                    long updated = sqr.GetInt64(2);
+                    string jid = sqr.GetString(1).Replace("'", "''");
+                    if (period == 0)
+                        continue;
+                    if (DateTime.Now.Ticks < updated + period)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                            FROM autoban 
+                                            WHERE (value = '{0}' and updated = {1} and period = {2} and room ='{3}')
+                                      ",
+                                   jid, updated.ToString(), period.ToString(), room), sqlite_conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+
+            }
+        }
 
         public void CleanAutoModerator(Jid Room)
         {
@@ -592,7 +706,7 @@ namespace Core.DataBase
         }
 
 
-
+		// akick
 
         public bool DelAutoKick(Jid Room, int num)
         {
@@ -828,7 +942,243 @@ namespace Core.DataBase
             }
         }
 
+		// aban
+		
+		public bool DelAutoBan(Jid Room, int num)
+        {
+            lock (sobjs[12])
+            {
+                string room = Room.Bare.ToLower().Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                      SELECT * 
+                           FROM autoban 
+                           WHERE (room = '{0}')
+                                      ",
+                                       room), sqlite_conn);
+//                cmd.ExecuteNonQuery();
+                SqliteDataReader sqr = cmd.ExecuteReader();
+                int i = 0;
+                while (sqr.Read())
+                {
+                    i++;
+                    if (i == num)
+                    {
+                        string determiner = sqr.GetString(0);
+                        string value = sqr.GetString(1);
+                        long updated = sqr.GetInt64(2);
+                        long period = sqr.GetInt64(3);
+                        string reason = sqr.GetString(4);
+                        cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                            FROM autoban 
+                                            WHERE (determiner = '{0}' and value = '{1}' and updated = {2} and period = {3} and reason = '{4}' and room ='{5}')
+                                      ",
+                                               determiner.Replace("'", "''"), value.Replace("'", "''"), updated.ToString(), period.ToString(), reason.Replace("'", "''"), room.Replace("'", "''")), sqlite_conn);
+                        cmd.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                return false;
+          
 
+            }
+        }
+        public string GetAutoBanList(Jid Room, string pattern, Response r)
+        {
+            lock (sobjs[9])
+            {
+                string room = Room.Bare.ToLower().Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                      SELECT * 
+                           FROM autoban 
+                           WHERE (room = '{0}')
+                                      ",
+                                       room), sqlite_conn);
+//                cmd.ExecuteNonQuery();
+                SqliteDataReader sqr = cmd.ExecuteReader();
+                string data = "";
+                int num = 0;
+                while (sqr.Read())
+                {
+                   num++;
+                   data += pattern
+                       .Replace("{1}", num.ToString())
+                       .Replace("{2}", sqr.GetString(0)
+                                       .Replace("AKICK_JID_REGEXP", "jid-exp")
+                                       .Replace("AKICK_JID", "jid")
+                                       .Replace("AKICK_NICK_REGEXP", "nick-exp")
+                                       .Replace("AKICK_NICK", "nick"))
+                       .Replace("{3}", sqr.GetString(1))
+                       .Replace("{4}", sqr.GetInt64(3) == 0 ? "&" : sqr.GetInt64(3) + sqr.GetInt64(2) - DateTime.Now.Ticks < 0 ? "0" : Utils.FormatTimeSpan(sqr.GetInt64(3) + sqr.GetInt64(2) - DateTime.Now.Ticks, r))
+                       .Replace("{5}", sqr.GetString(4)) + "\n";
+                }
+                return data == "" ? null : r.f("akick_list")+"\n"+ data.Trim('\n');
+
+            }
+        }
+
+        public string IsAutoBan(Jid Jid, string Nick, Jid Room, SessionHandler sh)
+        {
+            lock (sobjs[7])
+            {
+                @out.exe("aban_regex_starting");
+                string jid = Jid.ToString().ToLower().Replace("'", "''").ToLower();
+                string nick = Nick.Replace("'", "''").ToLower();
+                string room = Room.Bare.Replace("'", "''");
+                SqliteCommand cmd = new SqliteCommand(String.Format(@"
+                     SELECT *   
+                               FROM autoban 
+                               WHERE (room = '{0}')
+                               ORDER BY updated DESC
+                                      ",
+                                            room), sqlite_conn);
+//                cmd.ExecuteNonQuery();
+                SqliteDataReader sqr = cmd.ExecuteReader();
+                @out.exe("aban_sqlite_executed");
+
+
+                while (sqr.Read())
+                {
+                    string determiner = sqr.GetString(0);
+                    string value = sqr.GetString(1).ToLower();
+                    long updated = sqr.GetInt64(2);
+                    long period = sqr.GetInt64(3);
+                    string reason = sqr.GetString(4);
+                    @out.exe("aban_type_determined");
+                    switch (determiner)
+                    {
+                        case "AKICK_JID":
+                            @out.exe("aban_type: JID");
+                            if (Jid.Bare == value)
+                            {
+                                if (period == 0)
+                                    return reason;
+                                if (DateTime.Now.Ticks < updated + period)
+                                {
+                                    return reason;
+                                }
+                                else
+                                {
+
+                                    cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                            FROM autoban 
+                                            WHERE (determiner = '{0}' and value = '{1}' and updated = {2} and period = {3} and reason = '{4}' and room ='{5}')
+                                      ",
+                                              determiner.Replace("'", "''"), value.Replace("'", "''"), updated.ToString(), period.ToString(), reason.Replace("'", "''"), room.Replace("'", "''")), sqlite_conn);
+                                    cmd.ExecuteNonQuery();
+
+
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                            break;
+
+                        case "AKICK_JID_REGEXP":
+                            @out.exe("aban_type: JID_REGEXP");
+                            bool reged = false;
+                            try
+                            {
+                                Regex regex = new Regex(value);
+                                reged = regex.IsMatch(Jid.ToString().ToLower());
+                            }
+                            catch { }
+                            if (reged)
+                            {
+                                if (period == 0)
+                                    return reason;
+                                if (DateTime.Now.Ticks < updated + period)
+                                    return reason;
+                                else
+                                {
+                                    cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                            FROM autoban 
+                                            WHERE (determiner = '{0}' and value = '{1}' and updated = '{2}' and period = '{3}' and reason = '{4}' and room ='{5}')
+                                      ",
+                                           determiner.Replace("'", "''"), value.Replace("'", "''"), updated.ToString(), period.ToString(), reason.Replace("'", "''"), room), sqlite_conn);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                                break;
+                            break;
+
+                        case "AKICK_NICK_REGEXP":
+                            @out.exe("aban_type: NICK_REGEXP");
+                            bool reged1 = false;
+                            try
+                            {
+                                Regex _regex = new Regex(value);
+                                reged1 = _regex.IsMatch(Nick.ToLower());
+                                @out.exe("aban_regex_success");
+                            }
+                            catch { @out.exe("aban_regex_fail"); }
+                            if (reged1)
+                            {
+                                if (period == 0)
+                                    return reason;
+                                if (DateTime.Now.Ticks < updated + period)
+                                    return reason;
+                                else
+                                {
+                                    cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                            FROM autoban 
+                                            WHERE (determiner = '{0}' and value = '{1}' and updated = '{2}' and period = '{3}' and reason = '{4}' and room ='{5}')
+                                      ",
+                                           determiner.Replace("'", "''"), value.Replace("'", "''"), updated.ToString(), period.ToString(), reason.Replace("'", "''"), room), sqlite_conn);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                                break;
+                            break;
+
+                        case "AKICK_NICK":
+                            @out.exe("aban_type: NICK");
+                            if (Nick == value)
+                            {
+                                if (period == 0)
+                                    return reason;
+                                if (DateTime.Now.Ticks < updated + period)
+                                {
+                                    return reason;
+                                }
+                                else
+                                {
+                                    cmd = new SqliteCommand(String.Format(@"
+                                     DELETE    
+                                            FROM autoban 
+                                            WHERE (determiner = '{0}' and value = '{1}' and updated = {2} and period = {3} and reason = '{4}' and room ='{5}')
+                                      ",
+                                           determiner.Replace("'", "''"), value.Replace("'", "''"), updated.ToString(), period.ToString(), reason.Replace("'", "''"), room.Replace("'", "''")), sqlite_conn);
+                                    cmd.ExecuteNonQuery();
+
+
+                                }
+                            }
+                            else
+                            {
+
+                                break;
+                            }
+                            break;
+
+
+                    }
+
+
+                }
+                return null;
+
+            }
+        }
+		
+		// avisitor
 
         public bool DelAutoVisitor(Jid Room, int num)
         {

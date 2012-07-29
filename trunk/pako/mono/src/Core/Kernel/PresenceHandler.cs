@@ -251,6 +251,21 @@ namespace Core.Kernel
 							}
 						}
 						
+						if (m_muc.OptionsHandler.GetOption ("aban") == "+") {
+							ak = Sh.S.Tempdb.IsAutoBan (Jid, p_jid.Resource, p_jid, Sh);
+							@out.exe ("censored: " + (ak ?? "NULL"));
+							if (ak != null) {
+								
+								if (m_muc.KickableForCensored (user)) {
+									@out.exe ("censored: yes");
+									m_muc.Ban (null, user, Utils.FormatEnvironmentVariables (ak, r));
+									
+									// TODO: Logging autokick
+									return;
+								}
+							}
+						}
+						
 						if (m_muc.OptionsHandler.GetOption ("avisitor") == "+") {
 							
 							ak = Sh.S.Tempdb.IsAutoVisitor (Jid, p_jid.Resource, p_jid, Sh);

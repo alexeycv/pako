@@ -485,7 +485,206 @@ namespace Plugin
 					break;
 				}
 
-			
+			case "aban":
+				
+				{
+					ws = Utils.SplitEx (m_b.Trim (), 3);
+					if (ws.Length > 2) {
+						if (ws[2].Trim () == "show") {
+							Sh.S.Tempdb.CleanAutoBan (m_r.MUC.Jid);
+							string data = Sh.S.Tempdb.GetAutoBanList (m_r.MUC.Jid, "{1}) {3}      ({2}, {4}, '{5}')", m_r);
+							m_r.Reply (data != null ? data : m_r.f ("aban_list_empty"));
+							return;
+						} else if (ws[2].Trim () == "clear") {
+							Sh.S.Tempdb.ClearAutoBan (m_r.MUC.Jid);
+							m_r.Reply (m_r.f ("aban_list_cleared"));
+							return;
+						} else if (ws[2].Trim () == "del") {
+							if (ws.Length == 4) {
+								int num = 0;
+								try {
+									num = Convert.ToInt32 (ws[3]);
+								} catch {
+									syntax_error = true;
+									break;
+								}
+								if (Sh.S.Tempdb.DelAutoBan (m_r.MUC.Jid, num))
+									rs = m_r.Agree ();
+								else
+									rs = m_r.f ("aban_not_existing");
+							} else {
+								syntax_error = true;
+								break;
+							}
+						} else {
+							string reason = null;
+							// *muc avisitor $15h jid-exp ^[0-9]+\@\s*$ || bad jid..
+							if (m_b.IndexOf ("||") > -1) {
+								reason = m_b.Substring (m_b.IndexOf ("||") + 2).Trim () == "" ? null : m_b.Substring (m_b.IndexOf ("||") + 2).Trim ();
+								
+								if (reason != null)
+									m_b = m_b.Remove (m_b.IndexOf ("||"));
+							}
+							if (reason == null)
+								reason = m_r.f ("kick_reason");
+							string determiner = "AKICK_JID";
+							string value = "";
+							long ticks = 0;
+							ws = Utils.SplitEx (m_b.Trim (), 4);
+							if (ws.Length == 3) {
+								ws = Utils.SplitEx (m_b.Trim (), 2);
+								determiner = "AKICK_JID";
+								MUser user = m_r.MUC.GetUser (ws[2]);
+								if (user != null)
+									if (user.Jid.Bare != m_r.Msg.From.Bare)
+										value = user.Jid.Bare;
+									else
+										value = ws[2].ToLower ();
+								else
+									value = ws[2].ToLower ();
+								
+								if (!Utils.JidValid (value)) {
+									m_r.Reply (m_r.f ("jid_not_valid", value));
+									return;
+								}
+							}
+							if (ws.Length > 3) {
+								value = ws[ws.Length - 1].Trim ();
+								bool time_span_setted = false;
+								bool type_setted = false;
+								int time_pos = -1;
+								int det_pos = -1;
+								for (int i = 2; i < ws.Length - 1; i++) {
+									
+									string p = ws[i];
+									if (p.StartsWith ("$")) {
+										if (time_span_setted == false) {
+											time_span_setted = true;
+											if (p != "$&") {
+												Regex reg = new Regex ("[0-9]+[s|m|h|d|M]");
+												if (!reg.IsMatch (p)) {
+													time_pos = -1;
+													time_span_setted = false;
+												}
+												if (time_span_setted) {
+													foreach (Match m in reg.Matches (p)) {
+														string full = m.ToString ().Trim ();
+														string time_span = full.Substring (0, full.Length - 1);
+														long _time = Convert.ToInt64 (time_span);
+														char type = full[full.Length - 1];
+														switch (type) {
+														case 's':
+															ticks += _time * 10000000;
+															break;
+														case 'm':
+															ticks += (_time * 600000000);
+															break;
+														case 'h':
+															ticks += _time * 36000000000;
+															break;
+														case 'd':
+															ticks += _time * 864000000000;
+															break;
+														case 'M':
+															ticks += _time * 25920000000000;
+															break;
+														default:
+															m_r.Reply (m_r.f ("akick_wrong_parameter"));
+															return;
+														}
+														
+													}
+													
+												}
+											}
+											time_pos = i;
+										}
+										
+									} else {
+										string _det = p;
+										if (type_setted == false) {
+											type_setted = true;
+											switch (_det) {
+											case "jid-exp":
+												determiner = "AKICK_JID_REGEXP";
+												break;
+											case "nick-exp":
+												determiner = "AKICK_NICK_REGEXP";
+												break;
+											case "jid":
+												determiner = "AKICK_JID";
+												break;
+											case "nick":
+												determiner = "AKICK_NICK";
+												break;
+											default:
+												det_pos = -1;
+												type_setted = false;
+												break;
+												
+											}
+											det_pos = i;
+											
+										}
+										
+										
+									}
+								}
+								
+								
+								if (!type_setted) {
+									if ((time_span_setted) && (det_pos == 2) && (time_pos != -1)) {
+										m_r.Reply (m_r.f ("akick_wrong_parameter"));
+										return;
+									}
+									
+								} else {
+									m_b = m_b.Remove (m_b.IndexOf (ws[det_pos]), ws[det_pos].Length);
+								}
+								
+								if (!time_span_setted) {
+									if ((type_setted) && (time_pos == 2) && (det_pos != -1)) {
+										m_r.Reply (m_r.f ("akick_wrong_parameter"));
+										return;
+									}
+								} else {
+									m_b = m_b.Remove (m_b.IndexOf (ws[time_pos]), ws[time_pos].Length);
+								}
+							}
+							
+							ws = Utils.SplitEx (m_b, 2);
+							value = ws[2].Trim ();
+							if (determiner == "AKICK_JID") {
+								MUser _user = m_r.MUC.GetUser (ws[2]);
+								if (_user != null)
+									if (_user.Jid.Bare != m_r.Msg.From.Bare)
+										value = _user.Jid.Bare;
+									else
+										value = ws[2].ToLower ();
+								else
+									value = ws[2].ToLower ();
+							}
+							
+							if (Sh.S.Tempdb.AddAutoBan (value, m_r.MUC.Jid, determiner, reason, ticks)) {
+								rs = m_r.Agree ();
+							} else
+								rs = rs = m_r.f ("aban_already_exsists");
+							
+							
+							
+							foreach (MUser user in m_r.MUC.Users.Values) {
+								string ak = Sh.S.Tempdb.IsAutoBan (user.Jid, user, m_r.MUC.Jid, Sh);
+								if (ak != null)
+									if (m_r.MUC.KickableForCensored (user))
+										m_r.MUC.Ban (null, user, ak);
+							}
+						}
+						
+					} else
+						syntax_error = true;
+					break;
+				}
+				
 			case "avisitor":
 				
 				{
@@ -2128,7 +2327,7 @@ namespace Plugin
 				
 				{
 					if (ws.Length == 2) {
-						rs = m_r.f ("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, vrcensor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen, invite";
+						rs = m_r.f ("volume_list", n) + "\nlist, show, disco, here, idle, owner, admin, amoderator, aban, moderator, member, voice, devoice, none, avisitor, kick, akick, ban, tryme, banlist, adminlist, memberlist, ownerlist, cmdaccess, options, vipaccess, viplang, subject, setsubject, censor, vrcensor, mylang, mystatus, mynick, jid, nicks, name, greet, tell, echo, status, entered, role, info, me, clean, whowas, seen, invite";
 					}
 					break;
 				}
