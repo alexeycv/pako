@@ -39,6 +39,13 @@ install:
 	nano bin/Dynamic/Rooms.base
 	echo Installing Pako... Done
 
+clean:
+	@echo Deleting Pako bot build files...
+	@find ./bin -name "Core.dll" -print -delete
+	@find ./bin -name "Pako.exe" -print -delete
+	@find ./bin/Plugins -name "*.dll" -print -delete
+	@echo Success cleaning build files... Done
+
 run:
 	mono bin/Pako.exe
 
