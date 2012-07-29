@@ -1251,23 +1251,20 @@ namespace www
 						HttpWebRequest _request = (HttpWebRequest)HttpWebRequest.CreateDefault (new System.Uri ("http://pda.anekdot.ru/"));
 						_request.Method = "GET";
 						
-						HttpWebResponse _response = (HttpWebResponse)_request.GetResponse ();
+						HttpWebResponse _response = (HttpWebResponse)_request.GetResponse();
+            			Encoding _responseEncoding = Encoding.GetEncoding(_response.CharacterSet);
+            			StreamReader _reader = new StreamReader(_response.GetResponseStream(), _responseEncoding);
+
+            			String _data = "";
+            			_data = _reader.ReadToEnd();
+            			String _resultStr = "";
+
+            			int _begin = _data.IndexOf("<h2 style=\"margin-top:15px;\"><a href=\"/anekdots/random\">Случайный анекдот</a></h2>") + 85;
+            			int _end = _data.IndexOf("</p>", _begin);
+
+            			_resultStr += "\n" + _data.Substring(_begin, _end - _begin).Replace("\"", "").Replace("\"", "").Replace("<br>", "\n").Replace("<div>", "").Replace("&lt;", "<").Replace("&gt;", ">").Replace("&quot;", "\"").Replace("class=\"main\">", "").Replace("class=main>", "").Replace("<br />", "");
 						
-						Encoding _responseEncoding = Encoding.GetEncoding (_response.CharacterSet);
-						StreamReader _reader = new StreamReader (_response.GetResponseStream (), _responseEncoding);
-						
-						String _data = "";
-						_data = _reader.ReadToEnd ();
-						String _resultStr = "";
-						
-						String header = "<h1>Случайный анекдот</h1>";
-							/* + header.Length*/						_data = _data.Substring (_data.IndexOf (header))						;
-						
-						String html_data = Utils.GetValue (_data, "<p>(.*)</p>");
-						// class=\"main\"
-						String result = html_data.Replace ("<br />", "\n");
-						
-						rs = result;
+						rs = _resultStr;
 					} catch (Exception err) {
 						rs = m_r.f ("anekdot_error");
 					}
