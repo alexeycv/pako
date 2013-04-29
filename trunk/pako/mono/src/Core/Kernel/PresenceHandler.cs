@@ -80,7 +80,7 @@ namespace Core.Kernel
 		{
 			// Handle Muc-Join
 			
-			pres.From = new Jid (pres.From.Bare.ToLower () + (pres.From.Resource != "" ? "/" + pres.From.Resource : ""));
+			pres.From = new Jid (pres.From.Bare.ToLower () + (!string.IsNullOrEmpty(pres.From.Resource) ? "/" + pres.From.Resource : ""));
 			if (pres.MucUser != null)
 				if (pres.MucUser.Item.Jid != null)
 					pres.MucUser.Item.Jid = new Jid (pres.MucUser.Item.Jid.Bare.ToLower () + (pres.MucUser.Item.Jid.Resource != "" ? "/" + pres.MucUser.Item.Jid.Resource : ""));
