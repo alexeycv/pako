@@ -52,7 +52,8 @@ namespace Core.Kernel
 		{
 			try {
 				_Handle ();
-			} catch (Exception ex) {
+			} 
+			catch (Exception ex) {
 				
 				string clrf = "\n";
 				string msg_source = pres.ToString ();
@@ -78,19 +79,27 @@ namespace Core.Kernel
 
 		public void _Handle ()
 		{
+			// go away if presence is null
+			if (pres == null)
+				return;
+			
 			// Handle Muc-Join
 			
 			pres.From = new Jid (pres.From.Bare.ToLower () + (!string.IsNullOrEmpty(pres.From.Resource) ? "/" + pres.From.Resource : ""));
-			if (pres.MucUser != null)
-				if (pres.MucUser.Item.Jid != null)
-					pres.MucUser.Item.Jid = new Jid (pres.MucUser.Item.Jid.Bare.ToLower () + (pres.MucUser.Item.Jid.Resource != "" ? "/" + pres.MucUser.Item.Jid.Resource : ""));
+			
+			//@out.write ("before=" + pres.MucUser.Item.Jid.ToString() + "  ");
+			
+			//if (pres.MucUser != null && pres.MucUser.Item != null && pres.MucUser.Item.Jid != null)
+			//	pres.MucUser.Item.Jid = new Jid (pres.MucUser.Item.Jid.Bare.ToLower () + (!string.IsNullOrEmpty(pres.MucUser.Item.Jid.Resource) ? "/" + pres.MucUser.Item.Jid.Resource : ""));
+			
+			//@out.write ("after=" + pres.MucUser.Item.Jid.ToString() + "  ");
+			
 			Jid p_jid = pres.From;
 			MUC m_muc = Sh.S.GetMUC (p_jid);
 			MUser m_user = null;
 			Jid Jid = pres.From;
-			if (pres.MucUser != null)
-				if (pres.MucUser.Item.Jid != null)
-					Jid = pres.MucUser.Item.Jid;
+			if (pres.MucUser != null && pres.MucUser.Item.Jid != null)
+				Jid = pres.MucUser.Item.Jid;
 			
 			switch (pres.Type) {
 			case PresenceType.subscribe:
