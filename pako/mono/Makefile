@@ -36,6 +36,7 @@ install:
 	cp lib/agsXMPP.dll bin/agsXMPP.dll
 	cp lib/Mono.Data.SqliteClient.dll bin/Mono.Data.SqliteClient.dll
 	echo Please, configure the bot.
+	cp bin/Example-Pako.cfg bin/Pako.cfg
 	nano bin/Pako.cfg
 	echo Please, configure autmaticly joined rooms. 
 	nano bin/Dynamic/Rooms.base
