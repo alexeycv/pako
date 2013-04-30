@@ -66,9 +66,7 @@ sudo apt-get install libmono-sqlite2.0-cil
 
 *Labels:*
 
-- *Open*
-
-*Pako.cfg*:
+- *Rename Example-Pako.cfg to Pako.cfg and open it*:
 
 Thsi is configurator, where you can specify all the XMPP-connection attributes:
 Example of config is already included into the source package.
