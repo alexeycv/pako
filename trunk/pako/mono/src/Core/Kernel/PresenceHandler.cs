@@ -172,7 +172,9 @@ namespace Core.Kernel
 					} else {
 						//Checking for MucUser properties Get old status and access
 						//_tempUser = m_muc.GetUser (pres.From.Resource);
-						_oldStatus = _tempUser.Status;
+						if (!String.IsNullOrEmpty(_tempUser.Status))
+							_oldStatus = _tempUser.Status;
+						
 						_oldAffiliation = _tempUser.Affiliation;
 					}
 					///
@@ -233,7 +235,7 @@ namespace Core.Kernel
 							}
 						}
 						
-						if (_oldStatus != null && _oldStatus != user.Status && m_muc.OptionsHandler.GetOption ("enable_logging") == "+") {
+						if (_oldStatus != null && user.Status != null && _oldStatus != user.Status && m_muc.OptionsHandler.GetOption ("enable_logging") == "+") {
 							if (Sh.S.Config.EnableLogging) {
 								Sh.S.HtmlLogger.AddHtmlLog ("groupchat", "status", m_muc.Jid.ToString (), user.Nick, " old status was '" + _oldStatus + "' and become " + user.Status + "'");
 							}

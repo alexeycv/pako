@@ -209,7 +209,7 @@ namespace Core.Kernel
 			m_con.Capabilities.Node = "http://pako.googlecode.com";
 			m_con.KeepAlive = true;
 			m_con.KeepAliveInterval = 60;
-			m_con.SocketConnectionType = agsXMPP.net.SocketConnectionType.Direct;
+			m_con.SocketConnectionType = agsXMPP.Net.SocketConnectionType.Direct;
 			bool connect_server = S.Config.ConnectServer != "";
 			m_con.AutoResolveConnectServer = !connect_server;
 			m_con.ConnectServer = connect_server ? S.Config.ConnectServer : null;
