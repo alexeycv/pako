@@ -154,18 +154,24 @@ namespace Core.Kernel
 				
 				
 				if (pres.MucUser != null) {
+					
+					// break on null resource
+					if (pres.From.Resource == null)
+						break;
+					
 					//if user is just joined...
 					bool _justJoined = false;
 					bool _affiliationChanged = false;
 					bool _statusChanged = false;
-					MUser _tempUser = null;
+					MUser _tempUser = m_muc.GetUser (pres.From.Resource);	// = null
 					string _oldStatus = null;
 					Affiliation _oldAffiliation = Affiliation.none;
-					if (m_muc.GetUser (pres.From.Resource) == null) {
+					//if (m_muc.GetUser (pres.From.Resource) == null) {
+					if (_tempUser == null) {
 						_justJoined = true;
 					} else {
 						//Checking for MucUser properties Get old status and access
-						_tempUser = m_muc.GetUser (pres.From.Resource);
+						//_tempUser = m_muc.GetUser (pres.From.Resource);
 						_oldStatus = _tempUser.Status;
 						_oldAffiliation = _tempUser.Affiliation;
 					}
