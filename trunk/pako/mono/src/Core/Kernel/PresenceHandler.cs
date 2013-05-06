@@ -44,9 +44,6 @@ namespace Core.Kernel
 			pres = m_pres;
 			Sh = sh;
 			Handle ();
-			
-			//Thread thr = new Thread(new ThreadStart(Handle));
-			//thr.Start();            
 		}
 		public void Handle ()
 		{
@@ -85,7 +82,7 @@ namespace Core.Kernel
 			
 			// Handle Muc-Join
 			
-			pres.From = new Jid (pres.From.Bare.ToLower () + (!string.IsNullOrEmpty(pres.From.Resource) ? "/" + pres.From.Resource : ""));
+			//pres.From = new Jid (pres.From.Bare.ToLower () + (!string.IsNullOrEmpty(pres.From.Resource) ? "/" + pres.From.Resource : ""));
 			
 			//@out.write ("before=" + pres.MucUser.Item.Jid.ToString() + "  ");
 			
