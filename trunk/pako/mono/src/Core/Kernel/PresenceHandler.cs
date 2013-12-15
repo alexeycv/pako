@@ -177,6 +177,22 @@ namespace Core.Kernel
 						
 						_oldAffiliation = _tempUser.Affiliation;
 					}
+					
+					// send caps if user is just joined
+					if (m_muc != null && !m_muc.IsCapsPresenceSended)
+					{
+						m_muc.IsCapsPresenceSended = true;
+						//Thread.Sleep(2000);
+						String _caps = "<presence from='"+Sh.S.C.Username+"@"+Sh.S.C.Server+"/"+Sh.S.C.Resource+"' to=\""+m_muc.Jid.User+"@"+m_muc.Jid.Server+"\">\n"+
+  									"<c xmlns='http://jabber.org/protocol/caps' \n"+
+     								"hash='sha-1' \n"+
+	     							"node='http://pako.googlecode.com'\n"+
+    	 							"ver='"+Sh.S.C.Capabilities.Version+"'/>\n"+
+									"</presence>";
+						Sh.S.C.Send(_caps);
+						//@out.write (_caps);
+					}
+					
 					///
 					m_user = m_muc != null ? m_muc.GetUser (pres.From.Resource) : null;
 					Jid calcjid = m_muc != null ? pres.From : new Jid (pres.From.Bare);

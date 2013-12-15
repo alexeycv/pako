@@ -270,6 +270,11 @@ namespace Core.Conference
             get { lock (sobjs[54]) { return _customObjects; } }
             set { lock (sobjs[54]) { _customObjects = value; } }
         }
+		
+		/// <summary>
+		/// The flag, that shows is caps presence sended to the room
+		/// </summary>
+		public bool IsCapsPresenceSended {get; set;}
 
 
         /// <summary>
