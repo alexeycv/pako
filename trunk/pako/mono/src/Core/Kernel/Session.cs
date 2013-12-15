@@ -205,8 +205,7 @@ namespace Core.Kernel
 			m_con.UseSSL = S.Config.UseSSL;
 			m_con.UseStartTLS = S.Config.UseStartTls;
 			m_con.UseCompression = S.Config.UseCompression;
-			m_con.EnableCapabilities = true;
-			m_con.Capabilities.Node = "http://pako.googlecode.com";
+			
 			m_con.KeepAlive = true;
 			m_con.KeepAliveInterval = 60;
 			m_con.SocketConnectionType = agsXMPP.Net.SocketConnectionType.Direct;
@@ -224,11 +223,17 @@ namespace Core.Kernel
 			//Plugins can add feature support by adding features in their Main.Start()
             m_con.DiscoInfo.AddIdentity(new DiscoIdentity("pc", "Pako", "client"));
             m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.DISCO_INFO));
-            //m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.DISCO_ITEMS));
+            m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.DISCO_ITEMS));
             m_con.DiscoInfo.AddFeature(new DiscoFeature(agsXMPP.Uri.MUC));
             m_discoManager = new DiscoManager(m_con);
 			
 			// end of code added by Mattias Aslund
+			
+			//caps
+			m_con.EnableCapabilities = true;
+			m_con.Capabilities.Node = "http://pako.googlecode.com";
+			m_con.Capabilities.SetVersion(m_con.DiscoInfo);
+			m_con.ClientVersion = "13.12.15";
 			
 			os_version = Utils.Bot["os"].Replace ("\n\r", "").Replace ("\n", "").Replace ("\r", "");
 			
