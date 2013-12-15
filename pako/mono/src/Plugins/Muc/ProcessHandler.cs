@@ -1803,6 +1803,8 @@ namespace Plugin
 						string sign = m_r.MUC.OptionsHandler.GetOption ("cleanup_unit");
 						if (!String.IsNullOrEmpty (sign.Trim ()) && sign != "null")
 							clm.Body = sign == "empty" ? " " : sign;
+						if (clm.Body == null)
+							clm.Body = "";
 						if (sign == null)
 							@out.exe ("\"no sign\"");
 						else
